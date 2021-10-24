@@ -1,11 +1,50 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { useState } from 'react';
+import { Text, StyleSheet, View, Image } from 'react-native';
 
-const LoginScreen = () => {
+import FormInput from '../components/FormInput';
+import FormButton from '../components/FormButton';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const LoginScreen = ({navigation}) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
     return(
-        <Text>Login Screen</Text>
+        <View style={styles.container}>
+          <Image  
+            style={styles.logo}
+            source={require("../assets/logo.png")} />
+          <Text style={styles.text}>Memebit</Text>
+          <FormInput
+          labelValue={email}
+          onChangeText={(userEmail) => setEmail(userEmail)}
+          placeholder="Email"
+          iconType="user"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+          <FormInput
+          labelValue={password}
+          onChangeText={(userPassword) => setPassword(userPassword)}
+          placeholder="Mot de passe"
+          iconType="lock"
+          secureTextEntry={true}
+          />
+          <FormButton
+            buttonTitle="Se Connecter"
+            onPress={() => alert("Sign In clicked !")}
+          />
+          <TouchableOpacity
+          style={styles.forgotButton}
+          onPress={() => navigation.navigate("Signup")}
+          >
+            <Text style={styles.navButtonText}>
+              Pas encore un compte? Creez en un...</Text>
+          </TouchableOpacity>
+        </View>
         )
-}
+} 
 
 export default LoginScreen;
 
