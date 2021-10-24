@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { AuthContext } from '../navigation/AuthProvider';
 
 const SignupScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const {register} = useContext(AuthContext)
 
     return(
         <View style={styles.container}>
@@ -38,7 +41,7 @@ const SignupScreen = ({navigation}) => {
           />
           <FormButton
             buttonTitle="Creez votre compte"
-            onPress={() => alert("Sign In clicked !")}
+            onPress={() => register(email, password)}
           />
           <TouchableOpacity
           style={styles.forgotButton}

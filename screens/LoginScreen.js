@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Text, StyleSheet, View, Image } from 'react-native';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { AuthContext } from '../navigation/AuthProvider';
+
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  
+  const {login} = useContext(AuthContext);
     return(
         <View style={styles.container}>
           <Image  
@@ -33,7 +36,7 @@ const LoginScreen = ({navigation}) => {
           />
           <FormButton
             buttonTitle="Se Connecter"
-            onPress={() => alert("Sign In clicked !")}
+            onPress={() => login(email, password)}
           />
           <TouchableOpacity
           style={styles.forgotButton}

@@ -48,7 +48,7 @@ const AuthStack= ({navigation}) =>{
                 options={{header:() => null}}
             />
             <Stack.Screen
-                name="Signup"
+                name='Signup'
                 component={SignupScreen}
                 options={{
                     title:'',
