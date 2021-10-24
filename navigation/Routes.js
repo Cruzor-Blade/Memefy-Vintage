@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import auth from '@react-native-firebase/auth'
 import { AuthContext } from './AuthProvider';
 
-import AppStack from './AppStack';
+import AppTabs from "./AppTabs";
 import AuthStack from "./AuthStack";
 
 const Routes = () =>{
@@ -26,7 +26,7 @@ const Routes = () =>{
 
     return(
         <NavigationContainer>
-            {user ? <AppStack/> : <AuthStack/>}
+            {user ? <AppTabs/> : <AuthStack/>}
         </NavigationContainer>
     )
 };
