@@ -21,7 +21,7 @@ const AppTabs = () => {
 
       <Tab.Screen
         name='Post'
-        component={HomeScreen}
+        component={PostScreen}
         options={{
           tabBarLabel: 'Publier',
           tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/plus.png")} />)

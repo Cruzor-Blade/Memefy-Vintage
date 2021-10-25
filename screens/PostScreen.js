@@ -1,28 +1,52 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import FormButton from '../components/FormButton';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native'
 
-import { AuthContext } from '../navigation/AuthProvider';
+import { InputWrapper, InputField } from '../styles/AddPost';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const PostScreen = () => {
-  const {user, logout} = useContext(AuthContext);
   return (
-    <Text style={styles.container}>Post Screen</Text>
+    <View style={styles.container}>
+      <Text>Post</Text>
+      <InputWrapper>
+        <InputField
+          placeholder="A quoi pensez vous ?"
+          multiline
+          numberOfLines={4}
+        />
+      </InputWrapper>
+      <ActionButton buttonColor="rgba(231, 76, 60, 1)" >
+        <ActionButton.Item
+          buttonColor="#9b59b6"
+          title="Prendre une photo"
+          onPress={() => console.log("notes tapped !")}
+        >
+          <Icon name='camera-outline' style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+        <ActionButton.Item
+          buttonColor="#3498db"
+          title="Importer..."
+          onPress={() => console.log("Import tapped !")}
+        >
+          <Icon name='md-images-outline' style={styles.actionButtonIcon} />
+        </ActionButton.Item>
+      </ActionButton>
+    </View>
   )
 }
 
 export default PostScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#f9fafd',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+  container:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center'
   },
-  text: {
-    fontSize: 20,
-    color: '#333333'
+  actionButtonIcon:{
+    fontSize:24,
+    height:27,
+    color:"white"
   }
-});
+})
