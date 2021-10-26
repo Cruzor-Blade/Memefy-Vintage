@@ -64,6 +64,8 @@ const AddPostScreen = () => {
 
     firestore()
     .collection('posts')
+    // .doc(user.uid)
+    // .collection('userPosts')
     .add({
       userId: user.uid,
       post: post,
@@ -100,7 +102,7 @@ const AddPostScreen = () => {
     setUploading(true);
     setTransferred(0);
 
-    const storageRef = storage().ref(`photos/${filename}`);
+    const storageRef = storage().ref(`photos/${user.uid}/${filename}`);
     const task = storageRef.putFile(uploadUri);
 
     // Set transferred state
