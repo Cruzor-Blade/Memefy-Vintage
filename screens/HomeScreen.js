@@ -75,7 +75,7 @@ const Posts = [
 ];
 
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const {user} = useContext(AuthContext);
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -207,7 +207,7 @@ const HomeScreen = () => {
     <Container>
       <FlatList
       data={posts}
-      renderItem={({item}) => <PostCard item={item} onDelete={handleDelete} />}
+      renderItem={({item}) => <PostCard item={item} onDelete={handleDelete} onPress={() => navigation.navigate('ProfileScreen', {userId:item.userId})} />}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
       />
