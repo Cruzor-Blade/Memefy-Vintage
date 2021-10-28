@@ -108,7 +108,7 @@ const ProfileScreen = ({navigation, route}) => {
         {userData ? userData.about || 'No details added.' : ''}
         </Text>
         <View style={styles.userBtnWrapper}>
-          {route.params ? (
+          {route.params && route.params.userId != user.uid ? (
             <>
               <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
                 <Text style={styles.userBtnTxt}>Message</Text>

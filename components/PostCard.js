@@ -72,7 +72,11 @@ const PostCard = ({item, onDelete, onPress, ...props}) =>{
                                                                   'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'}} />
           <UserInfoText>
             <TouchableOpacity onPress={onPress}>
-              <UserName>{userData ? user.fname || 'Test' : 'Test' } {userData ? user.lname || 'User' : 'User'}</UserName>
+              <UserName>
+                {userData.username}
+                {userData ? user.fname || 'Test' : 'Test' }
+                {userData ? user.lname || 'User' : 'User'}
+              </UserName>
             </TouchableOpacity>
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
           </UserInfoText>

@@ -18,18 +18,23 @@ export const AuthProvider = ({children}) => {
               console.log(e);
             }
           },
-          register: async (email, password) => {
+          register: async (email, password, username) => {
             try {
               await auth().createUserWithEmailAndPassword(email, password)
               .then(() => {
                 firestore()
                 .collection('users').doc(auth().currentUser.uid)
                 .set({
+                  username:username,
                   fname:'',
                   lname:'',
                   email: email,
                   createdAt: firestore.Timestamp.fromDate(new Date()),
                   userImg: null,
+                  about:'',
+                  phone:'',
+                  country:'',
+                  city:''
                 })
                 .catch(error => {
                   console.log('Something went wrong while adding the user to the firestore: ', error);

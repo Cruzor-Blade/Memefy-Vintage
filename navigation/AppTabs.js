@@ -12,11 +12,25 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import PreferencesScreen from '../screens/PreferencesScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
+import About from '../screens/preferences/About';
+import Donate from '../screens/preferences/Donate';
+import Suggestions from '../screens/preferences/Suggestions';
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const AppTabs = () => {
+  const getTabBarVisibility = (route) => {
+    tabBarHiddenRoutes=['EditProfileScreen', 'Preferences'] ;
+    routeName = route.state ? route.state.routes[route.state.index].name 
+    : '';
+    if (tabBarHiddenRoutes.includes(routeName)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   return (
     <Tab.Navigator
     initialRouteName="Home"
@@ -34,7 +48,7 @@ const AppTabs = () => {
 
       <Tab.Screen
         name='Find'
-        component={HomeScreen}
+        component={FindScreen}
         options={{
           tabBarLabel: 'Rechercher',
           tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/search.png")} />)
@@ -43,7 +57,7 @@ const AppTabs = () => {
 
       <Tab.Screen
         name='Home'
-        component={HomeScreen}
+        component={HomeStack}
         options={{
           tabBarLabel: 'Accueil',
           tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/home.png")} />)
@@ -53,14 +67,15 @@ const AppTabs = () => {
       <Tab.Screen
         name='Profile'
         component={ProfileStack}
-        options={{
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: 'Profil',
           tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/profile.png")} />)
-        }}
+        })}
         />
       <Tab.Screen
         name='Preferences'
-        component={HomeScreen}
+        component={PreferencesStack}
         options={{
           tabBarLabel: 'Preferences',
           tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/settings.png")} />)
@@ -92,6 +107,19 @@ const PostStack = ({navigation}) => {
   )
 }
 
+
+const HomeStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="HomeScreen">
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+      />
+    </Stack.Navigator>
+  )
+}
+
+
 const ProfileStack = ({navigation, route}) => {
   const tabHiddenRoutes = ["EditProfileScreen"];
 
@@ -100,7 +128,7 @@ const ProfileStack = ({navigation, route}) => {
   } else {
     navigation.setOptions({tabBarVisible:true})
   }
-
+  
   return (
     <Stack.Navigator initialRouteName="ProfileScreen">
       <Stack.Screen
@@ -132,9 +160,82 @@ const ProfileStack = ({navigation, route}) => {
           )
         }}
       />
+      <Stack.Screen
+        name="FindScreen"
+        component={FindScreen}
+      />
     </Stack.Navigator>
   )
 }
+
+
+const PreferencesStack = ({navigation, route}) => {
+
+  return (
+    <Stack.Navigator initialRouteName="PreferencesScreen">
+      <Stack.Screen
+        name="PreferencesScreen"
+        component={PreferencesScreen}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('Home')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+      <Stack.Screen
+        name="Suggestions"
+        
+        component={Suggestions}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('PreferencesScreen')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+      <Stack.Screen
+        name="Donate"
+        
+        component={Donate}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('PreferencesScreen')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+      <Stack.Screen
+        name="About"
+        
+        component={About}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('PreferencesScreen')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+    </Stack.Navigator>
+  )
+}
+
 
 export default AppTabs;
 

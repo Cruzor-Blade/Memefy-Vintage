@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../navigation/AuthProvider';
 
 const SignupScreen = ({navigation}) => {
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,10 +18,18 @@ const SignupScreen = ({navigation}) => {
         <View style={styles.container}>
           <Text style={styles.text}>Creez un compte</Text>  
           <FormInput
+          labelValue={username}
+          onChangeText={(username) => setUsername(username)}
+          placeholder="Entrez un nom d'utilisateur"
+          iconType="user"
+          autoCapitalize="none"
+          autoCorrect={false}
+          />
+          <FormInput
           labelValue={email}
           onChangeText={(userEmail) => setEmail(userEmail)}
           placeholder="Email"
-          iconType="user"
+          iconType="mail"
           keyboardType="email-address"
           autoCapitalize="none"
           autoCorrect={false}
@@ -41,7 +50,7 @@ const SignupScreen = ({navigation}) => {
           />
           <FormButton
             buttonTitle="Creez votre compte"
-            onPress={() => register(email, password)}
+            onPress={() => register(email, password, username)}
           />
           <TouchableOpacity
           style={styles.forgotButton}
