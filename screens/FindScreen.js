@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
 import FormButton from '../components/FormButton';
 
 import { AuthContext } from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 
-const FindScreen = () => {
+const FindScreen = ({navigation}) => {
   const {user, logout} = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
@@ -38,7 +38,9 @@ const FindScreen = () => {
        numColumns={1}
        horizontal={false}
        renderItem={({item}) => (
-         <Text>{item.id}</Text>
+         <TouchableOpacity onPress={() => navigation.navigate('FindProfile', {userId:item.id})}>
+           <Text>{item.id} ({item.fname} {item.lname})</Text>
+         </TouchableOpacity>
        )}
       />
     </View>

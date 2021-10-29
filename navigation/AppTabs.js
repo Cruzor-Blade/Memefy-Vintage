@@ -48,7 +48,7 @@ const AppTabs = () => {
 
       <Tab.Screen
         name='Find'
-        component={FindScreen}
+        component={FindStack}
         options={{
           tabBarLabel: 'Rechercher',
           tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/search.png")} />)
@@ -108,12 +108,55 @@ const PostStack = ({navigation}) => {
 }
 
 
+const FindStack = ({navigation}) => {
+  return (
+    <Stack.Navigator initialRouteName="FindScreen">
+      <Stack.Screen
+        name="FindScreen"
+        component={FindScreen}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('Home')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+      <Stack.Screen
+        name="FindProfile"
+        component={ProfileScreen}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('FindScreen')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+      <Stack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+      />
+    </Stack.Navigator>
+  )
+}
+
 const HomeStack = ({navigation}) => {
   return (
     <Stack.Navigator initialRouteName="HomeScreen">
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
+      />
+      <Stack.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
       />
     </Stack.Navigator>
   )
@@ -159,10 +202,6 @@ const ProfileStack = ({navigation, route}) => {
             />
           )
         }}
-      />
-      <Stack.Screen
-        name="FindScreen"
-        component={FindScreen}
       />
     </Stack.Navigator>
   )

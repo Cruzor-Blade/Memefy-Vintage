@@ -73,7 +73,6 @@ const PostCard = ({item, onDelete, onPress, ...props}) =>{
           <UserInfoText>
             <TouchableOpacity onPress={onPress}>
               <UserName>
-                {userData.username}
                 {userData ? user.fname || 'Test' : 'Test' }
                 {userData ? user.lname || 'User' : 'User'}
               </UserName>
