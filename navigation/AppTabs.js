@@ -15,6 +15,9 @@ import EditProfileScreen from '../screens/EditProfileScreen';
 import About from '../screens/preferences/About';
 import Donate from '../screens/preferences/Donate';
 import Suggestions from '../screens/preferences/Suggestions';
+import CommentsScreen from '../screens/CommentsScreen';
+import PostViewScreen from '../screens/PostViewScreen';
+
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -157,6 +160,34 @@ const HomeStack = ({navigation}) => {
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
+      />
+      <Stack.Screen
+        name="CommentsScreen"
+        component={CommentsScreen}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('Home')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+      <Stack.Screen
+        name="PostViewScreen"
+        component={PostViewScreen}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('Home')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
       />
     </Stack.Navigator>
   )

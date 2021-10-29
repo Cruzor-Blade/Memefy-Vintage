@@ -22,7 +22,7 @@ import { Container,
 import moment from 'moment';
 import { AuthContext } from '../navigation/AuthProvider';
 
-const PostCard = ({item, onDelete, onPress, ...props}) =>{
+const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
   const {user} = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
 
@@ -67,11 +67,13 @@ const PostCard = ({item, onDelete, onPress, ...props}) =>{
   return(
     <Card style={{width:windowWidth, ...props}}>
         <UserInfo>
-          <UserImg source={{uri : userData ? userData.userImg || 'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'
-                                                                  :
-                                                                  'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'}} />
+          <TouchableOpacity onPress={onProfilePress}>
+              <UserImg source={{uri : userData ? userData.userImg || 'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'
+                                                                      :
+                                                                      'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'}} />
+          </TouchableOpacity>
           <UserInfoText>
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity onPress={onProfilePress}>
               <UserName>
                 {userData ? user.fname || 'Test' : 'Test' }
                 {userData ? user.lname || 'User' : 'User'}
@@ -81,13 +83,19 @@ const PostCard = ({item, onDelete, onPress, ...props}) =>{
           </UserInfoText>
         </UserInfo>
         <PostText>{item.post}</PostText>
-        {item.postImg === null ? <Divider/> : <PostImg source={{uri: item.postImg}} />}
+        {item.postImg === null ? <Divider/>
+        : //if there is an user image available
+        <TouchableOpacity onPress={onImagePress}>
+          <PostImg source={{uri: item.postImg}}/>
+        </TouchableOpacity>
+        }
+
         <InteractionWrapper>
           <Interaction active={true} >
             <Ionicons name={likeIcon} size={25} color={likeIconColor} />
             <InteractionText active={item.liked}>{likeText}</InteractionText>
           </Interaction>
-          <Interaction>
+          <Interaction onPress={onCommentPress}>
             <Ionicons name="md-chatbubble-outline" size={25} />
             <InteractionText>{CommentText}</InteractionText>
           </Interaction>

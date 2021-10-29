@@ -207,13 +207,17 @@ const HomeScreen = ({navigation}) => {
     <Container>
       <FlatList
       data={posts}
-      renderItem={({item}) => <PostCard
-      item={item}
-      onDelete={handleDelete}
-      onPress={() => navigation.navigate('ProfileScreen', {userId:item.userId})} />}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
-      />
+      renderItem={({item}) => 
+        <PostCard
+          item={item}
+          onDelete={handleDelete}
+          onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
+          onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id})}
+          onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id})}
+            />}
+          />
     </Container>
   )
 }
