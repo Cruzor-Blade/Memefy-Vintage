@@ -179,6 +179,7 @@ const HomeStack = ({navigation}) => {
         name="PostViewScreen"
         component={PostViewScreen}
         options={{
+          headerShown: false,
           headerLeft: () => (
             <Feather.Button
             name="arrow-left"
