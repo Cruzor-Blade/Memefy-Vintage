@@ -35,7 +35,7 @@ const PostViewScreen = ({route}) => {
 
     useEffect(() => {
         if (route.params.postId !== postId) {
-            await firestore()
+            firestore()
             .collection('posts')
             .doc(route.params.postId)
             .collection('comments')
