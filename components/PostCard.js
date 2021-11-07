@@ -76,8 +76,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
           <UserInfoText>
             <TouchableOpacity onPress={onProfilePress}>
               <UserName>
-                {userData ? user.fname || 'Test' : 'Test' }
-                {userData ? user.lname || 'User' : 'User'}
+                {userData ? userData.fname || 'Test' : 'Test' } {userData ? userData.lname || 'User' : 'User'}
               </UserName>
             </TouchableOpacity>
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
