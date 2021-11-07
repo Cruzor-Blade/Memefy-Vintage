@@ -72,6 +72,7 @@ export const InteractionWrapper = styled.View`
     flex-direction: row;
     justify-content: space-around;
     padding: 15px;
+    border-width: 1px;
 `;
 
 export const Interaction = styled.TouchableOpacity`

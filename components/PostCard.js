@@ -1,4 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
+import {View} from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -91,10 +92,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         }
 
         <InteractionWrapper>
-          <Interaction active={true} >
-            <Ionicons name={likeIcon} size={25} color={likeIconColor} />
-            <InteractionText active={item.liked}>{likeText}</InteractionText>
-          </Interaction>
+          <View></View>
           <Interaction onPress={onCommentPress}>
             <Ionicons name="md-chatbubble-outline" size={25} />
             <InteractionText>{CommentText}</InteractionText>

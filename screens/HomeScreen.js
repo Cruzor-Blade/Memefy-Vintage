@@ -209,6 +209,8 @@ const HomeScreen = ({navigation}) => {
       data={posts}
       keyExtractor={item => item.id}
       showsVerticalScrollIndicator={false}
+      onRefresh={fetchPosts}
+      refreshing={loading}
       renderItem={({item}) => 
         <PostCard
           item={item}
