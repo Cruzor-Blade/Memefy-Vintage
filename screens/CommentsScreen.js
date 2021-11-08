@@ -17,6 +17,28 @@ const CommentsScreen = ({route}) => {
     const [loading, setLoading] = useState(false);
 
 
+    function matchUserToComment(comments) {
+        for (let i = 0; i < comments.length; i++) {
+            if (comments[i].hasOwnProperty('user')) {
+                continue;
+            }
+            
+            firestore()
+            .collection('users')
+            .doc( comments[i].creator)
+            .get()
+            .then((documentSnapshot) => {
+                if( documentSnapshot.exists ) {
+                    console.log('Individual User Data for comments', documentSnapshot.data());
+                    const { userImg, fname, lname } = documentSnapshot.data();
+                    comments[i].user = [userImg, fname, lname ]
+                    console.log("About the comments", comments)
+                    setComments(comments)
+                }
+            })     
+        }
+    }
+
     const fetchComments = () => {
         firestore()
         .collection('posts')
@@ -29,7 +51,7 @@ const CommentsScreen = ({route}) => {
                 const id = doc.id;
                 return {id, ...data};
             });
-            setComments(comments);
+            matchUserToComment(comments);
             
         })
     }
@@ -69,6 +91,7 @@ const CommentsScreen = ({route}) => {
                 renderItem={({item}) => (
                     <View>
                         <View>
+                            <Text>{item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}</Text>
                             <Text>{item.commentText}</Text>
                         </View>
                     </View>
