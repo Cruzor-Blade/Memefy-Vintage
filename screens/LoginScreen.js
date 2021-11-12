@@ -10,8 +10,26 @@ import { AuthContext } from '../navigation/AuthProvider';
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidPassword, setIsValidPassword] = useState(true);
   
   const {login} = useContext(AuthContext);
+
+  const handleValidEmail = (val) => {
+    if (val.trim().length >= 4 && val.includes("@", ".")) {
+      setIsValidEmail(true);
+    } else {
+      setIsValidEmail(false);
+    }
+  }
+
+  const handleValidPassword = (val) => {
+    if (val.trim().length >= 8) {
+      setIsValidPassword(true);
+    } else {
+      setIsValidPassword(false);
+    }
+  }
     return(
         <View style={styles.container}>
           <Image  
@@ -19,28 +37,51 @@ const LoginScreen = ({navigation}) => {
             source={require("../assets/logo.png")} />
           <Text style={styles.text}>Memebit</Text>
           <FormInput
-          labelValue={email}
-          onChangeText={(userEmail) => setEmail(userEmail)}
-          placeholder="Email"
-          iconType="user"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoCorrect={false}
+            labelValue={email}
+            placeholder="Email"
+            iconType="user"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={(userEmail) => {
+              setEmail(userEmail.trim())
+            if (userEmail.trim().length >= 4 && userEmail.includes("@", ".")){
+              setIsValidEmail(true);
+            } 
+            }}
+            onEndEditing={(e) => handleValidEmail(e.nativeEvent.text)}
           />
+          {isValidEmail ? null : (
+                <Text style={styles.errorMsg}>l'addresse email entree est incorrecte</Text>
+              )}
           <FormInput
-          labelValue={password}
-          onChangeText={(userPassword) => setPassword(userPassword)}
-          placeholder="Mot de passe"
-          iconType="lock"
-          secureTextEntry={true}
+            labelValue={password}
+            placeholder="Mot de passe"
+            iconType="lock"
+            secureTextEntry={true}
+            onChangeText={(userPassword) => {
+              setPassword(userPassword.trim())
+              if (userPassword.trim().length >=8 && !isValidPassword) {
+                setIsValidPassword(true)
+              }
+              }}
+            onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
           />
+          {isValidPassword ? null : (
+            <Text style={styles.errorMsg}>Le mot de passe doit avoir au moins 8 caracteres</Text>
+          )}
           <FormButton
             buttonTitle="Se Connecter"
-            onPress={() => login(email, password)}
+            onPress={() => {
+              handleValidEmail(email);
+              handleValidPassword(password);
+              if (isValidEmail && isValidPassword) {
+                login(email, password)}}
+              }
           />
           <TouchableOpacity
-          style={styles.forgotButton}
-          onPress={() => navigation.navigate("Signup")}
+            style={styles.forgotButton}
+            onPress={() => navigation.navigate("Signup")}
           >
             <Text style={styles.navButtonText}>
               Pas encore un compte? Creez en un...</Text>
@@ -57,7 +98,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: 20,
+      padding:20
     },
     logo: {
       height: 150,
@@ -82,4 +123,8 @@ const styles = StyleSheet.create({
       color: '#2e64e5',
       fontFamily: 'Lato-Regular',
     },
+    errorMsg: {
+      fontSize:13,
+      color:'#ff0000',
+    }
   });

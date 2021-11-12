@@ -79,9 +79,19 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     })
   }
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  const getFirebaseReaction = (userReaction) => {
+    firestore()
+    .collection("posts")
+    .doc(item.id)
+    .collection("reactions")
+    .doc(user.uid)
+    .get((querySnapshot) => {
+      if (querySnapshot.exists) {
+        const { postReaction } = querySnapshot.data()
+        setCurrentUserReaction(postReaction);
+      }
+    })
+  }
 
   const onReactionPress = async (userReaction) => {
         setCurrentUserReaction(userReaction);
@@ -90,8 +100,9 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         .doc(item.id)
         .collection("reactions")
         .doc(user.uid)
-        .set({userReaction})
-};
+        .set({postReaction: userReaction,})
+  };
+
   const onRmvReactionPress = async () => {
         setCurrentUserReaction(null);
         await firestore()
@@ -186,6 +197,14 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   };
 
 
+  useEffect(() => {
+    getUser();
+    getFirebaseReaction();
+  }, []);
+
+  useEffect(() => {
+    getFirebaseReaction()
+  }, [currentUserReaction])
 
   return(
     <Card style={{width:windowWidth, ...props}}>
