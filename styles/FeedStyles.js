@@ -70,8 +70,8 @@ export const Divider = styled.View`
 
 export const InteractionWrapper = styled.View`
     flex-direction: row;
-    justify-content: space-around;
-    padding: 15px;
+    align-items: center;
+    justify-content: center;
     border-width: 1px;
 `;
 

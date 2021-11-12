@@ -36,16 +36,28 @@ const AppTabs = () => {
 
   return (
     <Tab.Navigator
-    initialRouteName="Home"
-    activeColor="#ccc"
-    >
+      initialRouteName="Home"
+      activeColor="#ccc"
+      backBehavior='initialRoute'
+      screenOptions={{
+        style : {
+          height:200
+        }
+      }}
+      >
 
       <Tab.Screen
         name='Post'
         component={PostStack}
         options={{
           tabBarLabel: 'Publier',
-          tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/plus.png")} />)
+          tabBarIcon: ({focused}) => (
+            <Image
+              style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+              source={require("../assets/maintab/plus.png")}
+              resizeMode='contain'
+            />
+          )
         }}
         />
 
@@ -54,7 +66,12 @@ const AppTabs = () => {
         component={FindStack}
         options={{
           tabBarLabel: 'Rechercher',
-          tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/search.png")} />)
+          tabBarIcon: ({focused}) => (
+          <Image
+            style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+            source={require("../assets/maintab/search.png")}
+            resizeMode='contain'
+            />)
         }}
         />
 
@@ -63,7 +80,12 @@ const AppTabs = () => {
         component={HomeStack}
         options={{
           tabBarLabel: 'Accueil',
-          tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/home.png")} />)
+          tabBarIcon: ({focused}) => (
+          <Image
+            style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+            source={require("../assets/maintab/home.png")}
+            resizeMode='contain'
+            />)
         }}
         />
 
@@ -73,7 +95,13 @@ const AppTabs = () => {
         options={({route}) => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: 'Profil',
-          tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/profile.png")} />)
+          tabBarIcon: ({focused}) => (
+            <Image
+              style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+              source={require("../assets/maintab/profile.png")}
+              resizeMode='contain'
+            />
+          )
         })}
         />
       <Tab.Screen
@@ -81,7 +109,13 @@ const AppTabs = () => {
         component={PreferencesStack}
         options={{
           tabBarLabel: 'Preferences',
-          tabBarIcon: () => (<Image style={styles.bottomIcons} source={require("../assets/maintab/settings.png")} />)
+          tabBarIcon: ({focused}) => (
+          <Image
+            style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+            source={require("../assets/maintab/search.png")}
+            resizeMode='contain'
+            />
+          )
         }}
         />
 
@@ -91,7 +125,15 @@ const AppTabs = () => {
 
 const PostStack = ({navigation}) => {
   return (
-    <Stack.Navigator initialRouteName="PostScreen">
+    <Stack.Navigator
+      initialRouteName="PostScreen"
+      screenOptions={{
+        style: {
+          height: 100,
+          elevation:2
+        }
+      }}
+    >
       <Stack.Screen
         name="PostScreen"
         component={PostScreen}
@@ -313,6 +355,7 @@ export default AppTabs;
 const styles = StyleSheet.create({
   bottomIcons:{
     height:26,
-    width:26
+    width:26,
+    marginBottom:2,
   }
 })
