@@ -12,68 +12,44 @@ const SignupScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [dataValidity, setDataValidity] = useState({
-    isValidEmail:true,
-    isValidUser:true,
-    isValidPassword:true,
-    matchingPasswords:true
-  })
+
+  const[isValidUser, setIsValidUser] = useState(true);
+  const[isValidEmail, setIsValidEmail] = useState(true);
+  const[isValidPassword, setIsValidPassword] = useState(true);
+  const[matchingPasswords, setMatchingPasswords] = useState(true);
 
   const {register} = useContext(AuthContext);
 
-  const handleValidEmail = (val) => {
-    if (val.trim().length >= 4 && val.includes("@", ".")) {
-      setDataValidity ({
-        ...dataValidity,
-        isValidEmail:true
-      });
+  
+  const handleValidUser = (val) => {
+    if (val.split(" ").join("").length >= 4 && val !="") {
+      setIsValidUser(true);
     } else {
-      setDataValidity ({
-        ...dataValidity,
-        isValidEmail:false
-      });
+      setIsValidUser(false);
     }
   }
 
-  const handleValidUser = (val) => {
-    if (val.trim().length >= 4) {
-      setDataValidity ({
-        ...dataValidity,
-        isValidUser:true
-      });
+  const handleValidEmail = (val) => {
+    if (val.split(" ").join("").length >= 4 && val.includes("@", ".") && val !="") {
+      setIsValidEmail(true);
     } else {
-      setDataValidity ({
-        ...dataValidity,
-        isValidUser:false
-      });
+      setIsValidEmail(false);
     }
   }
 
   const handleValidPassword = (val) => {
-    if (val.trim().length >= 8) {
-      setDataValidity ({
-        ...dataValidity,
-        isValidPassword:true
-      });
+    if (val.split(" ").join("").length >= 8 && val !="") {
+      setIsValidPassword(true);
     } else {
-      setDataValidity ({
-        ...dataValidity,
-        isValidPassword:false
-      });
+      setIsValidPassword(false);
     }
   }
 
-  const handleMatchingPasswords = (val) => {
+  const handleMatchingPasswords = () => {
     if(password.split(" ").join("") == confirmPassword.split(" ").join("")) {
-      setDataValidity ({
-        ...dataValidity,
-        matchingPasswords:true
-      })
+      setMatchingPasswords(true);
     } else {
-      setDataValidity ({
-        ...dataValidity,
-        matchingPasswords:false
-      })
+      setMatchingPasswords(false);
     }
   }
    
@@ -89,16 +65,13 @@ const SignupScreen = ({navigation}) => {
               autoCorrect={false}
               onChangeText={(username) => {
                   setUsername(username.split(" ").join(""))
-                  if(username.trim().length >=4 && !dataValidity.isValidUser) {
-                    setDataValidity({
-                      ...dataValidity,
-                      isValidUser:true
-                    })
+                  if(username.split(" ").join("").length >=4 && !isValidUser) {
+                    setIsValidUser(true);
                   }
                 }}
               onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
             />
-            {dataValidity.isValidUser ? null : (
+            {isValidUser ? null : (
                 <Text style={styles.errorMsg}>Le nom d'utilisateur doit avoir au moins 4 caracteres</Text>
               )}
             <FormInput
@@ -108,18 +81,16 @@ const SignupScreen = ({navigation}) => {
               keyboardType="email-address"
               autoCapitalize="none"
               autoCorrect={false}
+              autoComplete={"email"}
               onChangeText={(userEmail) => {
-                setEmail(userEmail.trim())
-                if (userEmail.trim().length >= 4 && userEmail.includes("@", ".")) {
-                  setDataValidity ({
-                    ...dataValidity,
-                    isValidEmail:true
-                  });
+                setEmail(userEmail.split(" ").join(""))
+                if (userEmail.split(" ").join("").length >= 4 && userEmail.includes("@", ".") && !isValidEmail) {
+                  setIsValidEmail(true);
                 }
               }}
               onEndEditing={(e) => handleValidEmail(e.nativeEvent.text)}
             />
-            {dataValidity.isValidEmail ? null : (
+            {isValidEmail ? null : (
                 <Text style={styles.errorMsg}>L'addresse email entree est incorrecte</Text>
               )}
             <FormInput
@@ -128,17 +99,14 @@ const SignupScreen = ({navigation}) => {
               iconType="lock"
               secureTextEntry={true}
               onChangeText={(userPassword) => {
-                setPassword(userPassword.trim())
-                if (userPassword.trim().length >=8 && !dataValidity.isValidPassword) {
-                  setDataValidity({
-                    ...dataValidity,
-                    isValidPassword:true
-                  });
+                setPassword(userPassword.split(" ").join(""))
+                if (userPassword.split(" ").join("").length >=8 && !isValidPassword) {
+                  setIsValidPassword(true);
                 }
                 }}
               onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
               />
-              {dataValidity.isValidPassword ? null : (
+              {isValidPassword ? null : (
                 <Text style={styles.errorMsg}>Le mot de passe doit avoir au moins 8 caracteres</Text>
               )}
             <FormInput
@@ -147,32 +115,30 @@ const SignupScreen = ({navigation}) => {
               iconType="lock"
               secureTextEntry={true}
               onChangeText={(userConfirmPassword) => {
-                setConfirmPassword(userConfirmPassword.trim())
-                if (confirmPassword.trim().length >=8 && !dataValidity.matchingPasswords) {
-                  setDataValidity({
-                    ...dataValidity,
-                    isValidPassword:true
-                  });
+                setConfirmPassword(userConfirmPassword.split(" ").join(""))
+                if (confirmPassword.split(" ").join("").length >=8 && !matchingPasswords) {
+                  setMatchingPasswords(true);
                 }
               }}
               onEndEditing={(e) => handleMatchingPasswords(e.nativeEvent.text)}
             />
-            {dataValidity.matchingPasswords ? null : (
+            {matchingPasswords ? null : (
                 <Text style={styles.errorMsg}>Les mots de passe des entrees ne correspondent pas</Text>
               )}
           </ScrollView>
           <FormButton
             buttonTitle="Creez votre compte"
             onPress={() => {
-              handleValidEmail(email);
               handleValidUser(username);
+              handleValidEmail(email);
               handleValidPassword(password);
               handleMatchingPasswords(confirmPassword);
-              if (dataValidity.isValidUser &&
-                dataValidity.isValidEmail &&
-                dataValidity.isValidPassword &
-                dataValidity.matchingPasswords) {
-                  register(email, password, username)
+              if (username.split(" ").join("").length >= 4 && username !="" && //Check if username is valid
+                  email.split(" ").join("").length >= 4 && email.includes("@", ".") && email !="" && //Check if email is valid
+                  password.split(" ").join("").length >= 8 && password !="" && //Check if password is valid
+                  password.split(" ").join("") == confirmPassword.split(" ").join("") //Checks is passwords are matching
+                ) {
+                  register(email, password, username);
                 }
             }}
           />

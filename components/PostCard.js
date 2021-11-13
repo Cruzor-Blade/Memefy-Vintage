@@ -85,9 +85,10 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     .doc(item.id)
     .collection("reactions")
     .doc(user.uid)
-    .get((querySnapshot) => {
+    .get()
+    .then((querySnapshot) => {
       if (querySnapshot.exists) {
-        const { postReaction } = querySnapshot.data()
+        const {postReaction} = querySnapshot.data()
         setCurrentUserReaction(postReaction);
       }
     })
@@ -100,7 +101,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         .doc(item.id)
         .collection("reactions")
         .doc(user.uid)
-        .set({postReaction: userReaction,})
+        .set(userReaction)
   };
 
   const onRmvReactionPress = async () => {

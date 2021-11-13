@@ -16,7 +16,7 @@ const LoginScreen = ({navigation}) => {
   const {login} = useContext(AuthContext);
 
   const handleValidEmail = (val) => {
-    if (val.trim().length >= 4 && val.includes("@", ".")) {
+    if (val.split(" ").join("").length >= 4 && val.includes("@", ".") && val != "") {
       setIsValidEmail(true);
     } else {
       setIsValidEmail(false);
@@ -24,7 +24,7 @@ const LoginScreen = ({navigation}) => {
   }
 
   const handleValidPassword = (val) => {
-    if (val.trim().length >= 8) {
+    if (val.split(" ").join("").length >= 8 && val !="") {
       setIsValidPassword(true);
     } else {
       setIsValidPassword(false);
@@ -43,9 +43,10 @@ const LoginScreen = ({navigation}) => {
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
+            autoComplete={"email"}
             onChangeText={(userEmail) => {
-              setEmail(userEmail.trim())
-            if (userEmail.trim().length >= 4 && userEmail.includes("@", ".")){
+              setEmail(userEmail.split(" ").join(""))
+            if (userEmail.split(" ").join("").length >= 4 && userEmail.includes("@", ".")){
               setIsValidEmail(true);
             } 
             }}
@@ -60,8 +61,8 @@ const LoginScreen = ({navigation}) => {
             iconType="lock"
             secureTextEntry={true}
             onChangeText={(userPassword) => {
-              setPassword(userPassword.trim())
-              if (userPassword.trim().length >=8 && !isValidPassword) {
+              setPassword(userPassword.split(" ").join(""))
+              if (userPassword.split(" ").join("").length >=8 && !isValidPassword) {
                 setIsValidPassword(true)
               }
               }}
@@ -75,9 +76,12 @@ const LoginScreen = ({navigation}) => {
             onPress={() => {
               handleValidEmail(email);
               handleValidPassword(password);
-              if (isValidEmail && isValidPassword) {
-                login(email, password)}}
+              if (email.split(" ").join("").length >= 4 && email.includes("@", ".") && email != ""
+                  && password.split(" ").join("").length >= 8 && password !="") {
+                  login(email, password)
               }
+              }
+            }
           />
           <TouchableOpacity
             style={styles.forgotButton}
