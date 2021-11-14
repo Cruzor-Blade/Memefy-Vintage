@@ -79,7 +79,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     })
   }
 
-  const getFirebaseReaction = (userReaction) => {
+  const getFirebaseReaction = () => {
     firestore()
     .collection("posts")
     .doc(item.id)
@@ -88,8 +88,10 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     .get()
     .then((querySnapshot) => {
       if (querySnapshot.exists) {
-        const {postReaction} = querySnapshot.data()
-        setCurrentUserReaction(postReaction);
+        const {userReaction} = querySnapshot.data();
+        console.log("Query snapshot reaction: ", querySnapshot.data())
+        console.log("Post reaction: ",userReaction);
+        setCurrentUserReaction(userReaction);
       }
     })
   }
@@ -101,7 +103,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         .doc(item.id)
         .collection("reactions")
         .doc(user.uid)
-        .set(userReaction)
+        .set({userReaction})
   };
 
   const onRmvReactionPress = async () => {

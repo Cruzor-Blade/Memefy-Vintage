@@ -64,7 +64,7 @@ const SignupScreen = ({navigation}) => {
               autoCapitalize="none"
               autoCorrect={false}
               onChangeText={(username) => {
-                  setUsername(username.split(" ").join(""))
+                  setUsername(username.split(" ").join("").toLowerCase())
                   if(username.split(" ").join("").length >=4 && !isValidUser) {
                     setIsValidUser(true);
                   }

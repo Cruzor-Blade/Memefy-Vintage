@@ -35,7 +35,7 @@ const LoginScreen = ({navigation}) => {
           <Image  
             style={styles.logo}
             source={require("../assets/logo.png")} />
-          <Text style={styles.text}>Memebit</Text>
+          <Text style={styles.text}>MemeBit</Text>
           <FormInput
             labelValue={email}
             placeholder="Email"
@@ -105,9 +105,10 @@ const styles = StyleSheet.create({
       padding:20
     },
     logo: {
-      height: 150,
-      width: 150,
+      height: 130,
+      width: 180,
       resizeMode: 'cover',
+      marginBottom:3,
     },
     text: {
       fontFamily: 'Kufam-SemiBoldItalic',
