@@ -39,6 +39,16 @@ export const AuthProvider = ({children}) => {
                 if (querySnapshot.exists) {
                     Alert.alert("Ce nom d'utilisateur est deja pris")
                 } else {
+                  await firestore()
+                  .collection('usernames')
+                  .doc(username)
+                  .set({})
+                  .then()
+                  .catch(e => {
+                    console.log("Error while setting the username",e)                    
+                  })
+
+
                   await auth().createUserWithEmailAndPassword(email, password)
                   .then(() => {
                     firestore()
