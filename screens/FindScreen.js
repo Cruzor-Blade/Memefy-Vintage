@@ -39,7 +39,10 @@ const FindScreen = ({navigation}) => {
        horizontal={false}
        renderItem={({item}) => (
          <TouchableOpacity onPress={() => navigation.navigate('FindProfile', {userId:item.id})}>
-           <Text>{item.id} ({item.fname} {item.lname})</Text>
+           <View style={styles.userItem}>
+              <Image source={{uri: item.userImg}} style={{height:40, width:40}} />
+              <Text>{item.username}</Text><Text>({item.id} ({item.fname} {item.lname})</Text>
+            </View>
          </TouchableOpacity>
        )}
       />
@@ -62,7 +65,18 @@ const styles = StyleSheet.create({
     color: '#333333'
   },
   searchInput: {
+    alignItems:'center',
+    borderColor: '#0000ff',
+    borderRadius:10,
+    fontSize:16,
+    borderWidth: 1,
+    width:'95%',
     height:40,
-    width:'95%'
+    alignSelf:'center'
+  },
+  userItem: {
+    flexDirection:'row',
+    alignItems:'center',
+    padding:4
   }
 });

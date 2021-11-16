@@ -15,8 +15,7 @@ import { Container,
   PostImg,
   Divider,
   InteractionWrapper,
-  Interaction,
-  InteractionText
+  UserImageContainer,
 } from '../styles/FeedStyles';
 
 import moment from 'moment';
@@ -24,7 +23,7 @@ import { AuthContext } from '../navigation/AuthProvider';
 
 const iconSize = 36.0;
 const mvDuration = 500;
-const containerWidth= windowWidth * (5/6);
+const containerWidth= windowWidth * (31/40);
 
 const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
   const {user} = useContext(AuthContext);
@@ -129,10 +128,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
           <TouchableOpacity
               onPress={() => {
                 if (reaction == 'prev') {
-                  setShowReactions(!showReactions);
-                  mvPrev();
-                  setTimeout(() => mvSad() , showReactions ? mvDuration/6 : mvDuration/3);
-                  setTimeout(() => mvDontcare(), showReactions ? mvDuration/4 : mvDuration/2);
+                  SwitchReactions();
                 } else {
                   onReactionPress(reaction);
                 }
@@ -150,6 +146,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   const dontcareTrans = useState(new Animated.Value(0))[0];
   const sadTrans = useState(new Animated.Value(0))[0];
   const prevTrans = useState(new Animated.Value(0))[0];
+  const prevRot = useState(new Animated.Value(0))[0];
 
   function mvDontcare() {
       if (!showReactions) {
@@ -200,6 +197,13 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   };
 
 
+  const SwitchReactions = () => {
+    setShowReactions(!showReactions);
+    mvPrev();
+    setTimeout(() => mvSad() , showReactions ? mvDuration/6 : mvDuration/3);
+    setTimeout(() => mvDontcare(), showReactions ? mvDuration/4 : mvDuration/2);
+  }
+
   useEffect(() => {
     getUser();
     getFirebaseReaction();
@@ -211,11 +215,13 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
 
   return(
     <Card style={{width:windowWidth, ...props}}>
-        <UserInfo>
+        <UserInfo >
           <TouchableOpacity onPress={onProfilePress}>
+            <UserImageContainer>
               <UserImg source={{uri : userData ? userData.userImg || 'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'
                                                                       :
                                                                       'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'}} />
+            </UserImageContainer>
           </TouchableOpacity>
           <UserInfoText>
             <TouchableOpacity onPress={onProfilePress}>
@@ -226,27 +232,29 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
           </UserInfoText>
         </UserInfo>
-        <PostText>{item.post}</PostText>
+        {item.post && <PostText>{item.post}</PostText>}
         {item.postImg === null ? <Divider/>
         : //if there is an user image available
         <TouchableOpacity onPress={onImagePress}>
           <PostImg source={{uri: item.postImg}}/>
         </TouchableOpacity>
         }
-
         <InteractionWrapper>
-          <Interaction onPress={onCommentPress}>
-            <Ionicons name="md-chatbubble-outline" size={25} />
-            <InteractionText>{CommentText}</InteractionText>
-            {currentUserReaction ? (
-              <TouchableOpacity onPress={() => onRmvReactionPress()}>
-                <Image
-                source={reactions[currentUserReaction]}
-                style={{height:25, width:25, opacity:0.7}}
-                />
-              </TouchableOpacity>
-            ) : null}
-          </Interaction>
+          <View style={styles.commentsViewReaction}>
+            <TouchableOpacity onPress={onCommentPress}>
+              <Ionicons name="md-chatbubble-outline" size={28} />
+            </TouchableOpacity>
+            <View style={{height:45, width:26, alignItems:'center', justifyContent:'center'}}>
+              {currentUserReaction ? (
+                <TouchableOpacity onPress={() => onRmvReactionPress()}>
+                  <Image
+                  source={reactions[currentUserReaction]}
+                  style={{height:25, width:25, opacity:0.7}}
+                  />
+                </TouchableOpacity>
+              ) : null}
+            </View>
+          </View>
           <View style={styles.reactionsContainer}>
                 <View style={[styles.reactionView, {left:laughLeft}]}>
                     <ReactionItem
@@ -307,6 +315,14 @@ const styles = StyleSheet.create({
       alignItems:'center',
       borderColor:"#444",
       borderWidth:1
+  },
+  commentsViewReaction:{
+    height:45,
+    width: windowWidth-containerWidth,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'space-evenly'
+
   },
   reactionView:{
       height:iconSize+2,

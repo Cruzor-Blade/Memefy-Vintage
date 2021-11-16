@@ -22,10 +22,25 @@ export const UserInfo = styled.View`
     padding: 15px;
 `;
 
-export const UserImg = styled.Image`
+export const UserImageContainer = styled.View`
     width: 50px;
     height: 50px;
-    border-radius: 25px;
+    border-radius: 20px;
+    rotation: 45;
+    border-width: 1px;
+    border-color: black;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const UserImg = styled.Image`
+    width: 55px;
+    height: 55px;
+    border-radius: 20px;
+    resize-mode: cover;
+    overflow: hidden;
+    transform: rotate(45deg);
+    position: absolute;
 `;
 
 export const UserInfoText = styled.View`
@@ -51,7 +66,7 @@ export const PostText = styled.Text`
     font-family: 'Lato-Regular';
     padding-left: 15px;
     padding-right: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 7px;
 `;
 
 export const PostImg = styled.Image`
