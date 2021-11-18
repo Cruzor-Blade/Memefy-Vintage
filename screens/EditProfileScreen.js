@@ -1,7 +1,6 @@
 import React, {useEffect, useContext, useState} from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   ImageBackground,
   TextInput,
@@ -9,6 +8,8 @@ import {
   Alert,
   ScrollView
 } from 'react-native';
+
+import { Text, useTheme } from 'react-native-paper';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,6 +27,9 @@ import storage from '@react-native-firebase/storage';
 
 const EditProfileScreen = () => {
   const {user, logout} = useContext(AuthContext);
+  const currentTheme = useTheme();
+  const color = currentTheme.dark ? '#aaaaaa' : '#333333'
+
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
@@ -156,7 +160,7 @@ const EditProfileScreen = () => {
   };
 
   renderInner = () => (
-    <View style={styles.panel}>
+    <View style={[styles.panel, {backgroundColor: currentTheme.dark ? '#555555' : '#ffffff'}]}>
       <View style={{alignItems: 'center'}}>
         <Text style={styles.panelTitle}>Upload Photo</Text>
         <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
@@ -191,7 +195,7 @@ const EditProfileScreen = () => {
   fall = new Animated.Value(1);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: currentTheme.dark ? '#555555' : '#ffffff'}]}>
       <BottomSheet
         ref={this.bs}
         snapPoints={[330, -5]}
@@ -206,13 +210,13 @@ const EditProfileScreen = () => {
           margin: 20,
           opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
         }}>
-        <ScrollView showsVerticalScrollIndicator={false} >
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{alignItems: 'center'}}>
             <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
                 <View
                 style={{
-                    height: 100,
-                    width: 100,
+                    height: 150,
+                    width: 150,
                     borderRadius: 15,
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -226,7 +230,7 @@ const EditProfileScreen = () => {
                         'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
                         : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
                     }}
-                    style={{height: 100, width: 100}}
+                    style={{height: 150, width: 150}}
                     imageStyle={{borderRadius: 15}}>
                     <View
                     style={{
@@ -258,78 +262,78 @@ const EditProfileScreen = () => {
             </View>
 
             <View style={styles.action}>
-            <FontAwesome name="user-o" color="#333333" size={20} />
-            <TextInput
-                placeholder="First Name"
-                placeholderTextColor="#666666"
-                autoCorrect={false}
-                value={userData ? userData.fname : ''}
-                onChangeText={(txt) => setUserData({...userData, fname: txt})}
-                style={styles.textInput}
-            />
+              <FontAwesome name="user-o" color={color} size={20} />
+              <TextInput
+                  placeholder="First Name"
+                  placeholderTextColor={color}
+                  autoCorrect={false}
+                  value={userData ? userData.fname : ''}
+                  onChangeText={(txt) => setUserData({...userData, fname: txt})}
+                  style={styles.textInput}
+              />
             </View>
             <View style={styles.action}>
-            <FontAwesome name="user-o" color="#333333" size={20} />
-            <TextInput
-                placeholder="Last Name"
-                placeholderTextColor="#666666"
-                value={userData ? userData.lname : ''}
-                onChangeText={(txt) => setUserData({...userData, lname: txt})}
-                autoCorrect={false}
-                style={styles.textInput}
-            />
+              <FontAwesome name="user-o" color={color} size={20} />
+              <TextInput
+                  placeholder="Last Name"
+                  placeholderTextColor={color}
+                  value={userData ? userData.lname : ''}
+                  onChangeText={(txt) => setUserData({...userData, lname: txt})}
+                  autoCorrect={false}
+                  style={styles.textInput}
+              />
             </View>
             <View style={styles.action}>
-            <Ionicons name="ios-clipboard-outline" color="#333333" size={20} />
-            <TextInput
-                multiline
-                numberOfLines={3}
-                placeholder="About Me"
-                placeholderTextColor="#666666"
-                value={userData ? userData.about : ''}
-                onChangeText={(txt) => setUserData({...userData, about: txt})}
-                autoCorrect={true}
-                style={[styles.textInput, {height: 40}]}
-            />
+              <Ionicons name="ios-clipboard-outline" color={color} size={20} />
+              <TextInput
+                  multiline
+                  numberOfLines={3}
+                  placeholder="About Me"
+                  placeholderTextColor={color}
+                  value={userData ? userData.about : ''}
+                  onChangeText={(txt) => setUserData({...userData, about: txt})}
+                  autoCorrect={true}
+                  style={[styles.textInput, {height: 40}]}
+              />
             </View>
             <View style={styles.action}>
-            <Feather name="phone" color="#333333" size={20} />
-            <TextInput
-                placeholder="Phone"
-                placeholderTextColor="#666666"
-                keyboardType="number-pad"
-                autoCorrect={false}
-                value={userData ? userData.phone : ''}
-                onChangeText={(txt) => setUserData({...userData, phone: txt})}
-                style={styles.textInput}
-            />
+              <Feather name="phone" color={color} size={20} />
+              <TextInput
+                  placeholder="Phone"
+                  placeholderTextColor={color}
+                  keyboardType="number-pad"
+                  autoCorrect={false}
+                  value={userData ? userData.phone : ''}
+                  onChangeText={(txt) => setUserData({...userData, phone: txt})}
+                  style={styles.textInput}
+              />
             </View>
 
             <View style={styles.action}>
-            <FontAwesome name="globe" color="#333333" size={20} />
-            <TextInput
-                placeholder="Country"
-                placeholderTextColor="#666666"
-                autoCorrect={false}
-                value={userData ? userData.country : ''}
-                onChangeText={(txt) => setUserData({...userData, country: txt})}
-                style={styles.textInput}
-            />
+              <FontAwesome name={color} color={color} size={20} />
+              <TextInput
+                  placeholder="Country"
+                  placeholderTextColor={color}
+                  autoCorrect={false}
+                  value={userData ? userData.country : ''}
+                  onChangeText={(txt) => setUserData({...userData, country: txt})}
+                  style={styles.textInput}
+              />
             </View>
             <View style={styles.action}>
-            <MaterialCommunityIcons
-                name="map-marker-outline"
-                color="#333333"
-                size={20}
-            />
-            <TextInput
-                placeholder="City"
-                placeholderTextColor="#666666"
-                autoCorrect={false}
-                value={userData ? userData.city : ''}
-                onChangeText={(txt) => setUserData({...userData, city: txt})}
-                style={styles.textInput}
-            />
+              <MaterialCommunityIcons
+                  name="map-marker-outline"
+                  color={color}
+                  size={20}
+              />
+              <TextInput
+                  placeholder="City"
+                  placeholderTextColor={color}
+                  autoCorrect={false}
+                  value={userData ? userData.city : ''}
+                  onChangeText={(txt) => setUserData({...userData, city: txt})}
+                  style={styles.textInput}
+              />
             </View>
             <FormButton buttonTitle="Update" onPress={handleUpdate} />
         </ScrollView>

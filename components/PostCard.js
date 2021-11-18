@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TouchableOpacity, StyleSheet, View, Image, Animated } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, StyleSheet, View, Image, Animated } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { windowWidth} from '../utils/Dimentions';
@@ -20,13 +20,16 @@ import { Container,
 
 import moment from 'moment';
 import { AuthContext } from '../navigation/AuthProvider';
+import { useTheme } from 'react-native-paper';
 
 const iconSize = 36.0;
 const mvDuration = 500;
-const containerWidth= windowWidth * (31/40);
+const containerWidth= windowWidth * (3/4);
 
 const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
   const {user} = useContext(AuthContext);
+  const currentTheme = useTheme();
+
   const [userData, setUserData] = useState(null);
   const [showReactions, setShowReactions] = useState(false);
   const [currentUserReaction, setCurrentUserReaction] = useState(null);
@@ -124,23 +127,37 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
       prev: require("../assets/reactions/prev.png"),
   }
 
-  const ReactionItem = ({reaction}) =>(
-          <TouchableOpacity
-              onPress={() => {
-                if (reaction == 'prev') {
-                  SwitchReactions();
-                } else {
-                  onReactionPress(reaction);
-                }
-              }}
-          >
-              <Image
-                  source={reactions[reaction]}
-                  style={styles.reaction}
-              />
-          </TouchableOpacity>
-  );
+  const ReactionItem = ({reaction}) => {
+    if ( reaction == 'prev') {
+      return (
+        <TouchableWithoutFeedback
+            onPress={() => {
+                SwitchReactions();
+            }}
+        >
+            <Image
+                source={reactions[reaction]}
+                style={[styles.reaction, {height: iconSize+1, width:iconSize+1}]}
+            />
+        </TouchableWithoutFeedback>
+);
 
+    } else {
+      return (
+        <TouchableOpacity
+            onPress={() => {
+                onReactionPress(reaction);
+            }}
+        >
+            <Image
+                source={reactions[reaction]}
+                style={styles.reaction}
+            />
+        </TouchableOpacity>
+);
+
+    }
+  }
 
   const coolTrans = useState(new Animated.Value(0))[0];
   const dontcareTrans = useState(new Animated.Value(0))[0];
@@ -214,7 +231,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   }, [currentUserReaction])
 
   return(
-    <Card style={{width:windowWidth, ...props}}>
+    <Card style={[{width:windowWidth, ...props}, currentTheme.dark ? {backgroundColor:'#333333'} : {backgroundColor:'#f8f8f8'}]}>
         <UserInfo >
           <TouchableOpacity onPress={onProfilePress}>
             <UserImageContainer>
@@ -225,7 +242,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
           </TouchableOpacity>
           <UserInfoText>
             <TouchableOpacity onPress={onProfilePress}>
-              <UserName>
+              <UserName style={currentTheme.dark ? {color:'#eeeeee'} : {color:'#333333'}}>
                 {userData ? userData.fname || 'Test' : 'Test' } {userData ? userData.lname || 'User' : 'User'}
               </UserName>
             </TouchableOpacity>

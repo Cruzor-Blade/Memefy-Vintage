@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { Text } from 'react-native-paper';
 
 const Preferences = ({navigation}) =>{
     const OptionMenuModel = ({screen, text, ...props}) => (
@@ -18,34 +18,18 @@ const Preferences = ({navigation}) =>{
 
     return(
         <View style={{marginTop:10}}>
-            <TouchableOpacity onPress={() =>
-              navigation.navigate("ThemeScreen")
-          }>
-
-            <View style={styles.PreferencesItems}>
-              <Text style={styles.preferencesText}>
-                          Apparence et personlisation
-              </Text>
-            </View>
-          </TouchableOpacity>
+            <OptionMenuModel
+              screen="Appearance"
+              text="Apparence et personalisation"
+            />
           <OptionMenuModel
             screen="Suggestions"
             text="Boite a suggestions"
           />
-          <TouchableOpacity onPress={() => navigation.navigate("Donate")} >
-            <View style={styles.PreferencesItems}>
-              <Text style={styles.preferencesText}>
-                          Nous soutenir
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate("About")} >
-            <View style={styles.PreferencesItems}>
-              <Text style={styles.preferencesText}>
-                          A propos
-              </Text>
-            </View>
-          </TouchableOpacity>
+          <OptionMenuModel
+            screen="About"
+            text="A propos"
+          />
         </View>
     )
 }

@@ -5,7 +5,6 @@ export const Container = styled.View`
   flex: 1;
   align-items: center;
   background-color: #fff;
-  padding-top:20px;
 `;
 
 export const Card = styled.View`
@@ -26,7 +25,6 @@ export const UserImageContainer = styled.View`
     width: 50px;
     height: 50px;
     border-radius: 20px;
-    rotation: 45;
     border-width: 1px;
     border-color: black;
     align-items: center;
@@ -39,7 +37,6 @@ export const UserImg = styled.Image`
     border-radius: 20px;
     resize-mode: cover;
     overflow: hidden;
-    transform: rotate(45deg);
     position: absolute;
 `;
 

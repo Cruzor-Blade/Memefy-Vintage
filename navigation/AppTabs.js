@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
+import { useTheme } from 'react-native-paper';
 
 import PostScreen from '../screens/PostScreen';
 import FindScreen from '../screens/FindScreen';
@@ -13,6 +14,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import PreferencesScreen from '../screens/PreferencesScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import About from '../screens/preferences/About';
+import Appearance from '../screens/preferences/Appearance';
 import Donate from '../screens/preferences/Donate';
 import Suggestions from '../screens/preferences/Suggestions';
 import CommentsScreen from '../screens/CommentsScreen';
@@ -23,6 +25,7 @@ const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const AppTabs = () => {
+  const currentTheme= useTheme();
   const getTabBarVisibility = (route) => {
     tabBarHiddenRoutes=['EditProfileScreen', 'Preferences'] ;
     routeName = route.state ? route.state.routes[route.state.index].name 
@@ -34,6 +37,12 @@ const AppTabs = () => {
     }
   }
 
+  const tabBarIconColor = (focused) =>{
+    if (focused && currentTheme.dark) return "#fcfcfc";
+    else if (focused && !currentTheme.dark) return "#ffffff";
+    else if (!focused && currentTheme.dark) return "#666666";
+    else if (!focused && !currentTheme.dark) return "#333333";
+  }
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -42,7 +51,8 @@ const AppTabs = () => {
       screenOptions={{
         style : {
           height:200
-        }
+        },
+        tabBarColor: currentTheme.dark ? '#121212' : 'rgb(242, 101, 34)',
       }}
       >
 
@@ -53,7 +63,7 @@ const AppTabs = () => {
           tabBarLabel: 'Publier',
           tabBarIcon: ({focused}) => (
             <Image
-              style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+              style={{tintColor: tabBarIconColor(focused) ,...styles.bottomIcons}}
               source={require("../assets/maintab/plus.png")}
               resizeMode='contain'
             />
@@ -68,7 +78,7 @@ const AppTabs = () => {
           tabBarLabel: 'Rechercher',
           tabBarIcon: ({focused}) => (
           <Image
-            style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+            style={{tintColor: tabBarIconColor(focused) ,...styles.bottomIcons}}
             source={require("../assets/maintab/search.png")}
             resizeMode='contain'
             />)
@@ -82,7 +92,7 @@ const AppTabs = () => {
           tabBarLabel: 'Accueil',
           tabBarIcon: ({focused}) => (
           <Image
-            style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+            style={{tintColor:  tabBarIconColor(focused) ,...styles.bottomIcons}}
             source={require("../assets/maintab/home.png")}
             resizeMode='contain'
             />)
@@ -97,7 +107,7 @@ const AppTabs = () => {
           tabBarLabel: 'Profil',
           tabBarIcon: ({focused}) => (
             <Image
-              style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
+              style={{tintColor:  tabBarIconColor(focused) ,...styles.bottomIcons}}
               source={require("../assets/maintab/profile.png")}
               resizeMode='contain'
             />
@@ -111,8 +121,8 @@ const AppTabs = () => {
           tabBarLabel: 'Preferences',
           tabBarIcon: ({focused}) => (
           <Image
-            style={{tintColor: focused ? '#fefeff' : '#000000' ,...styles.bottomIcons}}
-            source={require("../assets/maintab/search.png")}
+            style={{tintColor: tabBarIconColor(focused) ,...styles.bottomIcons}}
+            source={require("../assets/maintab/settings.png")}
             resizeMode='contain'
             />
           )
@@ -124,6 +134,7 @@ const AppTabs = () => {
 }
 
 const PostStack = ({navigation}) => {
+  const currentTheme = useTheme();
   return (
     <Stack.Navigator
       initialRouteName="PostScreen"
@@ -131,7 +142,8 @@ const PostStack = ({navigation}) => {
         style: {
           height: 100,
           elevation:2
-        }
+        },
+        headerTintColor: currentTheme.dark ? '#121212' : '#ffffff'
       }}
     >
       <Stack.Screen
@@ -301,6 +313,21 @@ const PreferencesStack = ({navigation, route}) => {
         }}
       />
       <Stack.Screen
+        name="Appearance"
+        
+        component={Appearance}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('PreferencesScreen')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
+        }}
+      />
+      <Stack.Screen
         name="Suggestions"
         
         component={Suggestions}
@@ -310,7 +337,7 @@ const PreferencesStack = ({navigation, route}) => {
             name="arrow-left"
             onPress={() => navigation.navigate('PreferencesScreen')}
             backgroundColor="#fff"
-            color="#333"
+            color="#222"
             />
           )
         }}
@@ -356,6 +383,6 @@ const styles = StyleSheet.create({
   bottomIcons:{
     height:26,
     width:26,
-    marginBottom:2,
+    marginBottom:3,
   }
 })

@@ -1,26 +1,29 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
-  Text,
   Image,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
   SafeAreaView,
 } from 'react-native';
-import FormButton from '../components/FormButton';
 import {AuthContext} from '../navigation/AuthProvider';
+import { useTheme, Text } from 'react-native-paper';
 
 import firestore from '@react-native-firebase/firestore';
 import PostCard from '../components/PostCard';
 
+
+
 const ProfileScreen = ({navigation, route}) => {
   const {user, logout} = useContext(AuthContext);
-
+  const currentTheme = useTheme();
+  
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
   const [userData, setUserData] = useState(null);
+
 
   const fetchPosts = async () => {
     try {
@@ -95,7 +98,7 @@ const ProfileScreen = ({navigation, route}) => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
       <ScrollView
-        style={styles.container}
+        style={[styles.container, { backgroundColor: currentTheme.dark ? '#555555' : '#fff' }]}
         contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
         showsVerticalScrollIndicator={false}>
         <Image
@@ -161,7 +164,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    paddingTop:5
   },
   userImg: {
     height: 150,
@@ -215,7 +218,7 @@ const styles = StyleSheet.create({
   },
   userInfoSubTitle: {
     fontSize: 12,
-    color: '#666',
+    color: '#777',
     textAlign: 'center',
   },
 });

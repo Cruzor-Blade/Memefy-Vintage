@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, FlatList, Alert } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 import FormButton from '../components/FormButton';
 import PostCard from '../components/PostCard';
@@ -204,7 +205,7 @@ const HomeScreen = ({navigation}) => {
   };
 
   return (
-    <Container>
+    <Container style={useTheme().dark ? {backgroundColor:'#555555'} : {backgroundColor:'#f8f8f8'}}>
       <FlatList
       data={posts}
       keyExtractor={item => item.id}

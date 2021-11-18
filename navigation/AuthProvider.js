@@ -7,12 +7,15 @@ export const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
   
     return (
       <AuthContext.Provider
         value={{
           user,
           setUser,
+          isDarkTheme,
+          toggleTheme: () => { setIsDarkTheme(!isDarkTheme);},
           login: async (email, password) => {
             try {
               await auth().signInWithEmailAndPassword(email, password);

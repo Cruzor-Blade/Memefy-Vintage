@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import FormButton from '../components/FormButton';
+import { View, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
 
 import { AuthContext } from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
@@ -30,8 +30,10 @@ const FindScreen = ({navigation}) => {
     <View>
       <TextInput
         style={styles.searchInput}
-        placeholder="Recherchez un individu..."
+        placeholder="  Recherchez un individu..."
         onChangeText={(text) => fetchUsers(text)}
+        placeholderTextColor={useTheme().dark ? "#cdcdcd" : "#333"}
+        tvParallaxShiftDistanceX="8"
       />
       <FlatList
        data= {users}
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width:'95%',
     height:40,
-    alignSelf:'center'
+    alignSelf:'center',
   },
   userItem: {
     flexDirection:'row',

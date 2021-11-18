@@ -228,12 +228,10 @@ const PostViewScreen = ({route, navigation}) => {
                     numColumns={1}
                     horizontal={false}
                     renderItem={({item}) => (
-                        <View>
-                            <View>
-                            <Text>{item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}</Text>
-                                <Text>{item.commentText}</Text>
-                            </View>
-                        </View>
+                          <View style={styles.commentCard}>
+                          <Text style={styles.commentUsername}>{item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}</Text>
+                              <Text>{item.commentText}</Text>
+                          </View>
                     )}
                 />
             </View>
@@ -274,5 +272,19 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'space-between',
 
-    }
+    },
+    commentCard: {
+        backgroundColor: '#dcdcdc',
+        padding:10,
+        marginLeft:15,
+        marginVertical:8,
+        maxWidth:'73%',
+        minWidth:'20%',
+        borderRadius:10,
+        elevation:1
+  },
+  commentUsername: {
+      fontSize:14,
+      fontWeight:'700'
+  }
 })
