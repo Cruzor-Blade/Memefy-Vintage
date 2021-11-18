@@ -21,24 +21,18 @@ export const UserInfo = styled.View`
     padding: 15px;
 `;
 
-export const UserImageContainer = styled.View`
-    width: 50px;
-    height: 50px;
-    border-radius: 20px;
-    border-width: 1px;
-    border-color: black;
+export const UserImg = styled.ImageBackground`
+    width: 55px;
+    height: 55px;
     align-items: center;
     justify-content: center;
 `;
 
-export const UserImg = styled.Image`
-    width: 55px;
-    height: 55px;
-    border-radius: 20px;
-    resize-mode: cover;
-    overflow: hidden;
-    position: absolute;
-`;
+export const ProfileCropper = styled.Image`
+    width: 57px;
+    height: 57px;
+    z-index: 2;
+`
 
 export const UserInfoText = styled.View`
     flex-direction: column;

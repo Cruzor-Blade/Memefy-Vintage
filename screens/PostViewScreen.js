@@ -15,6 +15,7 @@ import { Text,
     } from "react-native";
 import { PostTime, UserImg, UserInfo, UserInfoText, UserName } from "../styles/FeedStyles";
 
+import { defaultProfilePicture } from '../utils/Defaults';
 import moment from 'moment';
 import { AuthContext } from "../navigation/AuthProvider";
 
@@ -186,9 +187,7 @@ const PostViewScreen = ({route, navigation}) => {
                         <View style={styles.postDetailsContainer}>
                             <UserInfo>
                                 <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
-                                    <UserImg source={{uri : userData ? userData.userImg || 'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'
-                                                                                            :
-                                                                                            'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a'}} />
+                                    <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
                                 </TouchableOpacity>
                                 <UserInfoText>
                                     <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>

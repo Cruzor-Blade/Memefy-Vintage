@@ -205,7 +205,7 @@ const HomeScreen = ({navigation}) => {
   };
 
   return (
-    <Container style={useTheme().dark ? {backgroundColor:'#555555'} : {backgroundColor:'#f8f8f8'}}>
+    <Container style={useTheme().dark ? {backgroundColor:'#555555'} : {backgroundColor:'#ffffff'}}>
       <FlatList
       data={posts}
       keyExtractor={item => item.id}

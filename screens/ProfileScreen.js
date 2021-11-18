@@ -1,14 +1,16 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
-  Image,
+  ImageBackground,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  Image,
 } from 'react-native';
 import {AuthContext} from '../navigation/AuthProvider';
 import { useTheme, Text } from 'react-native-paper';
+import { defaultProfilePicture } from '../utils/Defaults';
 
 import firestore from '@react-native-firebase/firestore';
 import PostCard from '../components/PostCard';
@@ -50,8 +52,7 @@ const ProfileScreen = ({navigation, route}) => {
               id: doc.id,
               userId,
               userName: 'Test Name',
-              userImg:
-                'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+              userImg: defaultProfilePicture,
               postTime: postTime,
               post,
               postImg,
@@ -101,10 +102,12 @@ const ProfileScreen = ({navigation, route}) => {
         style={[styles.container, { backgroundColor: currentTheme.dark ? '#555555' : '#fff' }]}
         contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
         showsVerticalScrollIndicator={false}>
-        <Image
-          style={styles.userImg}
-          source={{uri: userData ? userData.userImg || 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg' : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'}}
-        />
+            <ImageBackground
+              style={styles.userImg}
+              source={{uri: userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}
+            >
+              <Image source={require('../assets/profileScreenquadrant.png')} style={[styles.profileQuadrant, {tintColor: currentTheme.dark ? '#555555' : '#fff'}]}/>
+            </ImageBackground>
         <Text style={styles.userName}>{userData ? userData.fname || 'Test' : 'Test'} {userData ? userData.lname || 'User' : 'User'}</Text>
         {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
         <Text style={styles.aboutUser}>
@@ -164,12 +167,18 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:5
+    paddingTop:8
   },
   userImg: {
     height: 150,
     width: 150,
-    borderRadius: 75,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+  },
+  profileQuadrant:{
+    height: 155,
+    width:155
   },
   userName: {
     fontSize: 18,

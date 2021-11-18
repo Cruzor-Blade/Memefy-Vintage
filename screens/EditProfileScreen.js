@@ -24,6 +24,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {AuthContext} from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import { defaultProfilePicture } from '../utils/Defaults';
 
 const EditProfileScreen = () => {
   const {user, logout} = useContext(AuthContext);
@@ -223,12 +224,7 @@ const EditProfileScreen = () => {
                 }}>
                 <ImageBackground
                     source={{
-                    uri: image
-                        ? image
-                        : userData
-                        ? userData.userImg ||
-                        'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg'
-                        : 'https://lh5.googleusercontent.com/-b0PKyNuQv5s/AAAAAAAAAAI/AAAAAAAAAAA/AMZuuclxAM4M1SCBGAO7Rp-QP6zgBEUkOQ/s96-c/photo.jpg',
+                    uri: image ? image : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture,
                     }}
                     style={{height: 150, width: 150}}
                     imageStyle={{borderRadius: 15}}>
