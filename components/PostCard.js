@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TouchableOpacity, TouchableWithoutFeedback, StyleSheet, View, Image, Animated } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -131,16 +131,27 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
 
   const ReactionItem = ({reaction}) => {
     if ( reaction == 'prev') {
+      const barSize = (iconSize-10)*(1/2)
       return (
         <TouchableWithoutFeedback
             onPress={() => {
                 SwitchReactions();
             }}
         >
-            <Image
-                source={reactions[reaction]}
-                style={[styles.reaction, {height: iconSize+1, width:iconSize+1}]}
-            />
+            <View style={[styles.prev]}>
+              <Animated.Image
+                source={require('../assets/reactions/prevComp.png')}
+                style={{height:barSize, width:barSize, position:'absolute',
+                  transform:[{translateY: prevUpbarTrans}, {translateX: prevUpbarTransH}]
+                }}
+                />
+              <Animated.Image
+                source={require('../assets/reactions/prevComp.png')}
+                style={[{height:barSize, width:barSize, position:'absolute',
+                  transform:[{rotate:'90deg'}, {translateX: prevBotbarTrans}, {translateY: prevBotbarTransH}]
+                }]}
+              />
+            </View>
         </TouchableWithoutFeedback>
 );
 
@@ -161,11 +172,14 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     }
   }
 
-  const coolTrans = useState(new Animated.Value(0))[0];
-  const dontcareTrans = useState(new Animated.Value(0))[0];
-  const sadTrans = useState(new Animated.Value(0))[0];
-  const prevTrans = useState(new Animated.Value(0))[0];
-  const prevRot = useState(new Animated.Value(0))[0];
+  const dontcareTrans = useRef(new Animated.Value(0)).current;
+  const sadTrans = useRef(new Animated.Value(0)).current;
+  const prevTrans = useRef(new Animated.Value(0)).current;
+  const prevUpbarTrans= useRef(new Animated.Value(0)).current;
+  const prevBotbarTrans= useRef(new Animated.Value(0)).current;
+  const prevUpbarTransH = useRef(new Animated.Value(0)).current;
+  const prevBotbarTransH = useRef(new Animated.Value(0)).current;
+
 
   function mvDontcare() {
       if (!showReactions) {
@@ -199,6 +213,38 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
       }
   };
 
+  function mvPrevUpbar() {
+    //translate the prevUpbar vertically
+    Animated.timing(prevUpbarTrans, {
+      toValue:showReactions ? (iconSize-6)/6 : -(iconSize-6)/6,
+      duration:mvDuration,
+      useNativeDriver:true
+    }).start();
+
+    //Translates prevUpbar Horizontally
+    Animated.timing(prevUpbarTransH, {
+      toValue: showReactions ? 1 : -1,
+      duration: mvDuration,
+      useNativeDriver: true
+    }).start();
+  }
+
+  function mvPrevBotbar() {
+    //Translates the prevBotbar vertically
+    Animated.timing(prevBotbarTrans, {
+      toValue:showReactions ? -(iconSize-6)/6 : (iconSize-6)/6,
+      duration:mvDuration,
+      useNativeDriver:true
+    }).start();
+
+    //Translates the prevBotbar horizontally
+    Animated.timing(prevBotbarTransH, {
+      toValue: showReactions ? -1 : 1,
+      duration: mvDuration,
+      useNativeDriver: true
+    }).start();
+  }
+
   function mvPrev() {
       if (!showReactions) {
           Animated.timing(prevTrans, {
@@ -213,6 +259,8 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
               useNativeDriver:true
           }).start();
       }
+      mvPrevUpbar();
+      mvPrevBotbar();
   };
 
 
@@ -226,6 +274,10 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   useEffect(() => {
     getUser();
     getFirebaseReaction();
+    prevUpbarTrans.setValue((iconSize-6)/6);
+    prevBotbarTrans.setValue(-(iconSize-6)/6);
+    prevUpbarTransH.setValue(1);
+    prevBotbarTransH.setValue(-1);
   }, []);
 
   useEffect(() => {
@@ -316,7 +368,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
 export default PostCard;
 
 const styles = StyleSheet.create({
-  postBottomStyles:{
+  postBottomStyles: {
       height: 45,
       width: windowWidth,
       alignItems:'center',
@@ -325,7 +377,7 @@ const styles = StyleSheet.create({
       borderColor:"#222",
       borderWidth:1
   },
-  reactionsContainer:{
+  reactionsContainer: {
       height:45,
       width: containerWidth,
       flexDirection:'row',
@@ -333,7 +385,7 @@ const styles = StyleSheet.create({
       borderColor:"#444",
       borderWidth:1
   },
-  commentsViewReaction:{
+  commentsViewReaction: {
     height:45,
     width: windowWidth-containerWidth,
     flexDirection:'row',
@@ -341,15 +393,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
 
   },
-  reactionView:{
+  reactionView: {
       height:iconSize+2,
       width:iconSize+2,
       alignItems:'center',
       justifyContent:'center',
       position:'absolute',
   },
-  reaction:{
+  reaction: {
       height:iconSize,
       width:iconSize
+  },
+  prev : {
+      backgroundColor:'#808285',
+      height: iconSize+1,
+      width:iconSize+1,
+      borderRadius:(iconSize+1)/2,
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent:'center'
   }
 })

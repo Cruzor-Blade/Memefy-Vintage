@@ -49,6 +49,7 @@ const Dot = ({selected}) =>{
 const OnboardingScreen = ({navigation}) => {
     return(
         <Onboarding
+        allowFontScaling={false}
         SkipButtonComponent={Skip}
         NextButtonComponent={Next}
         DoneButtonComponent={Done}
