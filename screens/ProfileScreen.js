@@ -8,6 +8,8 @@ import {
   SafeAreaView,
   Image,
 } from 'react-native';
+import MaskedView from '@react-native-community/masked-view';
+
 import {AuthContext} from '../navigation/AuthProvider';
 import { useTheme, Text } from 'react-native-paper';
 import { defaultProfilePicture } from '../utils/Defaults';
@@ -102,12 +104,20 @@ const ProfileScreen = ({navigation, route}) => {
         style={[styles.container, { backgroundColor: currentTheme.dark ? '#555555' : '#fff' }]}
         contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
         showsVerticalScrollIndicator={false}>
-            <ImageBackground
-              style={styles.userImg}
-              source={{uri: userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}
-            >
-              <Image source={require('../assets/profileScreenquadrant.png')} style={[styles.profileQuadrant, {tintColor: currentTheme.dark ? '#555555' : '#fff'}]}/>
-            </ImageBackground>
+            <MaskedView
+              style={{height:150, width:150, alignItems:'center', justifyContent:'center'}}
+              maskElement={
+                <Image
+                  source={require('../assets/masks/profileScreenMask.png')}
+                  style={{height:150, width:150}}
+                  />
+              }
+              >
+              <Image
+                style={{height:150, width:150}}
+                source={{uri: userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}
+                />
+            </MaskedView>
         <Text style={styles.userName}>{userData ? userData.fname || 'Test' : 'Test'} {userData ? userData.lname || 'User' : 'User'}</Text>
         {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
         <Text style={styles.aboutUser}>
@@ -169,16 +179,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop:8
   },
-  userImg: {
+  profileMask:{
     height: 150,
-    width: 150,
-    alignItems: 'center',
-    justifyContent: 'center',
-
-  },
-  profileQuadrant:{
-    height: 155,
-    width:155
+    width:150
   },
   userName: {
     fontSize: 18,

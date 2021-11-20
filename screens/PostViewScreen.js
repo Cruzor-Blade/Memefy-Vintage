@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore';
 import { windowWidth } from "../utils/Dimentions";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import storage from '@react-native-firebase/storage';
+import MaskedView from '@react-native-community/masked-view';
 
 import { Text,
     View,
@@ -11,9 +12,10 @@ import { Text,
     TouchableOpacity,
     TouchableWithoutFeedback,
     FlatList,
-    Alert
+    Alert,
+    ScrollView
     } from "react-native";
-import { PostTime, UserImg, UserInfo, UserInfoText, UserName } from "../styles/FeedStyles";
+import { PostTime, ProfileMask, UserImg, UserInfo, UserInfoText, UserName } from "../styles/FeedStyles";
 
 import { defaultProfilePicture } from '../utils/Defaults';
 import moment from 'moment';
@@ -182,12 +184,21 @@ const PostViewScreen = ({route, navigation}) => {
                 <View style={styles.imageContainer}>
                     <ImageBackground
                         source={post ? {uri: post.postImg} : require("../assets/default-img.jpg")}
-                        style={styles.image}
+                        style={[styles.image,
+                          {width:windowWidth,
+                            height: (route.params.ImgDimensions.height/route.params.ImgDimensions.width)*windowWidth}]}
                     >
                         <View style={styles.postDetailsContainer}>
                             <UserInfo>
                                 <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
-                                    <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
+                                    <MaskedView
+                                      style={{width:55, height:55, alignItems:'center', justifyContent:'center'}}
+                                      maskElement={
+                                        <ProfileMask source={require('../assets/masks/profileMask.png')}/>
+                                      }
+                                      >
+                                      <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
+                                    </MaskedView>
                                 </TouchableOpacity>
                                 <UserInfoText>
                                     <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
@@ -253,10 +264,7 @@ const styles = StyleSheet.create({
     },
     image:{
         position:'relative',
-        width:windowWidth,
-        minHeight:windowWidth,
-        maxHeight:windowWidth*1.1,
-        resizeMode:'contain'
+        resizeMode:'cover'
     },
     viewReactionsContainer:{
         flexDirection:'row',

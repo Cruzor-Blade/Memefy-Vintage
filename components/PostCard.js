@@ -16,13 +16,15 @@ import { Container,
   Divider,
   InteractionWrapper,
   UserImageContainer,
-  ProfileCropper
+  ProfileCropper,
+  ProfileMask
 } from '../styles/FeedStyles';
 import { defaultProfilePicture } from '../utils/Defaults';
 
 import moment from 'moment';
 import { AuthContext } from '../navigation/AuthProvider';
 import { useTheme } from 'react-native-paper';
+import MaskedView from '@react-native-community/masked-view';
 
 const iconSize = 36.0;
 const mvDuration = 500;
@@ -321,9 +323,14 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     <Card style={[{width:windowWidth, ...props}, currentTheme.dark ? {backgroundColor:'#333333'} : {backgroundColor:'#f6f6f6'}]}>
         <UserInfo >
           <TouchableOpacity onPress={onProfilePress}>
-            <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}>
-              <ProfileCropper source={require('../assets/profilequadrant.png')} style={{tintColor: currentTheme.dark ? '#333333':'#f6f6f6'}}/>
-            </UserImg>
+            <MaskedView
+              style={{width:55, height:55, alignItems:'center', justifyContent:'center'}}
+              maskElement={
+                <ProfileMask source={require('../assets/masks/profileMask.png')}/>
+              }
+              >
+              <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
+            </MaskedView>
           </TouchableOpacity>
           <UserInfoText>
             <TouchableOpacity onPress={onProfilePress}>

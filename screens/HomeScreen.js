@@ -220,7 +220,7 @@ const HomeScreen = ({navigation}) => {
           onDelete={handleDelete}
           onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
           onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
-          onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId})}
+          onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
             />}
           />
     </Container>

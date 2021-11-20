@@ -27,7 +27,13 @@ export const UserImg = styled.ImageBackground`
     height: 55px;
     align-items: center;
     justify-content: center;
+    background-color: transparent;
 `;
+
+export const ProfileMask = styled.Image`
+    width:55px;
+    height:55px;
+`
 
 export const ProfileCropper = styled.Image`
     width: 58px;
