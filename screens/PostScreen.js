@@ -24,36 +24,49 @@ import {
 } from '../styles/AddPost';
 
 import { AuthContext } from '../navigation/AuthProvider';
+import { windowWidth } from '../utils/Dimentions';
 
 const AddPostScreen = () => {
   const {user, logout} = useContext(AuthContext);
 
   const [image, setImage] = useState(null);
+  const [imgDims, setImgDims] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [post, setPost] = useState(null);
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
-      width: 1200,
-      height: 780,
+      compressImageMaxWidth:640,
+      compressImageMaxHeight:768,
       cropping: true,
+      freeStyleCropEnabled:true,
     }).then((image) => {
       console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      const {cropRect} = image;
+      const ImgDimensions = {width: cropRect.width, height: cropRect.height};
       setImage(imageUri);
+      setImgDims(ImgDimensions);
+      console.log("Image Dimensions: ", imgDims);
     });
   };
 
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
-      width: 1200,
-      height: 780,
+      compressImageMaxWidth:640,
+      compressImageMaxHeight:768,
       cropping: true,
+      freeStyleCropEnabled:true,
+      compressImageQuality:0.8,
     }).then((image) => {
       console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
+      const {cropRect} = image;
+      const ImgDimensions = {width: cropRect.width, height: cropRect.height};
       setImage(imageUri);
+      setImgDims(ImgDimensions);
+      console.log("Image Dimensions: ", imgDims);
     });
   };
 
@@ -73,6 +86,7 @@ const AddPostScreen = () => {
       postTime: firestore.Timestamp.fromDate(new Date()),
       likes: null,
       comments: null,
+      ImgDimensions:imgDims,
     })
     .then(() => {
       console.log('Post Added!');
@@ -124,6 +138,7 @@ const AddPostScreen = () => {
 
       setUploading(false);
       setImage(null);
+      setImgDims(null);
 
       // Alert.alert(
       //   'Image uploaded!',
@@ -141,7 +156,11 @@ const AddPostScreen = () => {
   return (
     <View style={styles.container}>
       <InputWrapper>
-        {image != null ? <AddImage source={{uri: image}} /> : null}
+        {image != null ?
+        <AddImage
+          source={{uri: image}}
+          style={imgDims && {height:(imgDims.height/imgDims.width)*windowWidth, maxHeight:windowWidth*1.2, minHeight:windowWidth*(2/3)}}
+        /> : null}
 
         <InputField
           placeholder="A quoi pensez vous ?"

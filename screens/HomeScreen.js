@@ -11,6 +11,7 @@ import { AuthContext } from '../navigation/AuthProvider';
 import { Container } from '../styles/FeedStyles';
 
 import firestore from '@react-native-firebase/firestore';
+import { defaultProfilePicture } from '../utils/Defaults';
 
 const Posts = [
   {
@@ -96,15 +97,16 @@ const HomeScreen = ({navigation}) => {
 
 
         querySnapshot.forEach(doc => {
-          const {userId, post, postImg, postTime, likes, comments} = doc.data()
+          const {userId, post, postImg, postTime, likes, comments, ImgDimensions} = doc.data()
           list.push({
             id:doc.id,
             userId,
             userName:'Test Name',
-            userImg:'https://firebasestorage.googleapis.com/v0/b/memebit-x.appspot.com/o/photos%2Fmeme-troll-face.png?alt=media&token=b0e1c29a-8fc0-4729-a244-f05e5d1e331a',
+            userImg:defaultProfilePicture,
             postTime,
             post,
             postImg,
+            ImgDimensions,
             liked: false,
             likes,
             comments

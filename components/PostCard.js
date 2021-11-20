@@ -338,7 +338,8 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         {item.postImg === null ? <Divider/>
         : //if there is an user image available
         <TouchableOpacity onPress={onImagePress}>
-          <PostImg source={{uri: item.postImg}}/>
+          <PostImg source={{uri: item.postImg}} 
+            style={{height:item.ImgDimensions ? (item.ImgDimensions.height/item.ImgDimensions.width)*windowWidth : 250}}/>
         </TouchableOpacity>
         }
         <InteractionWrapper>

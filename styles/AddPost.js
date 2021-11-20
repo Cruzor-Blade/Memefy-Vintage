@@ -15,11 +15,11 @@ export const InputField = styled.TextInput`
     text-align: center;
     width:90%;
     margin-bottom: 15px;
+    position:   absolute;
 `;
 
 export const AddImage = styled.Image`
     width: 100%;
-    height: 250px;
     margin-bottom: 15px;
 `;
 
@@ -31,9 +31,13 @@ export const StatusWrapper = styled.View`
 export const SubmitBtn = styled.TouchableOpacity`
     flex-direction: row;
     justify-content: center;
-    background-color: #2e64e515;
+    background-color: #2ec4e515;
     border-radius: 5px;
+    border-color: #2e64e5;
+    border-width: 1px;
     padding: 10px 25px;
+    position: absolute;
+    bottom:8px;
 `;
 
 export const SubmitBtnText = styled.Text`
