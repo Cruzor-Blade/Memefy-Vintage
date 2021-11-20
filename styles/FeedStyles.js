@@ -18,7 +18,8 @@ export const Card = styled.View`
 export const UserInfo = styled.View`
     flex-direction: row;
     justify-content: flex-start;
-    padding: 15px;
+    padding: 8px;
+    padding-left:12px;
 `;
 
 export const UserImg = styled.ImageBackground`
@@ -29,8 +30,8 @@ export const UserImg = styled.ImageBackground`
 `;
 
 export const ProfileCropper = styled.Image`
-    width: 57px;
-    height: 57px;
+    width: 58px;
+    height: 58px;
     z-index: 2;
 `
 
@@ -78,7 +79,6 @@ export const InteractionWrapper = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-width: 1px;
 `;
 
 export const Interaction = styled.TouchableOpacity`

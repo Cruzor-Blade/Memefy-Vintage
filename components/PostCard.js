@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect, useRef} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TouchableOpacity, TouchableWithoutFeedback, StyleSheet, View, Image, Animated } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, StyleSheet, View, Image, Animated, Alert } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { windowWidth} from '../utils/Dimentions';
@@ -31,11 +31,12 @@ const containerWidth= windowWidth * (3/4);
 const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
   const {user} = useContext(AuthContext);
   const currentTheme = useTheme();
-
+  
   const [userData, setUserData] = useState(null);
   const [showReactions, setShowReactions] = useState(false);
   const [currentUserReaction, setCurrentUserReaction] = useState(null);
-
+  
+  const [ changeReactions, setChangeReactions ]= useState({prev:null, current:null});
 
   const laughLeft = containerWidth*(1/6) - iconSize*1.25;
   const heartLeft = containerWidth*(2/6) - iconSize*1.25;
@@ -70,6 +71,15 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     CommentText='Comment'
   }
 
+  const handlereactionChange = (reaction) => {
+    if (!changeReactions.current && reaction) {
+      animateChatBubble();
+    }
+    setChangeReactions({
+      prev:changeReactions.current,
+      current:reaction
+    })
+  }
   const getUser = async () => {
     await firestore()
     .collection('users')
@@ -93,14 +103,15 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
     .then((querySnapshot) => {
       if (querySnapshot.exists) {
         const {userReaction} = querySnapshot.data();
-        console.log("Query snapshot reaction: ", querySnapshot.data())
-        console.log("Post reaction: ",userReaction);
+        // console.log("Query snapshot reaction: ", querySnapshot.data())
+        // console.log("Post reaction: ",userReaction);
         setCurrentUserReaction(userReaction);
       }
     })
   }
 
   const onReactionPress = async (userReaction) => {
+        handlereactionChange(userReaction);
         setCurrentUserReaction(userReaction);
         await firestore()
         .collection("posts")
@@ -111,6 +122,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   };
 
   const onRmvReactionPress = async () => {
+        handlereactionChange(null);
         setCurrentUserReaction(null);
         await firestore()
         .collection("posts")
@@ -179,7 +191,25 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   const prevBotbarTrans= useRef(new Animated.Value(0)).current;
   const prevUpbarTransH = useRef(new Animated.Value(0)).current;
   const prevBotbarTransH = useRef(new Animated.Value(0)).current;
+  const chatBubbleScale = useRef(new Animated.Value(0)).current;
 
+
+  function animateChatBubble() {
+    setTimeout(() => {
+      Animated.spring (chatBubbleScale, {
+        toValue:1.3,
+        duration:1000,
+        useNativeDriver:true
+      }).start();
+    }, 3000);
+    setTimeout(() => {
+      Animated.spring (chatBubbleScale, {
+        toValue:1,
+        duration:1000,
+        useNativeDriver:true
+      }).start();
+    }, 7000);
+  }
 
   function mvDontcare() {
       if (!showReactions) {
@@ -267,13 +297,16 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   const SwitchReactions = () => {
     setShowReactions(!showReactions);
     mvPrev();
-    setTimeout(() => mvSad() , showReactions ? mvDuration/6 : mvDuration/3);
-    setTimeout(() => mvDontcare(), showReactions ? mvDuration/4 : mvDuration/2);
+    setTimeout(() => mvSad() ,
+      showReactions ? mvDuration/6 : mvDuration/3);
+    setTimeout(() => mvDontcare(),
+      showReactions ? mvDuration/4 : mvDuration/2);
   }
 
   useEffect(() => {
     getUser();
     getFirebaseReaction();
+    chatBubbleScale.setValue(1);
     prevUpbarTrans.setValue((iconSize-6)/6);
     prevBotbarTrans.setValue(-(iconSize-6)/6);
     prevUpbarTransH.setValue(1);
@@ -281,15 +314,15 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   }, []);
 
   useEffect(() => {
-    getFirebaseReaction()
+    getFirebaseReaction();
   }, [currentUserReaction])
 
   return(
-    <Card style={[{width:windowWidth, ...props}, currentTheme.dark ? {backgroundColor:'#333333'} : {backgroundColor:'#f8f8f8'}]}>
+    <Card style={[{width:windowWidth, ...props}, currentTheme.dark ? {backgroundColor:'#333333'} : {backgroundColor:'#f6f6f6'}]}>
         <UserInfo >
           <TouchableOpacity onPress={onProfilePress}>
             <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}>
-              <ProfileCropper source={require('../assets/profilequadrant.png')} style={{tintColor: currentTheme.dark ? '#333333':'#f8f8f8'}}/>
+              <ProfileCropper source={require('../assets/profilequadrant.png')} style={{tintColor: currentTheme.dark ? '#333333':'#f6f6f6'}}/>
             </UserImg>
           </TouchableOpacity>
           <UserInfoText>
@@ -311,7 +344,10 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         <InteractionWrapper>
           <View style={styles.commentsViewReaction}>
             <TouchableOpacity onPress={onCommentPress}>
-              <Ionicons name="md-chatbubble-outline" size={28} />
+              <Animated.Image source={require('../assets/reactions/chatBubble.png')}
+                style={[{height:28, width:28, resizeMode:'contain',
+                  transform:[{scale:chatBubbleScale}]
+                }]} />
             </TouchableOpacity>
             <View style={{height:45, width:26, alignItems:'center', justifyContent:'center'}}>
               {currentUserReaction ? (
@@ -374,24 +410,22 @@ const styles = StyleSheet.create({
       alignItems:'center',
       justifyContent:'center',
       flexDirection:'row',
-      borderColor:"#222",
-      borderWidth:1
   },
   reactionsContainer: {
       height:45,
       width: containerWidth,
       flexDirection:'row',
       alignItems:'center',
-      borderColor:"#444",
-      borderWidth:1
   },
   commentsViewReaction: {
     height:45,
     width: windowWidth-containerWidth,
     flexDirection:'row',
     alignItems:'center',
-    justifyContent: 'space-evenly'
-
+    justifyContent: 'space-evenly',
+    backgroundColor:'#eeeeee',
+    borderBottomLeftRadius:8,
+    borderBottomRightRadius:8,
   },
   reactionView: {
       height:iconSize+2,
