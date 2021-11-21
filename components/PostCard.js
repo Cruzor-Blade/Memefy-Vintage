@@ -320,7 +320,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   }, [currentUserReaction])
 
   return(
-    <Card style={[{width:windowWidth, ...props}, currentTheme.dark ? {backgroundColor:'#333333'} : {backgroundColor:'#f6f6f6'}]}>
+    <Card style={[{width:windowWidth, ...props}, {backgroundColor:currentTheme.dark ? '#333333' : '#f6f6f6'}]}>
         <UserInfo >
           <TouchableOpacity onPress={onProfilePress}>
             <MaskedView
@@ -341,7 +341,8 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
           </UserInfoText>
         </UserInfo>
-        {item.post && <PostText>{item.post}</PostText>}
+        {item.post && <PostText style={currentTheme.dark ? {color:'#cccccc'} : {color:'#333333'}}>
+          {item.post}</PostText>}
         {item.postImg === null ? <Divider/>
         : //if there is an user image available
         <TouchableOpacity onPress={onImagePress}>
@@ -350,10 +351,10 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         </TouchableOpacity>
         }
         <InteractionWrapper>
-          <View style={styles.commentsViewReaction}>
+          <View style={[styles.commentsViewReaction, {backgroundColor:currentTheme.dark ? '#444444' : '#eeeeee'}]}>
             <TouchableOpacity onPress={onCommentPress}>
               <Animated.Image source={require('../assets/reactions/chatBubble.png')}
-                style={[{height:26, width:24, resizeMode:'contain',
+                style={[{height:26, width:24, resizeMode:'contain', tintColor: currentTheme.dark ? '#cccccc': '#222222',
                   transform:[{scale:chatBubbleScale}]
                 }]} />
             </TouchableOpacity>
@@ -431,7 +432,6 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     justifyContent: 'space-evenly',
-    backgroundColor:'#eeeeee',
     borderBottomLeftRadius:8,
     borderBottomRightRadius:8,
   },

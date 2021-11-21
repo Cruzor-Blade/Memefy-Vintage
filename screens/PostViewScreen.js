@@ -13,13 +13,16 @@ import { Text,
     TouchableWithoutFeedback,
     FlatList,
     Alert,
-    ScrollView
+    PermissionsAndroid,
+    Platform
     } from "react-native";
+import { useTheme } from "react-native-paper";
 import { PostTime, ProfileMask, UserImg, UserInfo, UserInfoText, UserName } from "../styles/FeedStyles";
 
 import { defaultProfilePicture } from '../utils/Defaults';
 import moment from 'moment';
 import { AuthContext } from "../navigation/AuthProvider";
+import RNFetchBlob from "rn-fetch-blob";
 
 const PostViewScreen = ({route, navigation}) => {
     const { user } = useContext(AuthContext);
@@ -28,6 +31,7 @@ const PostViewScreen = ({route, navigation}) => {
     const [comments, setComments] = useState([]);
     const [postId, setPostId] = useState("");
     const [userData, setUserData] = useState(null);
+    const currentTheme = useTheme();
 
 
     const getPostData = async() => {
@@ -178,6 +182,73 @@ const PostViewScreen = ({route, navigation}) => {
           .catch((e) => console.log('Error deleting posst.', e));
       };
 
+
+      const checkPermission = async () => {
+        if (Platform.OS === 'ios') {
+          downloadImage();
+        } else {
+          try {
+            const granted = await PermissionsAndroid.request(
+              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+              {
+                title:`Demande d'acces au stockage interne`,
+                message:`Vous devez accorder l'acces au stockage de votre appareil`
+              }
+            )
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+              console.log('Storage Permission Granted');
+              downloadImage();
+            } else {
+              alert(`Permission d'acces au stockage refusee`);
+            }
+          } catch (error) {
+            console.warn(error);
+          }
+        }
+      }
+
+      const downloadImage = () => {
+        let date = new Date();
+        const ImgURI = post.postImg;
+        let ext = getExtension(ImgURI);
+        ext = '.' + ext[0];
+
+        //Get config and fs from RNFetchBlob
+        const {config, fs} = RNFetchBlob;
+        let PictureDir = fs.dirs.PictureDir;
+        let options = {
+          fileCache: true,
+          addAndroidDownloads: {
+            //related to android only
+            useDownloadManager: true,
+            notification:true,
+            path: PictureDir + '/memebit/meme_' +
+            Math.floor(date.getTime() + date.getSeconds()/2) + ext,
+            description: 'Image'
+          }
+        }
+
+        config(options)
+        .fetch('GET', ImgURI)
+        .then((res) => {
+          //Showing alert for successful download
+          let status = res.info().status;
+          if (status == 200) {
+            alert('Image Telechargee avec succes')
+          } else {
+            alert('Impossible de telecharger pour le moment')
+            console.log('Response error: ', JSON.stringify(res))
+          }
+        })
+        .catch((error) => {
+          console.log('Error while downloading: ', error)
+        })
+      }
+
+      const getExtension = (filename) => {
+        return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined ;
+      }
+
     return (
         <View style={styles.container}>
             <TouchableWithoutFeedback>
@@ -220,7 +291,7 @@ const PostViewScreen = ({route, navigation}) => {
                                     />
                                 </TouchableOpacity>)
                                 : null}
-                                <TouchableOpacity style={{marginHorizontal: 6}}>
+                                <TouchableOpacity style={{marginHorizontal: 6}} onPress={checkPermission}>
                                     <Ionicons
                                         name="ios-download-outline"
                                         size = {29}
@@ -232,19 +303,22 @@ const PostViewScreen = ({route, navigation}) => {
                     </ImageBackground>
                 </View>
             </TouchableWithoutFeedback>
-            <View>
+            
                 <FlatList
+                    showsVerticalScrollIndicator={false}
                     data={comments}
                     numColumns={1}
                     horizontal={false}
                     renderItem={({item}) => (
-                          <View style={styles.commentCard}>
-                          <Text style={styles.commentUsername}>{item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}</Text>
-                              <Text>{item.commentText}</Text>
+                          <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]}>
+                          <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
+                            {item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}
+                          </Text>
+                              <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
                           </View>
                     )}
                 />
-            </View>
+            
         </View>
     )
 }
@@ -254,7 +328,7 @@ export default PostViewScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     imageContainer:{
         position:'relative',
@@ -281,7 +355,6 @@ const styles = StyleSheet.create({
 
     },
     commentCard: {
-        backgroundColor: '#dcdcdc',
         padding:10,
         marginLeft:15,
         marginVertical:8,

@@ -209,20 +209,20 @@ const HomeScreen = ({navigation}) => {
   return (
     <Container style={useTheme().dark ? {backgroundColor:'#555555'} : {backgroundColor:'#ffffff'}}>
       <FlatList
-      data={posts}
-      keyExtractor={item => item.id}
-      showsVerticalScrollIndicator={false}
-      onRefresh={fetchPosts}
-      refreshing={loading}
-      renderItem={({item}) => 
-        <PostCard
-          item={item}
-          onDelete={handleDelete}
-          onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
-          onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
-          onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
-            />}
-          />
+        data={posts}
+        keyExtractor={item => item.id}
+        showsVerticalScrollIndicator={false}
+        onRefresh={fetchPosts}
+        refreshing={loading}
+        renderItem={({item}) => 
+          <PostCard
+            item={item}
+            onDelete={handleDelete}
+            onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
+            onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
+            onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
+              />}
+            />
     </Container>
   )
 }

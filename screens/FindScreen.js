@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, FlatList, TouchableOpacity, Image } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 import { AuthContext } from '../navigation/AuthProvider';
@@ -30,23 +30,23 @@ const FindScreen = ({navigation}) => {
     <View>
       <TextInput
         style={styles.searchInput}
-        placeholder="  Recherchez un individu..."
+        placeholder="Recherchez un individu..."
         onChangeText={(text) => fetchUsers(text)}
         placeholderTextColor={useTheme().dark ? "#cdcdcd" : "#333"}
         tvParallaxShiftDistanceX="8"
       />
       <FlatList
-       data= {users}
-       numColumns={1}
-       horizontal={false}
-       renderItem={({item}) => (
-         <TouchableOpacity onPress={() => navigation.navigate('FindProfile', {userId:item.id})}>
-           <View style={styles.userItem}>
-              <Image source={{uri: item.userImg}} style={{height:40, width:40}} />
-              <Text>{item.username}</Text><Text>({item.id} ({item.fname} {item.lname})</Text>
-            </View>
-         </TouchableOpacity>
-       )}
+        data= {users}
+        numColumns={1}
+        horizontal={false}
+        renderItem={({item}) => (
+          <TouchableOpacity onPress={() => navigation.navigate('FindProfile', {userId:item.id})}>
+            <View style={styles.userItem}>
+                <Image source={{uri: item.userImg}} style={{height:40, width:40}} />
+                <Text>{item.username}</Text><Text>({item.id} ({item.fname} {item.lname})</Text>
+              </View>
+          </TouchableOpacity>
+        )}
       />
     </View>
   )
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     width:'95%',
     height:40,
     alignSelf:'center',
+    paddingHorizontal:14,
   },
   userItem: {
     flexDirection:'row',

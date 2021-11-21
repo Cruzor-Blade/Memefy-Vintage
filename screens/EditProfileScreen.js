@@ -306,7 +306,7 @@ const EditProfileScreen = () => {
             </View>
 
             <View style={styles.action}>
-              <FontAwesome name={color} color={color} size={20} />
+              <FontAwesome name="globe" color={color} size={20} />
               <TextInput
                   placeholder="Country"
                   placeholderTextColor={color}

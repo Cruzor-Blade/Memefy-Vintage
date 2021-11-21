@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth'
 import Entypo from 'react-native-vector-icons/Entypo';
+import { useTheme } from "react-native-paper";
 
 import { Text,
     View,
@@ -16,6 +17,7 @@ const CommentsScreen = ({route}) => {
     const [postId, setPostId] = useState("");
     const [commentText, setCommentText] = useState("");
     const [loading, setLoading] = useState(false);
+    const currentTheme = useTheme();
 
 
     function matchUserToComment(comments) {
@@ -69,15 +71,17 @@ const CommentsScreen = ({route}) => {
     }, [route.params.postId]);
 
     const onCommentSend = async () => {
-        await firestore()
-        .collection('posts')
-        .doc(route.params.postId)
-        .collection('comments')
-        .add({
-            creator: auth().currentUser.uid,
-            commentText
-        })
+         if (commentText !=''){
+            await firestore()
+            .collection('posts')
+            .doc(route.params.postId)
+            .collection('comments')
+            .add({
+                creator: auth().currentUser.uid,
+                commentText
+            })
         setCommentText('');
+        }
     }
 
     console.log("These are the comments: ",comments);
@@ -90,21 +94,26 @@ const CommentsScreen = ({route}) => {
                 refreshing={loading}
                 onRefresh={fetchComments}
                 renderItem={({item}) => (
-                    <View style={styles.commentCard} >
+                    <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]} >
                         <TouchableOpacity>
-                            <Text style={styles.commentUsername}>{item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}</Text>
+                            <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
+                                {item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}
+                            </Text>
                         </TouchableOpacity>
-                        <Text>{item.commentText}</Text>
+                        <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
                     </View>
                 )}
             />
             <View style={styles.sendCommentView}>
                 <View style={styles.inputView}>
                     <TextInput
+                        multiline={true}
                         value={commentText}
                         placeholder="Envoyer un commentaire..."
                         onChangeText={(text) => setCommentText(text)}
-                        style={styles.textInput}    
+                        style={styles.textInput}
+                        placeholderTextColor={currentTheme.dark ? "#cdcdcd" : "#333"}
+                        tvParallaxShiftDistanceX='18' 
                         />
                 </View>
                 <TouchableOpacity>
@@ -113,7 +122,7 @@ const CommentsScreen = ({route}) => {
                             name="paper-plane"
                             onPress={() => onCommentSend()}
                             backgroundColor="#fff"
-                            color="#333"
+                            color={currentTheme.dark ? "#cdcdcd" : "#333"}
                             size={28}
                             style={styles.sendIcon}
                             />
@@ -129,7 +138,7 @@ export default CommentsScreen;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     sendCommentView: {
         height:42,
@@ -146,19 +155,24 @@ const styles = StyleSheet.create({
         alignItems:'center',
         borderColor: '#0000ff',
         borderRadius:10,
-        fontSize:16,
+        fontSize:17,
         borderWidth: 1,
         width:'100%',
+        marginLeft:3,
+        paddingVertical:8,
+        paddingHorizontal:14
     },
     sendIconView :{
         flex:1,
-        elevation:1
+        elevation:1,
+        width:52,
+        alignItems:'center',
+        justifyContent:'center'
     },
     sendIcon: {
         alignSelf:'center',
     },
     commentCard: {
-        backgroundColor: '#dcdcdc',
         padding:10,
         marginLeft:15,
         marginVertical:8,
@@ -167,8 +181,4 @@ const styles = StyleSheet.create({
         borderRadius:10,
         elevation:1
     },
-    commentUsername: {
-        fontSize:14,
-        fontWeight:'700'
-    }
 })
