@@ -353,7 +353,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
           <View style={styles.commentsViewReaction}>
             <TouchableOpacity onPress={onCommentPress}>
               <Animated.Image source={require('../assets/reactions/chatBubble.png')}
-                style={[{height:28, width:28, resizeMode:'contain',
+                style={[{height:26, width:24, resizeMode:'contain',
                   transform:[{scale:chatBubbleScale}]
                 }]} />
             </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Text, StyleSheet, View, ScrollView } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
@@ -18,7 +18,7 @@ const SignupScreen = ({navigation}) => {
   const[isValidPassword, setIsValidPassword] = useState(true);
   const[matchingPasswords, setMatchingPasswords] = useState(true);
 
-  const {register} = useContext(AuthContext);
+  const {register, registerLoading} = useContext(AuthContext);
 
   
   const handleValidUser = (val) => {
@@ -125,6 +125,7 @@ const SignupScreen = ({navigation}) => {
             {matchingPasswords ? null : (
                 <Text style={styles.errorMsg}>Les mots de passe des entrees ne correspondent pas</Text>
               )}
+            {registerLoading && <ActivityIndicator size='small' style={{margin:3}}/>}
           </ScrollView>
           <FormButton
             buttonTitle="Creez votre compte"

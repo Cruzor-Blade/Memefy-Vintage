@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import { Text, StyleSheet, View, Image, ActivityIndicator } from 'react-native';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
@@ -13,7 +13,7 @@ const LoginScreen = ({navigation}) => {
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   
-  const {login} = useContext(AuthContext);
+  const {login, loginLoading} = useContext(AuthContext);
 
   const handleValidEmail = (val) => {
     if (val.split(" ").join("").length >= 4 && val.includes("@", ".") && val != "") {
@@ -71,6 +71,7 @@ const LoginScreen = ({navigation}) => {
           {isValidPassword ? null : (
             <Text style={styles.errorMsg}>Le mot de passe doit avoir au moins 8 caracteres</Text>
           )}
+          {loginLoading && <ActivityIndicator size='small' style={{margin:3}}/>}
           <FormButton
             buttonTitle="Se Connecter"
             onPress={() => {
