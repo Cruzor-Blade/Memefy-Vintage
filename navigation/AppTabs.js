@@ -157,7 +157,8 @@ const PostStack = ({navigation}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Publier un meme'
         }}
       />
     </Stack.Navigator>
@@ -179,7 +180,8 @@ const FindStack = ({navigation}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Rechercher...'
         }}
       />
       <Stack.Screen
@@ -193,7 +195,8 @@ const FindStack = ({navigation}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Utilisateur'
         }}
       />
       <Stack.Screen
@@ -210,10 +213,28 @@ const HomeStack = ({navigation}) => {
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
+        options={{
+          headerLeft : () => (
+            <Image
+              source={require('../assets/maintab/memebit.png')}
+              style={{width:120, height:33, marginLeft:20, marginTop:7}}
+            />
+          ),
+          title:'',
+          headerStyle: {
+            elevation:0
+          }
+        }}
       />
       <Stack.Screen
         name="ProfileScreen"
         component={ProfileScreen}
+        options={{
+          title:'Votre profil',
+          headerStyle:{
+            elevation:0
+          }
+        }}
       />
       <Stack.Screen
         name="CommentsScreen"
@@ -226,7 +247,8 @@ const HomeStack = ({navigation}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Commentaires'
         }}
       />
       <Stack.Screen
@@ -271,7 +293,11 @@ const ProfileStack = ({navigation, route}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Votre profil',
+          headerStyle:{
+            elevation:0.5
+          }
         }}
       />
       <Stack.Screen
@@ -286,7 +312,11 @@ const ProfileStack = ({navigation, route}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Editer votre profil',
+          headerStyle:{
+            elevation:0.5
+          }
         }}
       />
     </Stack.Navigator>
@@ -309,7 +339,11 @@ const PreferencesStack = ({navigation, route}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Preferences',
+          headerStyle:{
+            elevation:0.5
+          }
         }}
       />
       <Stack.Screen
@@ -324,7 +358,11 @@ const PreferencesStack = ({navigation, route}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'Apparence',
+          headerStyle:{
+            elevation:0.5
+          }
         }}
       />
       <Stack.Screen
@@ -339,7 +377,11 @@ const PreferencesStack = ({navigation, route}) => {
             backgroundColor="#fff"
             color="#222"
             />
-          )
+          ),
+          title:'Suggestions',
+          headerStyle:{
+            elevation:0.5
+          }
         }}
       />
       <Stack.Screen
@@ -369,7 +411,11 @@ const PreferencesStack = ({navigation, route}) => {
             backgroundColor="#fff"
             color="#333"
             />
-          )
+          ),
+          title:'A propos de nous',
+          headerStyle:{
+            elevation:0.5
+          }
         }}
       />
     </Stack.Navigator>
