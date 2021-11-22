@@ -176,7 +176,7 @@ const ProfileScreen = ({navigation, route}) => {
     if (route.params) {
       fetchUsersFollowing();
     }
-  }, [following])
+  }, [])
 
   useEffect(() => {
     getUser();
