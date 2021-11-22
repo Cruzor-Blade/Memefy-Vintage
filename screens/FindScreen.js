@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, TextInput, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TextInput, FlatList, TouchableOpacity} from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
 import { Text, useTheme } from 'react-native-paper';
 
@@ -12,19 +12,20 @@ const FindScreen = ({navigation}) => {
   const {user, logout} = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
-  const fetchUsers = async (search) => {
-    await firestore()
-    .collection('usernames')
+  const fetchUsers = (search) => {
+    firestore()
+    .collection('users')
     .where('username', '>=', search)
+    .where('username', '<=', search + '~')
     .get()
     .then((querySnapshot) => {
       let users = querySnapshot.docs.map(doc => {
+        console.log(doc.data())
         const data = doc.data();
         const id = doc.id;
         return {id, ...data}
       });
       setUsers(users);
-
     })
   }
 
@@ -32,9 +33,16 @@ const FindScreen = ({navigation}) => {
   return (
     <View>
       <TextInput
+        autoCapitalize='none'
         style={styles.searchInput}
         placeholder="Recherchez un individu..."
-        onChangeText={(text) => fetchUsers(text)}
+        onChangeText={(text) => {
+          if (text == '') {
+            setUsers([]);
+          } else {
+            fetchUsers(text)}
+          }
+        }
         placeholderTextColor={useTheme().dark ? "#cdcdcd" : "#333"}
         tvParallaxShiftDistanceX="8"
       />
