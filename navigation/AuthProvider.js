@@ -79,7 +79,9 @@ export const AuthProvider = ({children}) => {
                         about:'',
                         phone:'',
                         country:'',
-                        city:''
+                        city:'',
+                        followers:0,
+                        followings:0
                       })
                       .catch(e => {
                         console.log('Something went wrong while adding the user to the firestore: ', e);

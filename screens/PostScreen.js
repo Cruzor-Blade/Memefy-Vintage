@@ -175,7 +175,11 @@ const AddPostScreen = () => {
             <ActivityIndicator size="large" color="#0000ff" />
           </StatusWrapper>
         ) : (
-          <SubmitBtn onPress={submitPost}>
+          <SubmitBtn onPress={() => {
+            if (post || image){
+              submitPost();
+            }
+            }}>
             <SubmitBtnText>Post</SubmitBtnText>
           </SubmitBtn>
         )}
