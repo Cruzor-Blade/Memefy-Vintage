@@ -82,35 +82,80 @@ const HomeScreen = ({navigation}) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-  
+  const [followingList, setFollowingList] = useState(false);
+
 
   const fetchPosts = async () => {
+    
+    //Fetching the users Ids that the current user is following 
+    let followArray = [];
+
+    await firestore()
+    .collection('users')
+    .doc(user.uid)
+    .collection('userFollowings')
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        followArray.push(doc.id);
+      })
+    })
+
+
     try {
       const list = []
+      let notUserFollowingPosts =[];
 
       await firestore()
       .collection('posts')
       .orderBy('postTime', 'desc')
       .get()
       .then((querySnapshot) => {
-        // console.log('Total Posts: ', querySnapshot.size);
-
+        let showPostTime = 0;
 
         querySnapshot.forEach(doc => {
-          const {userId, post, postImg, postTime, likes, comments, ImgDimensions} = doc.data()
-          list.push({
-            id:doc.id,
-            userId,
-            userName:'Test Name',
-            userImg:defaultProfilePicture,
-            postTime,
-            post,
-            postImg,
-            ImgDimensions,
-            liked: false,
-            likes,
-            comments
-          })
+          const {userId, post, postImg, postTime, likes, comments, ImgDimensions} = doc.data();
+          if (followArray.includes(userId)) {
+            list.push({
+              id:doc.id,
+              userId,
+              userName:'Test Name',
+              userImg:defaultProfilePicture,
+              postTime,
+              post,
+              postImg,
+              ImgDimensions,
+              liked: false,
+              likes,
+              comments,
+              following:true
+            })
+          } else {
+            notUserFollowingPosts.push({
+              id:doc.id,
+              userId,
+              userName:'Test Name',
+              userImg:defaultProfilePicture,
+              postTime,
+              post,
+              postImg,
+              ImgDimensions,
+              liked: false,
+              likes,
+              comments,
+              following:false
+            })
+          }
+
+          if (showPostTime == 0 && notUserFollowingPosts.length != 0) {
+            const randomPostIndex = Math.floor(Math.random() * notUserFollowingPosts.length)
+            list.push(notUserFollowingPosts[randomPostIndex])
+            notUserFollowingPosts = []
+            showPostTime == Math.round(Math.random() * 18 + 7);
+          } else {
+            showPostTime= showPostTime - 1;
+          }
+          
         })
 
       })
