@@ -25,8 +25,9 @@ const ProfileScreen = ({navigation, route}) => {
   
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [deleted, setDeleted] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [followLoading, setFollowLoading] = useState(false);
+  const [following, setFollowing] = useState(false);
 
 
   const fetchPosts = async () => {
@@ -92,13 +93,97 @@ const ProfileScreen = ({navigation, route}) => {
     })
   }
 
+  const fetchUsersFollowing = () => {
+    let followArray = [];
+    firestore()
+    .collection('users')
+    .doc(user.uid)
+    .collection('userFollowings')
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        followArray.push(doc.id);
+      })
+      if (followArray.includes(route.params.userId)) {
+        setFollowing(true);
+      } else {
+        setFollowing(false)
+      }
+    })
+    
+  }
+
+  console.log(following)
+
+
+  const onFollow = async () => {
+    if (!followLoading){
+      setFollowLoading(true);
+
+      try {
+        await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .collection('userFollowings')
+        .doc(route.params.userId)
+        .set({})
+      } catch (error) {
+        console.log('Error while adding the user to the current firesore user follows: ', error)
+      }
+
+      try {
+        await firestore()
+        .collection('users')
+        .doc(route.params.userId)
+        .update({'followings': firestore.FieldValue.increment(1)});
+        setFollowing(true);
+      } catch (error) {
+        console.log(error);
+      }
+      setFollowLoading(false);
+    }
+  }
+
+
+  const onUnFollow = async () => {
+    if (!followLoading){
+      setFollowLoading(true);
+      
+      try {
+        await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .collection('userFollowings')
+        .doc(route.params.userId)
+        .delete()
+      } catch (error) {
+        console.log('Error during unfollowing: ', error)
+      }
+      try {
+        await firestore()
+        .collection('users')
+        .doc(route.params.userId)
+        .update({'followings': firestore.FieldValue.increment(-1)});
+      } catch (error) {
+        console.log('Error during unfollow decrement: ', error)
+      }
+      setFollowing(false);
+      setFollowLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (route.params) {
+      fetchUsersFollowing();
+    }
+  }, [following])
+
   useEffect(() => {
     getUser();
     fetchPosts();
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
-  const handleDelete = () => {};
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -128,12 +213,20 @@ const ProfileScreen = ({navigation, route}) => {
         <View style={styles.userBtnWrapper}>
           {route.params && route.params.userId != user.uid ? (
             <>
-              <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
+              {/* <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
                 <Text style={styles.userBtnTxt}>Message</Text>
+              </TouchableOpacity> */}
+              {following ? (
+              <TouchableOpacity style={styles.userBtn} onPress={() => onUnFollow()}>
+                <Text style={styles.userBtnTxt}>se retirer</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-                <Text style={styles.userBtnTxt}>Follow</Text>
-              </TouchableOpacity>
+              )
+                : 
+              (
+                <TouchableOpacity style={styles.userBtn} onPress={() => onFollow()}>
+                <Text style={styles.userBtnTxt}>suivre</Text>
+              </TouchableOpacity>  
+              )}
             </>
           ) : (
             <>
@@ -167,7 +260,7 @@ const ProfileScreen = ({navigation, route}) => {
         </View>
 
         {posts.map((item) => (
-          <PostCard key={item.id} item={item} onDelete={handleDelete} />
+          <PostCard key={item.id} item={item}/>
         ))}
       </ScrollView>
     </SafeAreaView>
