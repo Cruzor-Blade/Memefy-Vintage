@@ -37,6 +37,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   const [userData, setUserData] = useState(null);
   const [showReactions, setShowReactions] = useState(false);
   const [currentUserReaction, setCurrentUserReaction] = useState(null);
+  const [userFollowing, setUserFollowing] = useState(item.following);
   
   const [ changeReactions, setChangeReactions ]= useState({prev:null, current:null});
 
@@ -94,6 +95,33 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
       }
     })
   }
+
+  const onFollow = async () => {
+    try {
+      await firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('userFollowings')
+      .doc(item.userId)
+      .set({})
+    } catch (error) {
+      console.log('Error while adding the user to the current firesore user follows: ', error)
+    }
+
+    try {
+      await firestore()
+      .collection('users')
+      .doc(item.userId)
+      .update({'followings': firestore.FieldValue.increment(1)});
+    } catch (error) {
+      console.log(error);
+    }
+    animateFollowOpacity('hide');
+    setTimeout(() => {
+      setUserFollowing(true);
+    }, mvDuration*0.6)
+  }
+
 
   const getFirebaseReaction = () => {
     firestore()
@@ -173,7 +201,10 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
       return (
         <TouchableOpacity
             onPress={() => {
-                onReactionPress(reaction);
+              if (showReactions) {
+                  SwitchReactions();
+                }
+              onReactionPress(reaction);
             }}
         >
             <Image
@@ -194,6 +225,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   const prevUpbarTransH = useRef(new Animated.Value(0)).current;
   const prevBotbarTransH = useRef(new Animated.Value(0)).current;
   const chatBubbleScale = useRef(new Animated.Value(0)).current;
+  const followOpacity = useRef(new Animated.Value(0)).current;
 
 
   function animateChatBubble() {
@@ -211,6 +243,14 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
         useNativeDriver:true
       }).start();
     }, 7000);
+  }
+
+  function animateFollowOpacity (status) {
+    Animated.timing(followOpacity, {
+      toValue: status === 'hide' ? 0 : 1,
+      duration: mvDuration*0.6,
+      useNativeDriver:true
+    }).start();
   }
 
   function mvDontcare() {
@@ -299,6 +339,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   const SwitchReactions = () => {
     setShowReactions(!showReactions);
     mvPrev();
+    animateFollowOpacity(showReactions? 'show' : 'hide');
     setTimeout(() => mvSad() ,
       showReactions ? mvDuration/6 : mvDuration/3);
     setTimeout(() => mvDontcare(),
@@ -308,6 +349,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
   useEffect(() => {
     getUser();
     getFirebaseReaction();
+    followOpacity.setValue(1);
     chatBubbleScale.setValue(1);
     prevUpbarTrans.setValue((iconSize-6)/6);
     prevBotbarTrans.setValue(-(iconSize-6)/6);
@@ -370,6 +412,17 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
             </View>
           </View>
           <View style={styles.reactionsContainer}>
+              {!userFollowing && 
+                <Animated.View style={{position:'absolute', left: containerWidth-iconSize*1.75, opacity:followOpacity}}>
+                  <TouchableOpacity onPress={() => onFollow()}>
+                    <Image
+                      style={{height: 27, width:34.87, resizeMode:'contain'}}
+                      source={require('../assets/reactions/follow.png')}
+                    />
+                  </TouchableOpacity>
+                </Animated.View>
+              }
+                
                 <View style={[styles.reactionView, {left:laughLeft}]}>
                     <ReactionItem
                         reaction={'laugh'}
