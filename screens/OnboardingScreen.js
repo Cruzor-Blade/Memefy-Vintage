@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, Button, TouchableOpacity, Image } from 'react-native';
 
 import Onboarding from 'react-native-onboarding-swiper';
+import { windowWidth } from '../utils/Dimentions';
 
 
 const Skip = ({...props}) =>{
@@ -49,36 +50,36 @@ const Dot = ({selected}) =>{
 const OnboardingScreen = ({navigation}) => {
     return(
         <Onboarding
-        allowFontScaling={false}
-        SkipButtonComponent={Skip}
-        NextButtonComponent={Next}
-        DoneButtonComponent={Done}
-        DotComponent={Dot}
-        onSkip= {() => navigation.navigate("Login")}
-        onDone= {() => navigation.navigate("Login")}
-        pages={[
-            {
-                backgroundColor: '#a6e4d0',
-                image: <Image source={require('../assets/onboarding-img1.png')}/>,
-                title:"Connectez vous avec le monde",
-                subtitle:"Un nouveau moyen de rire et de partager des memes"
+            allowFontScaling={false}
+            SkipButtonComponent={Skip}
+            NextButtonComponent={Next}
+            DoneButtonComponent={Done}
+            DotComponent={Dot}
+            onSkip= {() => navigation.navigate("Login")}
+            onDone= {() => navigation.navigate("Login")}
+            pages={[
+                {
+                    backgroundColor: '#a6e4d0',
+                    image: <Image source={require('../assets/onboarding/onboarding-1.png')}/>,
+                    title:"Bienvenue sur MemeBit",
+                    subtitle:"L'application pour rire et partager des memes"
 
-            },
-            {
-                backgroundColor: '#fdeb93',
-                image: <Image source={require('../assets/onboarding-img2.png')}/>,
-                title: 'Exprimez vous...',
-                subtitle: 'Partagez vos favoris et reagissez tout autrement aux publixations qui vous marquent',
+                },
+                {
+                    backgroundColor: '#fdeb93',
+                    image: <Image source={require('../assets/onboarding/onboarding-2.png')} style={{width:windowWidth, height:windowWidth/1.2853, resizeMode:'contain'}}/>,
+                    title: "Gardez le sourire...",
+                    subtitle: "Riez et echangez sur des blagues tres droles pour votre sourire quotidien",
 
-            },
-            {
-                backgroundColor: '#e9bcbe',
-                image: <Image source={require('../assets/onboarding-img3.png')}/>,
-                title: 'Soyez vous meme',
-                subtitle: 'Parce que Memebit, c est chez vous !',
+                },
+                {
+                    backgroundColor: '#e9bcbe',
+                    image: <Image source={require('../assets/onboarding/onboarding-3.png')} style={{width:windowWidth*0.95, height:windowWidth/2.17, resizeMode:'contain'}}/>,
+                    title: "Soyez vous meme",
+                    subtitle: "Parce que Memebit, c'est comme chez vous !",
 
-            }
-        ]}
+                }
+            ]}
         />
     )
 };
