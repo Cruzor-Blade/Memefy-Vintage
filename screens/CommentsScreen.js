@@ -35,7 +35,7 @@ const CommentsScreen = ({route}) => {
                     console.log('Individual User Data for comments', documentSnapshot.data());
                     const { userImg, fname, lname } = documentSnapshot.data();
                     comments[i].user = [userImg, fname, lname ]
-                    console.log("About the comments", comments)
+                    // console.log("About the comments", comments)
                     setComments(comments)
                 }
             })     
@@ -84,7 +84,7 @@ const CommentsScreen = ({route}) => {
         }
     }
 
-    console.log("These are the comments: ",comments);
+    // console.log("These are the comments: ",comments);
     return (
         <View style={styles.container}>
             <FlatList
@@ -97,7 +97,7 @@ const CommentsScreen = ({route}) => {
                     <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]} >
                         <TouchableOpacity>
                             <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
-                                {item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}
+                                {item.user ? item.user[1] || 'No' : 'No'} {item.user ? item.user[2] || 'Name' : 'Name'}
                             </Text>
                         </TouchableOpacity>
                         <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>

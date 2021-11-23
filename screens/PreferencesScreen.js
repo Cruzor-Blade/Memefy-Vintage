@@ -28,7 +28,7 @@ const Preferences = ({navigation}) =>{
           />
           <OptionMenuModel
             screen="About"
-            text="A propos"
+            text="À propos"
           />
         </View>
     )

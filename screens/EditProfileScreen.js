@@ -71,8 +71,8 @@ const EditProfileScreen = () => {
     .then(() => {
       console.log('User Updated!');
       Alert.alert(
-        'Profile Updated!',
-        'Your profile has been updated successfully.'
+        'Profil mis à jour',
+        'Votre profil a été mis a jour avec succès.'
       );
     })
   }
@@ -163,23 +163,23 @@ const EditProfileScreen = () => {
   renderInner = () => (
     <View style={[styles.panel, {backgroundColor: currentTheme.dark ? '#555555' : '#ffffff'}]}>
       <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Upload Photo</Text>
-        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+        <Text style={styles.panelTitle}>Uploader la photo</Text>
+        <Text style={styles.panelSubtitle}>Choisissez une photo de profil</Text>
       </View>
       <TouchableOpacity
         style={styles.panelButton}
         onPress={takePhotoFromCamera}>
-        <Text style={styles.panelButtonTitle}>Take Photo</Text>
+        <Text style={styles.panelButtonTitle}>Prendre une Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
         onPress={choosePhotoFromLibrary}>
-        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+        <Text style={styles.panelButtonTitle}>Choisir dans la Gallerie</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
         onPress={() => this.bs.current.snapTo(1)}>
-        <Text style={styles.panelButtonTitle}>Cancel</Text>
+        <Text style={styles.panelButtonTitle}>Annuler</Text>
       </TouchableOpacity>
     </View>
   );
@@ -260,7 +260,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <FontAwesome name="user-o" color={color} size={20} />
               <TextInput
-                  placeholder="First Name"
+                  placeholder="Nom"
                   placeholderTextColor={color}
                   autoCorrect={false}
                   value={userData ? userData.fname : ''}
@@ -271,7 +271,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <FontAwesome name="user-o" color={color} size={20} />
               <TextInput
-                  placeholder="Last Name"
+                  placeholder="Prénom"
                   placeholderTextColor={color}
                   value={userData ? userData.lname : ''}
                   onChangeText={(txt) => setUserData({...userData, lname: txt})}
@@ -284,7 +284,7 @@ const EditProfileScreen = () => {
               <TextInput
                   multiline
                   numberOfLines={3}
-                  placeholder="About Me"
+                  placeholder="À propos de moi"
                   placeholderTextColor={color}
                   value={userData ? userData.about : ''}
                   onChangeText={(txt) => setUserData({...userData, about: txt})}
@@ -295,7 +295,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <Feather name="phone" color={color} size={20} />
               <TextInput
-                  placeholder="Phone"
+                  placeholder="Téléphone"
                   placeholderTextColor={color}
                   keyboardType="number-pad"
                   autoCorrect={false}
@@ -308,7 +308,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <FontAwesome name="globe" color={color} size={20} />
               <TextInput
-                  placeholder="Country"
+                  placeholder="Pays"
                   placeholderTextColor={color}
                   autoCorrect={false}
                   value={userData ? userData.country : ''}
@@ -323,7 +323,7 @@ const EditProfileScreen = () => {
                   size={20}
               />
               <TextInput
-                  placeholder="City"
+                  placeholder="Ville"
                   placeholderTextColor={color}
                   autoCorrect={false}
                   value={userData ? userData.city : ''}
@@ -331,7 +331,7 @@ const EditProfileScreen = () => {
                   style={styles.textInput}
               />
             </View>
-            <FormButton buttonTitle="Update" onPress={handleUpdate} />
+            <FormButton buttonTitle="Mettre à jour" onPress={handleUpdate} />
         </ScrollView>
       </Animated.View>
     </View>

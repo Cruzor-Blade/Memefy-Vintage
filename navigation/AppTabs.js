@@ -158,7 +158,7 @@ const PostStack = ({navigation}) => {
             color="#333"
             />
           ),
-          title:'Publier un meme'
+          title:'Partager un meme'
         }}
       />
     </Stack.Navigator>
@@ -313,7 +313,7 @@ const ProfileStack = ({navigation, route}) => {
             color="#333"
             />
           ),
-          title:'Editer votre profil',
+          title:'Éditer votre profil',
           headerStyle:{
             elevation:0.5
           }
@@ -340,7 +340,7 @@ const PreferencesStack = ({navigation, route}) => {
             color="#333"
             />
           ),
-          title:'Preferences',
+          title:'Préferences',
           headerStyle:{
             elevation:0.5
           }
@@ -412,7 +412,7 @@ const PreferencesStack = ({navigation, route}) => {
             color="#333"
             />
           ),
-          title:'A propos de nous',
+          title:'À propos de nous',
           headerStyle:{
             elevation:0.5
           }

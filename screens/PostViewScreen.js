@@ -41,7 +41,7 @@ const PostViewScreen = ({route, navigation}) => {
         .get()
         .then((documentSnapshot) => {
           if( documentSnapshot.exists ) {
-            console.log('Post Data', documentSnapshot.data());
+            // console.log('Post Data', documentSnapshot.data());
             setPost(documentSnapshot.data());
           }
         })
@@ -65,10 +65,10 @@ const PostViewScreen = ({route, navigation}) => {
             .get()
             .then((documentSnapshot) => {
                 if( documentSnapshot.exists ) {
-                    console.log('Individual User Data for comments', documentSnapshot.data());
+                    // console.log('Individual User Data for comments', documentSnapshot.data());
                     const { userImg, fname, lname } = documentSnapshot.data();
                     comments[i].user = [userImg, fname, lname ]
-                    console.log("About the comments", comments)
+                    // console.log("About the comments", comments)
                     setComments(comments)
                 }
             })     
@@ -110,7 +110,7 @@ const PostViewScreen = ({route, navigation}) => {
         })
       }
     
-    console.log("User Data:",userData);
+    // console.log("User Data:",userData);
 
 
     const handleDelete = (postId) => {
@@ -119,12 +119,12 @@ const PostViewScreen = ({route, navigation}) => {
           'Are You Sure?',
           [
             {
-              text:'Cancel',
+              text:'Annuler',
               onPress: () => console.log('Cancel pressed !'),
               style:'cancel'
             },
             {
-              text:'Confirm',
+              text:'Confirmer',
               onPress: () => deletePost(postId),
               style:'cancel'
             }
@@ -174,8 +174,8 @@ const PostViewScreen = ({route, navigation}) => {
           .delete()
           .then(() => {
             Alert.alert(
-              'Post deleted!',
-              'Your post has been deleted successfully!',
+              'Publication supprimée',
+              'Votre publication a été suprimée avec succès !',
             );
 
           })
@@ -191,15 +191,15 @@ const PostViewScreen = ({route, navigation}) => {
             const granted = await PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
               {
-                title:`Demande d'acces au stockage interne`,
-                message:`Vous devez accorder l'acces au stockage de votre appareil`
+                title:`Demande d'accès au stockage interne`,
+                message:`Vous devez accorder l'accès au stockage de votre appareil`
               }
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
               console.log('Storage Permission Granted');
               downloadImage();
             } else {
-              alert(`Permission d'acces au stockage refusee`);
+              alert(`Permission d'accès au stockage refusée`);
             }
           } catch (error) {
             console.warn(error);
@@ -234,9 +234,9 @@ const PostViewScreen = ({route, navigation}) => {
           //Showing alert for successful download
           let status = res.info().status;
           if (status == 200) {
-            alert('Image Telechargee avec succes')
+            alert('Image téléchargée avec succès')
           } else {
-            alert('Impossible de telecharger pour le moment')
+            alert('Impossible de télécharger pour le moment')
             console.log('Response error: ', JSON.stringify(res))
           }
         })
@@ -274,7 +274,7 @@ const PostViewScreen = ({route, navigation}) => {
                                 <UserInfoText>
                                     <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
                                         <UserName>
-                                            {userData ? userData.fname || 'Test' : 'Test' } {userData ? userData.lname || 'User' : 'User'}
+                                            {userData ? userData.fname || 'No' : 'No' } {userData ? userData.lname || 'Name' : 'Name'}
                                         </UserName>
                                     </TouchableOpacity>
                                     <PostTime>{post ? moment(post.postTime.toDate()).fromNow() : null}</PostTime>
@@ -312,7 +312,7 @@ const PostViewScreen = ({route, navigation}) => {
                     renderItem={({item}) => (
                           <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]}>
                           <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
-                            {item.user ? item.user[1] || 'Test' : 'Test'} {item.user ? item.user[2] || 'Name' : 'Name'}
+                            {item.user ? item.user[1] || 'No' : 'No'} {item.user ? item.user[2] || 'Name' : 'Name'}
                           </Text>
                               <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
                           </View>

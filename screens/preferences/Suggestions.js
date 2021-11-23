@@ -11,10 +11,10 @@ const Suggestions = () =>{
     return(
             <View style={styles.textContainer}>
                 <Text style={styles.textDesc}>
-                    Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'ameliorer.
+                    Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'améliorer.
                 </Text>
                 <Text style={styles.textDesc}>
-                    Entrez votre suggestion dans la zone de texte ci dessous.
+                    Merci de nous envoyer une suggestion par email en cliquant sur le bouton ci dessous.
                 </Text>
 
                 <FormButton

@@ -69,14 +69,14 @@ const OnboardingScreen = ({navigation}) => {
                     backgroundColor: '#fdeb93',
                     image: <Image source={require('../assets/onboarding/onboarding-2.png')} style={{width:windowWidth, height:windowWidth/1.2853, resizeMode:'contain'}}/>,
                     title: "Gardez le sourire...",
-                    subtitle: "Riez et echangez sur des blagues tres droles pour votre sourire quotidien",
+                    subtitle: "Riez et echangez sur des blagues tres drôles pour votre sourire quotidien",
 
                 },
                 {
                     backgroundColor: '#e9bcbe',
                     image: <Image source={require('../assets/onboarding/onboarding-3.png')} style={{width:windowWidth*0.95, height:windowWidth/2.17, resizeMode:'contain'}}/>,
                     title: "Soyez vous meme",
-                    subtitle: "Parce que Memebit, c'est comme chez vous !",
+                    subtitle: "Parce que MemeBit, c'est comme chez vous !",
 
                 }
             ]}

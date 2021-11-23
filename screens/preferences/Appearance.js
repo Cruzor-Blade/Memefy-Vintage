@@ -13,7 +13,7 @@ const Appearance = () => {
         <View>
             <TouchableRipple onPress={() => toggleTheme()}>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', padding:15}}>
-                    <Text style={{fontSize:16}}>Theme Sombre</Text>
+                    <Text style={{fontSize:16}}>Thème Sombre</Text>
                     <View pointerEvents="none">
                         <Switch value={paperTheme.dark}/>
                     </View>

@@ -205,10 +205,10 @@ const ProfileScreen = ({navigation, route}) => {
                 source={{uri: userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}
                 />
             </MaskedView>
-        <Text style={styles.userName}>{userData ? userData.fname || 'Test' : 'Test'} {userData ? userData.lname || 'User' : 'User'}</Text>
+        <Text style={styles.userName}>{userData ? userData.fname || 'No' : 'No'} {userData ? userData.lname || 'Name' : 'Name'}</Text>
         {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
         <Text style={styles.aboutUser}>
-        {userData ? userData.about || 'No details added.' : ''}
+        {userData ? userData.about || 'Aucun détail ajouté.' : ''}
         </Text>
         <View style={styles.userBtnWrapper}>
           {route.params && route.params.userId != user.uid ? (
@@ -235,10 +235,10 @@ const ProfileScreen = ({navigation, route}) => {
                 onPress={() => {
                   navigation.navigate('EditProfileScreen');
                 }}>
-                <Text style={styles.userBtnTxt}>Edit</Text>
+                <Text style={styles.userBtnTxt}>Éditer</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
-                <Text style={styles.userBtnTxt}>Logout</Text>
+                <Text style={styles.userBtnTxt}>Se déconnecter...</Text>
               </TouchableOpacity>
             </>
           )}
@@ -247,15 +247,15 @@ const ProfileScreen = ({navigation, route}) => {
         <View style={styles.userInfoWrapper}>
           <View style={styles.userInfoItem}>
             <Text style={styles.userInfoTitle}>{posts.length}</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
+            <Text style={styles.userInfoSubTitle}>Publications</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>10,000</Text>
-            <Text style={styles.userInfoSubTitle}>Followers</Text>
+            <Text style={styles.userInfoTitle}>{user.followers}</Text>
+            <Text style={styles.userInfoSubTitle}>Abonnés</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>100</Text>
-            <Text style={styles.userInfoSubTitle}>Following</Text>
+            <Text style={styles.userInfoTitle}>{user.followings}</Text>
+            <Text style={styles.userInfoSubTitle}>Abonnements</Text>
           </View>
         </View>
 

@@ -119,7 +119,7 @@ const HomeScreen = ({navigation}) => {
             list.push({
               id:doc.id,
               userId,
-              userName:'Test Name',
+              userName:'no_name',
               userImg:defaultProfilePicture,
               postTime,
               post,
@@ -134,7 +134,7 @@ const HomeScreen = ({navigation}) => {
             notUserFollowingPosts.push({
               id:doc.id,
               userId,
-              userName:'Test Name',
+              userName:'no_name',
               userImg:defaultProfilePicture,
               postTime,
               post,
@@ -166,7 +166,7 @@ const HomeScreen = ({navigation}) => {
         setLoading(false);
       }
 
-      console.log('Posts: ', list)
+      // console.log('Posts: ', list)
     } catch (e) {
       console.log (e)
     }
@@ -182,75 +182,7 @@ const HomeScreen = ({navigation}) => {
   }, [deleted]);
 
 
-  const handleDelete = (postId) => {
-    Alert.alert(
-      'Delete Post',
-      'Are You Sure?',
-      [
-        {
-          text:'Cancel',
-          onPress: () => console.log('Cancel pressed !'),
-          style:'cancel'
-        },
-        {
-          text:'Confirm',
-          onPress: () => deletePost(postId),
-          style:'cancel'
-        }
-      ],
-      {cancelable: false}
-    )
-  }
-
-  const deletePost = (postId) => {
-    console.log('Current Post Id: ', postId);
-
-    firestore()
-      .collection('posts')
-      .doc(postId)
-      .get()
-      .then((documentSnapshot) => {
-        if (documentSnapshot.exists) {
-          const {postImg} = documentSnapshot.data();
-
-          if (postImg != null) {
-            const storageRef = storage().refFromURL(postImg);
-            const imageRef = storage().ref(storageRef.fullPath);
-
-            imageRef
-              .delete()
-              .then(() => {
-                console.log(`${postImg} has been deleted successfully.`);
-                deleteFirestoreData(postId);
-                setDeleted(true);
-              })
-              .catch((e) => {
-                console.log('Error while deleting the image. ', e);
-              });
-            // If the post image is not available
-          } else {
-            deleteFirestoreData(postId);
-          }
-        }
-      });
-  };
-
-
-  const deleteFirestoreData = (postId) => {
-    firestore()
-      .collection('posts')
-      .doc(postId)
-      .delete()
-      .then(() => {
-        Alert.alert(
-          'Post deleted!',
-          'Your post has been deleted successfully!',
-        );
-        setDeleted(true);
-      })
-      .catch((e) => console.log('Error deleting posst.', e));
-  };
-
+  
   return (
     <Container style={useTheme().dark ? {backgroundColor:'#555555'} : {backgroundColor:'#ffffff'}}>
       <FlatList
@@ -262,7 +194,6 @@ const HomeScreen = ({navigation}) => {
         renderItem={({item}) => 
           <PostCard
             item={item}
-            onDelete={handleDelete}
             onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
             onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
             onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}

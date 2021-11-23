@@ -6,7 +6,7 @@ import FormButton from "../../components/FormButton";
 
 const About = () =>{
     const contact = "+237651516229"
-    const message = "Salut la team. Je vous contacte a propos de votre application MemeBit et J'aimerai en apprendre un peu plus sur vous :)"
+    const message = "Salut la team. Je vous contacte à propos de votre application MemeBit et J'aimerai en apprendre un peu plus sur vous :)"
     return (
         // <View style={styles.container}>
         //     <View>

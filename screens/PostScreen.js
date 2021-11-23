@@ -42,13 +42,13 @@ const AddPostScreen = () => {
       cropping: true,
       freeStyleCropEnabled:true,
     }).then((image) => {
-      console.log(image);
+      // console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
       const {cropRect} = image;
       const ImgDimensions = {width: cropRect.width, height: cropRect.height};
       setImage(imageUri);
       setImgDims(ImgDimensions);
-      console.log("Image Dimensions: ", imgDims);
+      // console.log("Image Dimensions: ", imgDims);
     });
   };
 
@@ -66,7 +66,7 @@ const AddPostScreen = () => {
       const ImgDimensions = {width: cropRect.width, height: cropRect.height};
       setImage(imageUri);
       setImgDims(ImgDimensions);
-      console.log("Image Dimensions: ", imgDims);
+      // console.log("Image Dimensions: ", imgDims);
     });
   };
 
@@ -91,8 +91,8 @@ const AddPostScreen = () => {
     .then(() => {
       console.log('Post Added!');
       Alert.alert(
-        'Post published!',
-        'Your post has been published Successfully!',
+        'Publication importée!',
+        'Votre post a été publié avec succès!',
       );
       setPost(null);
     })
@@ -180,7 +180,7 @@ const AddPostScreen = () => {
               submitPost();
             }
             }}>
-            <SubmitBtnText>Post</SubmitBtnText>
+            <SubmitBtnText>Publier</SubmitBtnText>
           </SubmitBtn>
         )}
       </InputWrapper>

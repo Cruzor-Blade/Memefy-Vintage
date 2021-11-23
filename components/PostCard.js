@@ -30,7 +30,7 @@ const iconSize = 36.0;
 const mvDuration = 500;
 const containerWidth= windowWidth * (3/4);
 
-const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
+const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
   const {user} = useContext(AuthContext);
   const currentTheme = useTheme();
   
@@ -377,7 +377,7 @@ const PostCard = ({item, onDelete, onProfilePress, onCommentPress, onImagePress,
           <UserInfoText>
             <TouchableOpacity onPress={onProfilePress}>
               <UserName style={currentTheme.dark ? {color:'#eeeeee'} : {color:'#333333'}}>
-                {userData ? userData.fname || 'Test' : 'Test' } {userData ? userData.lname || 'User' : 'User'}
+                {userData ? userData.fname || 'No' : 'No' } {userData ? userData.lname || 'Name' : 'Name'}
               </UserName>
             </TouchableOpacity>
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
