@@ -22,6 +22,7 @@ import { Container,
 import { defaultProfilePicture } from '../utils/Defaults';
 
 import moment from 'moment';
+import frLocale from "moment/locale/fr";
 import { AuthContext } from '../navigation/AuthProvider';
 import { useTheme } from 'react-native-paper';
 import MaskedView from '@react-native-community/masked-view';
