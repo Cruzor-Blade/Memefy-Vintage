@@ -51,6 +51,8 @@ const ProfileScreen = ({navigation, route}) => {
               postTime,
               likes,
               comments,
+              followers,
+              followings
             } = doc.data();
             list.push({
               id: doc.id,
@@ -64,6 +66,8 @@ const ProfileScreen = ({navigation, route}) => {
               liked: false,
               likes,
               comments,
+              followers,
+              followings
             });
           });
         });
@@ -131,10 +135,21 @@ const ProfileScreen = ({navigation, route}) => {
         console.log('Error while adding the user to the current firesore user follows: ', error)
       }
 
+      //Increment the number of users visited user is followed by
       try {
         await firestore()
         .collection('users')
         .doc(route.params.userId)
+        .update({'followers': firestore.FieldValue.increment(1)});
+      } catch (error) {
+        console.log(error);
+      }
+
+      //increment the number of users current user is following
+      try {
+        await firestore()
+        .collection('users')
+        .doc(user.uid)
         .update({'followings': firestore.FieldValue.increment(1)});
         setFollowing(true);
       } catch (error) {
@@ -159,10 +174,20 @@ const ProfileScreen = ({navigation, route}) => {
       } catch (error) {
         console.log('Error during unfollowing: ', error)
       }
+
       try {
         await firestore()
         .collection('users')
         .doc(route.params.userId)
+        .update({'followers': firestore.FieldValue.increment(-1)});
+      } catch (error) {
+        console.log('Error during unfollow decrement: ', error)
+      }
+
+      try {
+        await firestore()
+        .collection('users')
+        .doc(user.uid)
         .update({'followings': firestore.FieldValue.increment(-1)});
       } catch (error) {
         console.log('Error during unfollow decrement: ', error)
@@ -250,11 +275,11 @@ const ProfileScreen = ({navigation, route}) => {
             <Text style={styles.userInfoSubTitle}>Publications</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{user.followers}</Text>
+            <Text style={styles.userInfoTitle}>{userData && userData.followers}</Text>
             <Text style={styles.userInfoSubTitle}>Abonnés</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{user.followings}</Text>
+            <Text style={styles.userInfoTitle}>{userData && userData.followings}</Text>
             <Text style={styles.userInfoSubTitle}>Abonnements</Text>
           </View>
         </View>

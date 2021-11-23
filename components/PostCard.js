@@ -108,14 +108,25 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
       console.log('Error while adding the user to the current firesore user follows: ', error)
     }
 
-    try {
-      await firestore()
-      .collection('users')
-      .doc(item.userId)
-      .update({'followings': firestore.FieldValue.increment(1)});
-    } catch (error) {
-      console.log(error);
-    }
+    //Increment the number of users visited user is followed by
+      try {
+        await firestore()
+        .collection('users')
+        .doc(item.userId)
+        .update({'followers': firestore.FieldValue.increment(1)});
+      } catch (error) {
+        console.log(error);
+      }
+
+      //increment the number of users current user is following
+      try {
+        await firestore()
+        .collection('users')
+        .doc(user.uid)
+        .update({'followings': firestore.FieldValue.increment(1)});
+      } catch (error) {
+        console.log(error);
+      }
     animateFollowOpacity('hide');
     setTimeout(() => {
       setUserFollowing(true);
@@ -248,7 +259,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   function animateFollowOpacity (status) {
     Animated.timing(followOpacity, {
       toValue: status === 'hide' ? 0 : 1,
-      duration: mvDuration*0.6,
+      duration: mvDuration*0.75,
       useNativeDriver:true
     }).start();
   }

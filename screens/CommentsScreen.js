@@ -17,6 +17,7 @@ const CommentsScreen = ({route}) => {
     const [postId, setPostId] = useState("");
     const [commentText, setCommentText] = useState("");
     const [loading, setLoading] = useState(false);
+    const [sendingComment, setSendingComment] = useState(false);
     const currentTheme = useTheme();
 
 
@@ -35,7 +36,7 @@ const CommentsScreen = ({route}) => {
                     console.log('Individual User Data for comments', documentSnapshot.data());
                     const { userImg, fname, lname } = documentSnapshot.data();
                     comments[i].user = [userImg, fname, lname ]
-                    // console.log("About the comments", comments)
+                    console.log("About the comments", comments)
                     setComments(comments)
                 }
             })     
@@ -71,16 +72,20 @@ const CommentsScreen = ({route}) => {
     }, [route.params.postId]);
 
     const onCommentSend = async () => {
-         if (commentText !=''){
-            await firestore()
-            .collection('posts')
-            .doc(route.params.postId)
-            .collection('comments')
-            .add({
-                creator: auth().currentUser.uid,
-                commentText
-            })
-        setCommentText('');
+        if (!sendingComment) {
+            setSendingComment(true);
+                if (commentText !=''){
+                    await firestore()
+                    .collection('posts')
+                    .doc(route.params.postId)
+                    .collection('comments')
+                    .add({
+                        creator: auth().currentUser.uid,
+                        commentText
+                    })
+                setCommentText('');
+                }
+            setSendingComment(false)
         }
     }
 
