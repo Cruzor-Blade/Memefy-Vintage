@@ -171,7 +171,7 @@ const AddPostScreen = () => {
         />
         {uploading ? (
           <StatusWrapper>
-            <Text>{transferred} % Completed!</Text>
+            <Text>{transferred} % Transféré!</Text>
             <ActivityIndicator size="large" color="#0000ff" />
           </StatusWrapper>
         ) : (
@@ -187,13 +187,13 @@ const AddPostScreen = () => {
       <ActionButton buttonColor="#2e64e5">
         <ActionButton.Item
           buttonColor="#9b59b6"
-          title="Take Photo"
+          title="Prendre une Photo"
           onPress={takePhotoFromCamera}>
           <Icon name="camera-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item>
         <ActionButton.Item
           buttonColor="#3498db"
-          title="Choose Photo"
+          title="Choisir une Photo"
           onPress={choosePhotoFromLibrary}>
           <Icon name="md-images-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item>

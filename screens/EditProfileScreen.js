@@ -163,7 +163,7 @@ const EditProfileScreen = () => {
   renderInner = () => (
     <View style={[styles.panel, {backgroundColor: currentTheme.dark ? '#555555' : '#ffffff'}]}>
       <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Uploader la photo</Text>
+        <Text style={styles.panelTitle}>Uploader Une Photo</Text>
         <Text style={styles.panelSubtitle}>Choisissez une photo de profil</Text>
       </View>
       <TouchableOpacity

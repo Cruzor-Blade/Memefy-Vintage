@@ -1,15 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, FlatList, TouchableOpacity} from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
 import { Text, useTheme } from 'react-native-paper';
 
-import { AuthContext } from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import { defaultProfilePicture } from '../utils/Defaults';
 import { ProfileMask, UserImg, Divider } from '../styles/FeedStyles';
 
 const FindScreen = ({navigation}) => {
-  const {user, logout} = useContext(AuthContext);
   const [users, setUsers] = useState([]);
 
   const fetchUsers = (search) => {

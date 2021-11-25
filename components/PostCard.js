@@ -1,10 +1,9 @@
 import React, {useContext, useState, useEffect, useRef} from 'react';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { TouchableOpacity, TouchableWithoutFeedback, StyleSheet, View, Image, Animated, Alert } from 'react-native';
+import { TouchableOpacity, TouchableWithoutFeedback, StyleSheet, View, Image, Animated } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { windowWidth} from '../utils/Dimentions';
-import { Container,
+import {
   Card,
   UserInfo,
   UserImg,
@@ -15,8 +14,6 @@ import { Container,
   PostImg,
   Divider,
   InteractionWrapper,
-  UserImageContainer,
-  ProfileCropper,
   ProfileMask
 } from '../styles/FeedStyles';
 import { defaultProfilePicture } from '../utils/Defaults';
@@ -53,28 +50,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   const FsadLeft = containerWidth*(2/6);
   const FprevLeft = containerWidth*(3/6);
 
-
-  const likeIcon = item.liked ? "heart" : "heart-outline";
-  const likeIconColor = item.liked ? "#2e64e5" : "#333";
-  let likeText;
-  let CommentText;
-
-  if (item.likes == 1 ) {
-    likeText = "1 Like"
-  } else if (item.likes >1) {
-    likeText = item.likes + 'Likes'
-  } else {
-    likeText='Like'
-  }
-
-  if (item.comments == 1 ) {
-    CommentText = "1 Comment"
-  } else if (item.comments >1) {
-    CommentText = item.comments + 'Comments'
-  } else {
-    CommentText='Comment'
-  }
-
+  
   const handlereactionChange = (reaction) => {
     if (!changeReactions.current && reaction) {
       animateChatBubble();
