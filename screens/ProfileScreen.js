@@ -3,10 +3,10 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
   SafeAreaView,
   Image,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
 
@@ -57,7 +57,6 @@ const ProfileScreen = ({navigation, route}) => {
             list.push({
               id: doc.id,
               userId,
-              userName: 'Test Name',
               userImg: defaultProfilePicture,
               postTime: postTime,
               post,
@@ -92,8 +91,28 @@ const ProfileScreen = ({navigation, route}) => {
     .then((documentSnapshot) => {
       if( documentSnapshot.exists ) {
         console.log('User Data', documentSnapshot.data());
-        setUserData(documentSnapshot.data());
+        const {
+          username,
+          fname,
+          lname,
+          userImg,
+          about,
+          followers,
+          followings
+        } = documentSnapshot.data()
+        console.log("username:", username)
+        setUserData({
+          username,
+          fname,
+          lname,
+          userImg,
+          about,
+          followers,
+          followings
+        });
       }
+    }).catch(error  => {
+      console.log(error)
     })
   }
 
@@ -212,82 +231,98 @@ const ProfileScreen = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-      <ScrollView
-        style={[styles.container, { backgroundColor: currentTheme.dark ? '#555555' : '#fff' }]}
-        contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}
-        showsVerticalScrollIndicator={false}>
-            <MaskedView
-              style={{height:150, width:150, alignItems:'center', justifyContent:'center'}}
-              maskElement={
-                <Image
-                  source={require('../assets/masks/profileScreenMask.png')}
-                  style={{height:150, width:150}}
-                  />
-              }
-              >
-              <Image
-                style={{height:150, width:150}}
-                source={{uri: userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}
-                />
-            </MaskedView>
-        <Text style={styles.userName}>{userData ? userData.fname || 'No' : 'No'} {userData ? userData.lname || 'Name' : 'Name'}</Text>
-        {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
-        <Text style={styles.aboutUser}>
-        {userData ? userData.about || 'Aucun détail ajouté.' : ''}
-        </Text>
-        <View style={styles.userBtnWrapper}>
-          {route.params && route.params.userId != user.uid ? (
-            <>
-              {/* <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
-                <Text style={styles.userBtnTxt}>Message</Text>
-              </TouchableOpacity> */}
-              {following ? (
-              <TouchableOpacity style={styles.userBtn} onPress={() => onUnFollow()}>
-                <Text style={styles.userBtnTxt}>se retirer</Text>
-              </TouchableOpacity>
-              )
-                : 
-              (
-                <TouchableOpacity style={styles.userBtn} onPress={() => onFollow()}>
-                <Text style={styles.userBtnTxt}>suivre</Text>
-              </TouchableOpacity>  
-              )}
-            </>
-          ) : (
-            <>
-              <TouchableOpacity
-                style={styles.userBtn}
-                onPress={() => {
-                  navigation.navigate('EditProfileScreen');
-                }}>
-                <Text style={styles.userBtnTxt}>Éditer</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
-                <Text style={styles.userBtnTxt}>Se déconnecter...</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
+      
 
-        <View style={styles.userInfoWrapper}>
-          <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{posts.length}</Text>
-            <Text style={styles.userInfoSubTitle}>Publications</Text>
-          </View>
-          <View style={styles.userInfoItem}>
-            {userData ? <Text style={styles.userInfoTitle}>{userData.followers}</Text> : <ActivityIndicator size="small" />}
-            <Text style={styles.userInfoSubTitle}>Abonnés</Text>
-          </View>
-          <View style={styles.userInfoItem}>
-            { userData ? <Text style={styles.userInfoTitle}>{userData.followings}</Text> : <ActivityIndicator size="small" />}
-            <Text style={styles.userInfoSubTitle}>Abonnements</Text>
-          </View>
-        </View>
-
-        {posts.map((item) => (
+        {/* {posts.map((item) => (
           <PostCard key={item.id} item={item}/>
-        ))}
-      </ScrollView>
+        ))} */}
+        <FlatList
+          ListHeaderComponent = {() => (
+            <View
+              style={[styles.container, { backgroundColor: currentTheme.dark ? '#555555' : '#fff' }]}>
+              <MaskedView
+                  style={{height:150, width:150, alignItems:'center', justifyContent:'center'}}
+                  maskElement={
+                    <Image
+                      source={require('../assets/masks/profileScreenMask.png')}
+                      style={{height:150, width:150}}
+                      />
+                  }
+                  >
+                  <Image
+                    style={{height:150, width:150}}
+                    source={{uri: userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}
+                    />
+              </MaskedView>
+            <Text style={styles.userName}>{userData ? userData.fname || 'No' : 'No'} {userData ? userData.lname || 'Name' : 'Name'}</Text>
+            {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
+            <Text style={styles.aboutUser}>
+            {userData ? userData.about || 'Aucun détail ajouté.' : ''}
+            </Text>
+            <View style={styles.userBtnWrapper}>
+              {route.params && route.params.userId != user.uid ? (
+                <>
+                  {/* <TouchableOpacity style={styles.userBtn} onPress={() => {}}>
+                    <Text style={styles.userBtnTxt}>Message</Text>
+                  </TouchableOpacity> */}
+                  {following ? (
+                  <TouchableOpacity style={styles.userBtn} onPress={() => onUnFollow()}>
+                    <Text style={styles.userBtnTxt}>se retirer</Text>
+                  </TouchableOpacity>
+                  )
+                    : 
+                  (
+                    <TouchableOpacity style={styles.userBtn} onPress={() => onFollow()}>
+                    <Text style={styles.userBtnTxt}>suivre</Text>
+                  </TouchableOpacity>  
+                  )}
+                </>
+              ) : (
+                <>
+                  <TouchableOpacity
+                    style={styles.userBtn}
+                    onPress={() => {
+                      navigation.navigate('EditProfileScreen');
+                    }}>
+                    <Text style={styles.userBtnTxt}>Éditer</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
+                    <Text style={styles.userBtnTxt}>Se déconnecter...</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+            </View>
+
+            <View style={styles.userInfoWrapper}>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoTitle}>{posts.length}</Text>
+                <Text style={styles.userInfoSubTitle}>Publications</Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                {userData ? <Text style={styles.userInfoTitle}>{userData.followers}</Text> : <ActivityIndicator size="small" />}
+                <Text style={styles.userInfoSubTitle}>Abonnés</Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                { userData ? <Text style={styles.userInfoTitle}>{userData.followings}</Text> : <ActivityIndicator size="small" />}
+                <Text style={styles.userInfoSubTitle}>Abonnements</Text>
+              </View>
+            </View>
+          </View>
+          )}
+          ListEmptyComponent= {() => (
+          <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', margin:10}}>Cet utilisateur n'a aucune publication pour le moment.</Text>
+          )}
+          data={posts}
+          keyExtractor={item => item.id}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => 
+            <PostCard
+              item={item}
+              // onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
+              // onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
+              // onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
+                />}
+            />
     </SafeAreaView>
   );
 };
@@ -297,7 +332,9 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:8
+    paddingTop:8,
+    alignItems:'center',
+    justifyContent:'center'
   },
   profileMask:{
     height: 150,
