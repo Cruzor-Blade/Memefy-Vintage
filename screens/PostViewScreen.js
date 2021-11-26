@@ -325,7 +325,14 @@ const PostViewScreen = ({route, navigation}) => {
                           </Text>
                               <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
                           </View>
-                    )}
+                      )}
+                      ListEmptyComponent= {() => (
+                        <>
+                            <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:20}}>Cette publication n'a aucun commentaire pour le moment.</Text>
+                            <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold'}}>Soyez la première personne à commenter ; )</Text>
+                        
+                        </>
+                        )}
                 />
             
         </View>
@@ -342,7 +349,6 @@ const styles = StyleSheet.create({
     imageContainer:{
         position:'relative',
         width:windowWidth,
-        minHeight:windowWidth,
         maxHeight:windowWidth*1.4,
         elevation:8,
         backgroundColor:"#333",

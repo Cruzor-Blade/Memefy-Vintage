@@ -110,6 +110,13 @@ const CommentsScreen = ({route}) => {
                         <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
                     </View>
                 )}
+                ListEmptyComponent= {() => (
+                    <>
+                        <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:300, color:'#111'}}>Cette publication n'a aucun commentaire pour le moment.</Text>
+                        <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold', color:'#111'}}>Soyez la première personne à commenter ; )</Text>
+                    
+                    </>
+                    )}
             />
             <View style={styles.sendCommentView}>
                 <View style={styles.inputView}>
