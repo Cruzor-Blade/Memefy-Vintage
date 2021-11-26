@@ -22,13 +22,13 @@ const CommentsScreen = ({route}) => {
     const currentTheme = useTheme();
 
 
-    function matchUserToComment(comments) {
+    const matchUserToComment = async (comments) => {
         for (let i = 0; i < comments.length; i++) {
             if (comments[i].hasOwnProperty('user')) {
                 continue;
             }
             
-            firestore()
+            await firestore()
             .collection('users')
             .doc( comments[i].creator)
             .get()
@@ -36,11 +36,11 @@ const CommentsScreen = ({route}) => {
                 if( documentSnapshot.exists ) {
                     console.log('Individual User Data for comments', documentSnapshot.data());
                     const { userImg, fname, lname } = documentSnapshot.data();
-                    comments[i].user = [userImg, fname, lname ]
+                    comments[i].user = {userImg, fname, lname }
                     console.log("About the comments", comments)
-                    setComments(comments)
                 }
             })     
+            setComments(comments);
         }
         setLoading(false);
     }
@@ -94,13 +94,6 @@ const CommentsScreen = ({route}) => {
     // console.log("These are the comments: ",comments);
     return (
         <View style={styles.container}>
-            {/* {loading &&
-            <ActivityIndicator
-                size="large"
-                style={{marginHorizontal:'auto',
-                marginVertical:4
-            }}
-            />} */}
             <FlatList
                 data={comments}
                 numColumns={1}
@@ -111,7 +104,7 @@ const CommentsScreen = ({route}) => {
                     <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]} >
                         <TouchableOpacity>
                             <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
-                                {item.user ? item.user[1] || 'No' : 'No'} {item.user ? item.user[2] || 'Name' : 'Name'}
+                                {item.user ? item.user.fname : 'No'} {item.user ? item.user.lname : 'Name'}
                             </Text>
                         </TouchableOpacity>
                         <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>

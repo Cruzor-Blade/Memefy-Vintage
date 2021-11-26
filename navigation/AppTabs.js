@@ -239,12 +239,15 @@ const HomeStack = ({navigation}) => {
           headerLeft: () => (
             <Feather.Button
             name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('HomeScreen')}
             backgroundColor="#fff"
             color="#333"
             />
           ),
-          title:'Commentaires'
+          title:'Commentaires',
+          headerStyle:{
+            elevation:0.8
+          }
         }}
       />
       <Stack.Screen
@@ -316,12 +319,15 @@ const ProfileStack = ({navigation, route}) => {
           headerLeft: () => (
             <Feather.Button
             name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.navigate('ProfileScreen')}
             backgroundColor="#fff"
             color="#333"
             />
           ),
-          title:'Commentaires'
+          title:'Commentaires',
+          headerStyle:{
+            elevation:0
+          }
         }}
       />
       <Stack.Screen
@@ -330,14 +336,6 @@ const ProfileStack = ({navigation, route}) => {
         options={{
           headerShown: false,
           tabBarVisible:false,
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          )
         }}
       />
     </Stack.Navigator>

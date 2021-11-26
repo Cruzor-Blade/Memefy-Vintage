@@ -54,13 +54,13 @@ const PostViewScreen = ({route, navigation}) => {
     }, []);
 
 
-    function matchUserToComment(comments) {
+    const matchUserToComment = async (comments) => {
         for (let i = 0; i < comments.length; i++) {
             if (comments[i].hasOwnProperty('user')) {
                 continue;
             }
             
-            firestore()
+            await firestore()
             .collection('users')
             .doc( comments[i].creator)
             .get()
@@ -70,9 +70,9 @@ const PostViewScreen = ({route, navigation}) => {
                     const { userImg, fname, lname } = documentSnapshot.data();
                     comments[i].user = [userImg, fname, lname ]
                     // console.log("About the comments", comments)
-                    setComments(comments)
-                }
-            })     
+                  }
+                })     
+            setComments(comments)
         }
         setLoading(false);
     }
@@ -343,7 +343,13 @@ const styles = StyleSheet.create({
         position:'relative',
         width:windowWidth,
         minHeight:windowWidth,
-        maxHeight:windowWidth*1.4
+        maxHeight:windowWidth*1.4,
+        elevation:8,
+        backgroundColor:"#333",
+        shadowOffset:{
+          width:0,
+          height:3
+        }
     },
     image:{
         position:'relative',
