@@ -31,6 +31,7 @@ const PostViewScreen = ({route, navigation}) => {
     const [comments, setComments] = useState([]);
     const [postId, setPostId] = useState("");
     const [userData, setUserData] = useState(null);
+    const [loading, setLoading] = useState(false);
     const currentTheme = useTheme();
 
 
@@ -73,25 +74,31 @@ const PostViewScreen = ({route, navigation}) => {
                 }
             })     
         }
+        setLoading(false);
+    }
+
+    const fetchComments = () => {
+        setLoading(true);
+        firestore()
+        .collection('posts')
+        .doc(route.params.postId)
+        .collection('comments')
+        .get()
+        .then((querySnapshot) => {
+            let comments = querySnapshot.docs.map(doc => {
+                const data= doc.data();
+                const id = doc.id;
+                return {id, ...data};
+            });
+            matchUserToComment(comments);
+
+        })
+        setPostId(route.params.postId);
     }
 
     useEffect(() => {
         if (route.params.postId !== postId) {
-            firestore()
-            .collection('posts')
-            .doc(route.params.postId)
-            .collection('comments')
-            .get()
-            .then((querySnapshot) => {
-                let comments = querySnapshot.docs.map(doc => {
-                    const data= doc.data();
-                    const id = doc.id;
-                    return {id, ...data};
-                });
-                matchUserToComment(comments);
-
-            })
-            setPostId(route.params.postId);
+           fetchComments(); 
         }
 
 
@@ -306,6 +313,8 @@ const PostViewScreen = ({route, navigation}) => {
             
                 <FlatList
                     showsVerticalScrollIndicator={false}
+                    onRefresh={fetchComments}
+                    refreshing={loading}
                     data={comments}
                     numColumns={1}
                     horizontal={false}

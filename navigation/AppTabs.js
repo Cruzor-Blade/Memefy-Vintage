@@ -3,7 +3,6 @@ import { Image, StyleSheet } from 'react-native';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from 'react-native-paper';
 
@@ -139,11 +138,8 @@ const PostStack = ({navigation}) => {
     <Stack.Navigator
       initialRouteName="PostScreen"
       screenOptions={{
-        style: {
-          height: 100,
-          elevation:2
-        },
-        headerTintColor: currentTheme.dark ? '#121212' : '#ffffff'
+        headerTintColor: currentTheme.dark ? '#121212' : '#ffffff',
+        title: "Partager un meme"
       }}
     >
       <Stack.Screen
@@ -256,6 +252,7 @@ const HomeStack = ({navigation}) => {
         component={PostViewScreen}
         options={{
           headerShown: false,
+          tabBarVisible:false,
           headerLeft: () => (
             <Feather.Button
             name="arrow-left"
@@ -272,14 +269,7 @@ const HomeStack = ({navigation}) => {
 
 
 const ProfileStack = ({navigation, route}) => {
-  const tabHiddenRoutes = ["EditProfileScreen"];
 
-  if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
-    navigation.setOptions ({tabBarVisible: false});
-  } else {
-    navigation.setOptions({tabBarVisible:true})
-  }
-  
   return (
     <Stack.Navigator initialRouteName="ProfileScreen">
       <Stack.Screen
@@ -317,6 +307,37 @@ const ProfileStack = ({navigation, route}) => {
           headerStyle:{
             elevation:0.5
           }
+        }}
+      />
+      <Stack.Screen
+        name="CommentsScreen"
+        component={CommentsScreen}
+        options={{
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('Home')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          ),
+          title:'Commentaires'
+        }}
+      />
+      <Stack.Screen
+        name="PostViewScreen"
+        component={PostViewScreen}
+        options={{
+          headerShown: false,
+          tabBarVisible:false,
+          headerLeft: () => (
+            <Feather.Button
+            name="arrow-left"
+            onPress={() => navigation.navigate('Home')}
+            backgroundColor="#fff"
+            color="#333"
+            />
+          )
         }}
       />
     </Stack.Navigator>

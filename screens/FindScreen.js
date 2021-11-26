@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, FlatList, TouchableOpacity} from 'react-native';
+import { View, StyleSheet, TextInput, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
 import { Text, useTheme } from 'react-native-paper';
 
@@ -9,8 +9,10 @@ import { ProfileMask, UserImg, Divider } from '../styles/FeedStyles';
 
 const FindScreen = ({navigation}) => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchUsers = (search) => {
+    setLoading(true);
     firestore()
     .collection('users')
     .where('username', '>=', search)
@@ -24,6 +26,7 @@ const FindScreen = ({navigation}) => {
         return {id, ...data}
       });
       setUsers(users);
+      setLoading(false);
     })
   }
 
@@ -44,6 +47,7 @@ const FindScreen = ({navigation}) => {
         placeholderTextColor={useTheme().dark ? "#cdcdcd" : "#333"}
         tvParallaxShiftDistanceX="8"
       />
+      {loading && <ActivityIndicator style={{marginHorizontal:'auto', marginVertical:4}} size="large" />}
       <FlatList
         data= {users}
         numColumns={1}

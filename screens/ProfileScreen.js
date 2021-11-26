@@ -6,6 +6,7 @@ import {
   ScrollView,
   SafeAreaView,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
 
@@ -274,11 +275,11 @@ const ProfileScreen = ({navigation, route}) => {
             <Text style={styles.userInfoSubTitle}>Publications</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{userData && userData.followers}</Text>
+            {userData ? <Text style={styles.userInfoTitle}>{userData.followers}</Text> : <ActivityIndicator size="small" />}
             <Text style={styles.userInfoSubTitle}>Abonnés</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{userData && userData.followings}</Text>
+            { userData ? <Text style={styles.userInfoTitle}>{userData.followings}</Text> : <ActivityIndicator size="small" />}
             <Text style={styles.userInfoSubTitle}>Abonnements</Text>
           </View>
         </View>

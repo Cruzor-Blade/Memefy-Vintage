@@ -9,7 +9,8 @@ import { Text,
     StyleSheet,
     FlatList,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    ActivityIndicator
     } from "react-native";
 
 const CommentsScreen = ({route}) => {
@@ -41,9 +42,11 @@ const CommentsScreen = ({route}) => {
                 }
             })     
         }
+        setLoading(false);
     }
 
     const fetchComments = () => {
+        setLoading(true);
         firestore()
         .collection('posts')
         .doc(route.params.postId)
@@ -61,14 +64,13 @@ const CommentsScreen = ({route}) => {
     }
     
     useEffect(() => {
-        setLoading(true);
+ 
         if (route.params.postId !== postId) {
             fetchComments();
 
             setPostId(route.params.postId);
         }
 
-        setLoading(false);
     }, [route.params.postId]);
 
     const onCommentSend = async () => {
@@ -92,6 +94,13 @@ const CommentsScreen = ({route}) => {
     // console.log("These are the comments: ",comments);
     return (
         <View style={styles.container}>
+            {/* {loading &&
+            <ActivityIndicator
+                size="large"
+                style={{marginHorizontal:'auto',
+                marginVertical:4
+            }}
+            />} */}
             <FlatList
                 data={comments}
                 numColumns={1}
@@ -131,6 +140,10 @@ const CommentsScreen = ({route}) => {
                             size={28}
                             style={styles.sendIcon}
                             />
+                        {sendingComment && <ActivityIndicator
+                            size={28}
+                            style={{opacity:0.7, margin:'auto', position:'absolute', alignSelf:'center'}}
+                        />}
                     </View>
                 </TouchableOpacity>
             </View>    
