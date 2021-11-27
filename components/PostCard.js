@@ -21,6 +21,7 @@ import { defaultProfilePicture } from '../utils/Defaults';
 import moment from 'moment';
 import frLocale from "moment/locale/fr";
 import { AuthContext } from '../navigation/AuthProvider';
+import { ActionsContext } from '../userContext/Actions';
 import { useTheme } from 'react-native-paper';
 import MaskedView from '@react-native-community/masked-view';
 
@@ -30,13 +31,13 @@ const containerWidth= windowWidth * (3/4);
 
 const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
   const {user} = useContext(AuthContext);
+  const {onFollowUser} = useContext(ActionsContext);
   const currentTheme = useTheme();
   
   const [userData, setUserData] = useState(null);
   const [showReactions, setShowReactions] = useState(false);
   const [currentUserReaction, setCurrentUserReaction] = useState(null);
   const [userFollowing, setUserFollowing] = useState(item.following);
-  const [followLoading, setFollowLoading] = useState(false);
   
   const [ changeReactions, setChangeReactions ]= useState({prev:null, current:null});
 
@@ -75,46 +76,12 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   }
 
   const onFollow = async () => {
-    if (!followLoading) {
-      setFollowLoading(true)
-      try {
-        await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .collection('userFollowings')
-        .doc(item.userId)
-        .set({})
-      } catch (error) {
-        console.log('Error while adding the user to the current firesore user follows: ', error)
-      }
-      
-      //Increment the number of users visited user is followed by
-      try {
-        await firestore()
-        .collection('users')
-        .doc(item.userId)
-        .update({'followers': firestore.FieldValue.increment(1)});
-      } catch (error) {
-        console.log(error);
-      }
-      
-      //increment the number of users current user is following
-      try {
-        await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .update({'followings': firestore.FieldValue.increment(1)});
-      } catch (error) {
-        console.log(error);
-      }
+      await onFollowUser(user.uid, item.userId);
+
       animateFollowOpacity('hide');
       setTimeout(() => {
         setUserFollowing(true);
       }, mvDuration*0.2)
-      setTimeout(() => {
-      setFollowLoading(false);
-      }, mvDuration*1.2 )
-    }
   }
 
 

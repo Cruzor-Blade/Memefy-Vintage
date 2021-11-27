@@ -11,6 +11,7 @@ import {
 import MaskedView from '@react-native-community/masked-view';
 
 import {AuthContext} from '../navigation/AuthProvider';
+import { ActionsContext } from '../userContext/Actions';
 import { useTheme, Text } from 'react-native-paper';
 import { defaultProfilePicture } from '../utils/Defaults';
 
@@ -21,16 +22,32 @@ import PostCard from '../components/PostCard';
 
 const ProfileScreen = ({navigation, route}) => {
   const {user, logout} = useContext(AuthContext);
+  const {onFollowUser, onUnfollowUser} = useContext(ActionsContext);
   const currentTheme = useTheme();
   
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [followLoading, setFollowLoading] = useState(false);
   const [following, setFollowing] = useState(false);
 
 
   const fetchPosts = async () => {
+    
+    //Fetching the users Ids that the current user is following 
+    let followArray = [];
+
+    await firestore()
+    .collection('users')
+    .doc(user.uid)
+    .collection('userFollowings')
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        followArray.push(doc.id);
+      })
+    })
+
+
     try {
       const list = [];
 
@@ -60,6 +77,7 @@ const ProfileScreen = ({navigation, route}) => {
               userImg: defaultProfilePicture,
               postTime: postTime,
               post,
+              following: route.params && !followArray.includes(route.params.userId) ? false : true,
               postImg,
               ImgDimensions,
               liked: false,
@@ -140,80 +158,14 @@ const ProfileScreen = ({navigation, route}) => {
 
 
   const onFollow = async () => {
-    if (!followLoading){
-      setFollowLoading(true);
-
-      try {
-        await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .collection('userFollowings')
-        .doc(route.params.userId)
-        .set({})
-      } catch (error) {
-        console.log('Error while adding the user to the current firesore user follows: ', error)
-      }
-
-      //Increment the number of users visited user is followed by
-      try {
-        await firestore()
-        .collection('users')
-        .doc(route.params.userId)
-        .update({'followers': firestore.FieldValue.increment(1)});
-      } catch (error) {
-        console.log(error);
-      }
-
-      //increment the number of users current user is following
-      try {
-        await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .update({'followings': firestore.FieldValue.increment(1)});
-        setFollowing(true);
-      } catch (error) {
-        console.log(error);
-      }
-      setFollowLoading(false);
-    }
+    onFollowUser(user.uid, route.params.userId);
+    setFollowing(true);
   }
 
 
   const onUnFollow = async () => {
-    if (!followLoading){
-      setFollowLoading(true);
-      
-      try {
-        await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .collection('userFollowings')
-        .doc(route.params.userId)
-        .delete()
-      } catch (error) {
-        console.log('Error during unfollowing: ', error)
-      }
-
-      try {
-        await firestore()
-        .collection('users')
-        .doc(route.params.userId)
-        .update({'followers': firestore.FieldValue.increment(-1)});
-      } catch (error) {
-        console.log('Error during unfollow decrement: ', error)
-      }
-
-      try {
-        await firestore()
-        .collection('users')
-        .doc(user.uid)
-        .update({'followings': firestore.FieldValue.increment(-1)});
-      } catch (error) {
-        console.log('Error during unfollow decrement: ', error)
-      }
-      setFollowing(false);
-      setFollowLoading(false)
-    }
+    onUnfollowUser(user.uid, route.params.userId)
+    setFollowing(false);
   }
 
   useEffect(() => {

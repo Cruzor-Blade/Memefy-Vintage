@@ -1,12 +1,15 @@
 import React from "react";
 import { AuthProvider } from "./AuthProvider";
+import { ActionProvider } from "../userContext/Actions";
 import Routes from './Routes';
 
 const Providers = () =>{
     return (
         <AuthProvider>
-            <Routes/>
-        </AuthProvider>
+            <ActionProvider>
+                <Routes/>
+            </ActionProvider>
+        </AuthProvider> 
         )
 }
 
