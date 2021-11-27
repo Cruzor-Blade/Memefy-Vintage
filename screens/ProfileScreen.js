@@ -255,6 +255,7 @@ const ProfileScreen = ({navigation, route}) => {
                     />
               </MaskedView>
             <Text style={styles.userName}>{userData ? userData.fname || 'No' : 'No'} {userData ? userData.lname || 'Name' : 'Name'}</Text>
+            <Text style={[styles.userName, {fontSize:16, marginTop:0, marginBottom:15}]}>@{userData && userData.username}</Text>
             {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
             <Text style={styles.aboutUser}>
             {userData ? userData.about || 'Aucun détail ajouté.' : ''}
@@ -344,7 +345,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 10,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   aboutUser: {
     fontSize: 14,

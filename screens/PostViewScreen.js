@@ -68,7 +68,7 @@ const PostViewScreen = ({route, navigation}) => {
                 if( documentSnapshot.exists ) {
                     // console.log('Individual User Data for comments', documentSnapshot.data());
                     const { userImg, fname, lname } = documentSnapshot.data();
-                    comments[i].user = [userImg, fname, lname ]
+                    comments[i].user = {userImg, fname, lname }
                     // console.log("About the comments", comments)
                   }
                 })     
@@ -321,7 +321,7 @@ const PostViewScreen = ({route, navigation}) => {
                     renderItem={({item}) => (
                           <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]}>
                           <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
-                            {item.user ? item.user[1] || 'No' : 'No'} {item.user ? item.user[2] || 'Name' : 'Name'}
+                            {item.user ? item.user.fname || 'No' : 'No'} {item.user ? item.user.lname || 'Name' : 'Name'}
                           </Text>
                               <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
                           </View>
