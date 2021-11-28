@@ -6,7 +6,8 @@ import {
   TextInput,
   StyleSheet,
   Alert,
-  ScrollView
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
 
 import { Text, useTheme } from 'react-native-paper';
@@ -27,7 +28,7 @@ import storage from '@react-native-firebase/storage';
 import { defaultProfilePicture } from '../utils/Defaults';
 
 const EditProfileScreen = () => {
-  const {user, logout} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
   const currentTheme = useTheme();
   const color = currentTheme.dark ? '#aaaaaa' : '#333333'
 
@@ -332,6 +333,7 @@ const EditProfileScreen = () => {
               />
             </View>
             <FormButton buttonTitle="Mettre à jour" onPress={handleUpdate} />
+            {uploading && <ActivityIndicator size="28" style={{marginHorizontal:'auto', marginVertical:4}} />}
         </ScrollView>
       </Animated.View>
     </View>

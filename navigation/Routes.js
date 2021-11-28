@@ -10,13 +10,15 @@ import { Provider as PaperProvider,
 
 import auth from '@react-native-firebase/auth'
 import { AuthContext } from './AuthProvider';
+import { ActionsContext } from "../userContext/Actions";
 
 import AppTabs from "./AppTabs";
 import AuthStack from "./AuthStack";
 
 const Routes = () =>{
     
-    const {user, setUser, isDarkTheme } = useContext(AuthContext);
+    const {user, setUser } = useContext(AuthContext);
+    const { isDarkTheme } = useContext(ActionsContext);
     const [initializing, setInitializing] = useState(true);
     
     const CustomDefaultTheme = {

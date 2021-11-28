@@ -1,7 +1,8 @@
 import React from "react";
 
-import {View, Text, StyleSheet, Linking} from 'react-native';
+import {View, StyleSheet, Linking} from 'react-native';
 import FormButton from "../../components/FormButton";
+import { Text, useTheme } from 'react-native-paper';
 
 
 const About = () =>{
@@ -25,7 +26,7 @@ const About = () =>{
         //             </Text>
         //     </View>
         // </View>
-        <View style={styles.textContainer}>
+        <View style={[styles.textContainer, {backgroundColor: useTheme().dark ? '#555' : '#f8f8f8'}]}>
                 <Text style={styles.textDesc}>
                 Nous sommes un groupe de developpeurs :)
                 </Text>
@@ -58,7 +59,6 @@ const styles= StyleSheet.create({
         maxWidth:'98%',
         paddingHorizontal:15,
         paddingVertical:20,
-        backgroundColor: '#f8f8f8',
         marginBottom: 20,
         borderRadius: 10,
     },

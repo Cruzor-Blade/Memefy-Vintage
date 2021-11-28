@@ -182,7 +182,7 @@ const ProfileScreen = ({navigation, route}) => {
 
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: currentTheme.dark ? '#555555' : '#fff'}}>
       
 
         {/* {posts.map((item) => (
@@ -191,7 +191,7 @@ const ProfileScreen = ({navigation, route}) => {
         <FlatList
           ListHeaderComponent = {() => (
             <View
-              style={[styles.container, { backgroundColor: currentTheme.dark ? '#555555' : '#fff' }]}>
+              style={styles.container}>
               <MaskedView
                   style={{height:150, width:150, alignItems:'center', justifyContent:'center'}}
                   maskElement={

@@ -8,13 +8,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../navigation/AuthProvider';
 
 const LoginScreen = ({navigation}) => {
+  const {login, loginLoading} = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
   const [isValidPassword, setIsValidPassword] = useState(true);
   
-  const {login, loginLoading} = useContext(AuthContext);
-
   const handleValidEmail = (val) => {
     if (val.split(" ").join("").length >= 4 && val.includes("@", ".") && val != "") {
       setIsValidEmail(true);

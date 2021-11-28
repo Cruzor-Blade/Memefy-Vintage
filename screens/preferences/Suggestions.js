@@ -1,7 +1,7 @@
 import React from "react";
 
 import {View, StyleSheet, Linking} from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import FormButton from "../../components/FormButton";
 
 
@@ -9,7 +9,7 @@ const Suggestions = () =>{
     const message= "Salut a vous la team. J'ecris a propos votre application MemeBit ou j'aimerai apporter quelques suggestions coordialement."
 
     return(
-            <View style={styles.textContainer}>
+            <View style={[styles.textContainer, {backgroundColor: useTheme().dark ? '#555' :'#f8f8f8'}]}>
                 <Text style={styles.textDesc}>
                     Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'améliorer.
                 </Text>
@@ -42,7 +42,6 @@ const styles= StyleSheet.create({
         maxWidth:'98%',
         paddingHorizontal:15,
         paddingVertical:20,
-        backgroundColor: '#f8f8f8',
         marginBottom: 20,
         borderRadius: 10,
     },

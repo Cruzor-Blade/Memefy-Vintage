@@ -7,7 +7,6 @@ export const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
-    const [isDarkTheme, setIsDarkTheme] = useState(false);
     const [loginLoading, setLoginLoading] = useState(false);
     const [registerLoading, setRegisterLoading] = useState(false);
   
@@ -16,10 +15,8 @@ export const AuthProvider = ({children}) => {
         value={{
           user,
           setUser,
-          isDarkTheme,
           loginLoading,
           registerLoading,
-          toggleTheme: () => { setIsDarkTheme(!isDarkTheme);},
           login: async (email, password) => {
             if (loginLoading==false) {
               setLoginLoading(true);

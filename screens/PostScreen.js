@@ -27,7 +27,7 @@ import { AuthContext } from '../navigation/AuthProvider';
 import { windowWidth } from '../utils/Dimentions';
 
 const AddPostScreen = () => {
-  const {user, logout} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
 
   const [image, setImage] = useState(null);
   const [imgDims, setImgDims] = useState(null);

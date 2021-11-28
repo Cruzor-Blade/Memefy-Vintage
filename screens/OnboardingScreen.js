@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Button, TouchableOpacity, Image } from 'react-native';
+import {View, Text, TouchableOpacity, Image } from 'react-native';
 
 import Onboarding from 'react-native-onboarding-swiper';
 import { windowWidth } from '../utils/Dimentions';

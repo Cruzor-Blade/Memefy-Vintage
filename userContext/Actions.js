@@ -6,10 +6,14 @@ export const ActionsContext = createContext();
 
 export const ActionProvider = ({children}) => {
     const [followLoading, setFollowLoading] = useState (false);
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
+    
     return (
         <ActionsContext.Provider
             value={{
                 followLoading,
+                isDarkTheme,
+                toggleTheme: () =>  setIsDarkTheme(!isDarkTheme),
                 onFollowUser: async (followerId, followedId) => {
                     const followedDoc = firestore().collection('users').doc(followedId);
                     const followerDoc = firestore().collection('users').doc(followerId);

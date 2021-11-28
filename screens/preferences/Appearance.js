@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import { View } from 'react-native';
 import { TouchableRipple, Switch, useTheme, Text } from 'react-native-paper';
 
-import { AuthContext } from '../../navigation/AuthProvider';
+import { ActionsContext } from '../../userContext/Actions';
 import { Divider } from '../../styles/FeedStyles';
 
 const Appearance = () => {
-    const { toggleTheme} = useContext(AuthContext);
+    const { toggleTheme } = useContext(ActionsContext);
     const paperTheme = useTheme();
 
     return (
