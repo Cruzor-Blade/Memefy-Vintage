@@ -76,7 +76,7 @@ const OnboardingScreen = ({navigation}) => {
                     backgroundColor: '#e9bcbe',
                     image: <Image source={require('../assets/onboarding/onboarding-3.png')} style={{width:windowWidth*0.95, height:windowWidth/2.17, resizeMode:'contain'}}/>,
                     title: "Soyez vous meme",
-                    subtitle: "Parce que MemeBit, c'est comme chez vous !",
+                    subtitle: "Partagez ce que vous pensez avec les gens qui vous ressemblent. Parce que MemeBit, c'est comme chez vous !",
 
                 }
             ]}

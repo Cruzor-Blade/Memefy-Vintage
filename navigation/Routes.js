@@ -11,6 +11,7 @@ import { Provider as PaperProvider,
 import auth from '@react-native-firebase/auth'
 import { AuthContext } from './AuthProvider';
 import { ActionsContext } from "../userContext/Actions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import AppTabs from "./AppTabs";
 import AuthStack from "./AuthStack";
@@ -18,7 +19,7 @@ import AuthStack from "./AuthStack";
 const Routes = () =>{
     
     const {user, setUser } = useContext(AuthContext);
-    const { isDarkTheme } = useContext(ActionsContext);
+    const { isDarkTheme, setIsDarkTheme } = useContext(ActionsContext);
     const [initializing, setInitializing] = useState(true);
     
     const CustomDefaultTheme = {
@@ -52,10 +53,19 @@ const Routes = () =>{
         if (initializing) setInitializing(false);
     }
 
-    useEffect(() =>{
+    
+
+    useEffect(async () =>{
+        await AsyncStorage.getItem('isDarkTheme').then(value => {
+            if (value == 'true') {   
+                setIsDarkTheme(true);
+            }
+        });
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
+
+    
 
     if (initializing) return null;
 

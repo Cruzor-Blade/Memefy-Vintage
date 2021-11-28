@@ -226,7 +226,7 @@ const HomeStack = ({navigation}) => {
         name="ProfileScreen"
         component={ProfileScreen}
         options={{
-          title:'Votre profil',
+          title:'Utilisateur',
           headerStyle:{
             elevation:0
           }

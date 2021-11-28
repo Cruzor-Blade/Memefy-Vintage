@@ -1,6 +1,7 @@
 import React, {createContext, useState} from 'react';
 
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ActionsContext = createContext();
 
@@ -13,7 +14,11 @@ export const ActionProvider = ({children}) => {
             value={{
                 followLoading,
                 isDarkTheme,
-                toggleTheme: () =>  setIsDarkTheme(!isDarkTheme),
+                setIsDarkTheme,
+                toggleTheme: () =>  {
+                        AsyncStorage.setItem('isDarkTheme', `${!isDarkTheme}`)
+                        setIsDarkTheme(!isDarkTheme);
+                },
                 onFollowUser: async (followerId, followedId) => {
                     const followedDoc = firestore().collection('users').doc(followedId);
                     const followerDoc = firestore().collection('users').doc(followerId);
