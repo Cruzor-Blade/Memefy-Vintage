@@ -25,9 +25,11 @@ import {
 
 import { AuthContext } from '../navigation/AuthProvider';
 import { windowWidth } from '../utils/Dimentions';
+import { LanguageContext } from '../languages/languageContext';
 
 const AddPostScreen = () => {
   const {user} = useContext(AuthContext);
+  const {postScreen} = useContext(LanguageContext);
 
   const [image, setImage] = useState(null);
   const [imgDims, setImgDims] = useState(null);
@@ -91,8 +93,8 @@ const AddPostScreen = () => {
     .then(() => {
       console.log('Post Added!');
       Alert.alert(
-        'Publication importée!',
-        'Votre post a été publié avec succès!',
+        postScreen.alertTitle,
+        postScreen.alertSubtitle,
       );
       setPost(null);
     })
@@ -163,7 +165,7 @@ const AddPostScreen = () => {
         /> : null}
 
         <InputField
-          placeholder="A quoi pensez vous ?"
+          placeholder={postScreen.postPlaceholder}
           multiline
           numberOfLines={4}
           value={post}
@@ -171,7 +173,7 @@ const AddPostScreen = () => {
         />
         {uploading ? (
           <StatusWrapper>
-            <Text>{transferred} % Transféré!</Text>
+            <Text>{transferred}{postScreen.transferred}</Text>
             <ActivityIndicator size="large" color="#0000ff" />
           </StatusWrapper>
         ) : (
@@ -180,20 +182,20 @@ const AddPostScreen = () => {
               submitPost();
             }
             }}>
-            <SubmitBtnText>Publier</SubmitBtnText>
+            <SubmitBtnText>{postScreen.submitButton}</SubmitBtnText>
           </SubmitBtn>
         )}
       </InputWrapper>
       <ActionButton buttonColor="#2e64e5">
         <ActionButton.Item
           buttonColor="#9b59b6"
-          title="Prendre une Photo"
+          title={postScreen.actionButtonTakePhoto}
           onPress={takePhotoFromCamera}>
           <Icon name="camera-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item>
         <ActionButton.Item
           buttonColor="#3498db"
-          title="Choisir une Photo"
+          title={postScreen.actionButtonChooseFromGallery}
           onPress={choosePhotoFromLibrary}>
           <Icon name="md-images-outline" style={styles.actionButtonIcon} />
         </ActionButton.Item>

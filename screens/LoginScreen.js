@@ -6,9 +6,11 @@ import FormButton from '../components/FormButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import { AuthContext } from '../navigation/AuthProvider';
+import { LanguageContext } from '../languages/languageContext';
 
 const LoginScreen = ({navigation}) => {
   const {login, loginLoading} = useContext(AuthContext);
+  const {loginScreen} = useContext(LanguageContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +40,7 @@ const LoginScreen = ({navigation}) => {
           <Text style={styles.text}>MemeBit</Text>
           <FormInput
             labelValue={email}
-            placeholder="Email"
+            placeholder={loginScreen.emailPlaceholder}
             iconType="user"
             keyboardType="email-address"
             autoCapitalize="none"
@@ -53,11 +55,11 @@ const LoginScreen = ({navigation}) => {
             onEndEditing={(e) => handleValidEmail(e.nativeEvent.text)}
           />
           {isValidEmail ? null : (
-                <Text style={styles.errorMsg}>l'addresse email entree est incorrecte</Text>
+                <Text style={styles.errorMsg}>{loginScreen.emailErrorMsg}</Text>
               )}
           <FormInput
             labelValue={password}
-            placeholder="Mot de passe"
+            placeholder={loginScreen.passwordPlaceholder}
             iconType="lock"
             secureTextEntry={true}
             onChangeText={(userPassword) => {
@@ -69,11 +71,11 @@ const LoginScreen = ({navigation}) => {
             onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
           />
           {isValidPassword ? null : (
-            <Text style={styles.errorMsg}>Le mot de passe doit avoir au moins 8 caracteres</Text>
+            <Text style={styles.errorMsg}>{loginScreen.passwordErrorMsg}</Text>
           )}
           {loginLoading && <ActivityIndicator size='small' style={{margin:3}}/>}
           <FormButton
-            buttonTitle="Se Connecter"
+            buttonTitle={loginScreen.signInButtonLabel}
             onPress={() => {
               handleValidEmail(email);
               handleValidPassword(password);
@@ -89,7 +91,7 @@ const LoginScreen = ({navigation}) => {
             onPress={() => navigation.navigate("Signup")}
           >
             <Text style={styles.navButtonText}>
-              Pas encore un compte? Creez en un...</Text>
+              {loginScreen.signUpTouchable}</Text>
           </TouchableOpacity>
         </View>
         )

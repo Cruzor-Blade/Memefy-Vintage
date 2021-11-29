@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from 'react-native-paper';
+import { LanguageContext } from "../languages/languageContext";
 
 const Preferences = ({navigation}) =>{
+  const {preferencesScreen} = useContext(LanguageContext);
     const OptionMenuModel = ({screen, text, ...props}) => (
       <TouchableOpacity onPress={() =>
         navigation.navigate(screen)}
-        style={{...props}}
         >
-        <View style={styles.PreferencesItems}>
+        <View style={[styles.PreferencesItems, {...props}]}>
           <Text style={styles.preferencesText}>
                       {text}
           </Text>
@@ -20,15 +21,16 @@ const Preferences = ({navigation}) =>{
         <View style={{marginTop:10}}>
             <OptionMenuModel
               screen="Appearance"
-              text="Apparence et personalisation"
+              style={{marginTop:30}}
+              text={preferencesScreen.appearanceLabel}
             />
           <OptionMenuModel
             screen="Suggestions"
-            text="Boite a suggestions"
+            text={preferencesScreen.suggestionsLabel}
           />
           <OptionMenuModel
             screen="About"
-            text="À propos"
+            text={preferencesScreen.aboutLabel}
           />
         </View>
     )
@@ -44,7 +46,8 @@ const styles = StyleSheet.create({
  
     PreferencesItems:{
       margin:20,
-      marginTop:10,
+      marginTop:25,
+      marginBottom:0,
       height:30,
       borderColor:'#888',
       borderBottomWidth:0.5,

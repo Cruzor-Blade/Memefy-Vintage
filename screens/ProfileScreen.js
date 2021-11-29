@@ -17,11 +17,14 @@ import { defaultProfilePicture } from '../utils/Defaults';
 
 import firestore from '@react-native-firebase/firestore';
 import PostCard from '../components/PostCard';
+import { LanguageContext } from '../languages/languageContext';
 
 
 
 const ProfileScreen = ({navigation, route}) => {
   const {user, logout} = useContext(AuthContext);
+  const {profileScreen} = useContext(LanguageContext);
+
   const {onFollowUser, onUnfollowUser} = useContext(ActionsContext);
   const currentTheme = useTheme();
   
@@ -207,10 +210,10 @@ const ProfileScreen = ({navigation, route}) => {
                     />
               </MaskedView>
             <Text style={styles.userName}>{userData ? userData.fname || 'No' : 'No'} {userData ? userData.lname || 'Name' : 'Name'}</Text>
-            <Text style={[styles.userName, {fontSize:16, marginTop:0, marginBottom:15}]}>@{userData && userData.username}</Text>
+            <Text style={[styles.userName, {fontSize:16, marginTop:0, marginBottom:15}]}>{userData && `@${userData.username}`}</Text>
             {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
             <Text style={styles.aboutUser}>
-            {userData ? userData.about || 'Aucun détail ajouté.' : ''}
+            {userData ? userData.about || profileScreen.defaultDescription : ''}
             </Text>
             <View style={styles.userBtnWrapper}>
               {route.params && route.params.userId != user.uid ? (
@@ -220,13 +223,13 @@ const ProfileScreen = ({navigation, route}) => {
                   </TouchableOpacity> */}
                   {following ? (
                   <TouchableOpacity style={styles.userBtn} onPress={() => onUnFollow()}>
-                    <Text style={styles.userBtnTxt}>se retirer</Text>
+                    <Text style={styles.userBtnTxt}>{profileScreen.unfollow}</Text>
                   </TouchableOpacity>
                   )
                     : 
                   (
                     <TouchableOpacity style={styles.userBtn} onPress={() => onFollow()}>
-                    <Text style={styles.userBtnTxt}>suivre</Text>
+                    <Text style={styles.userBtnTxt}>{profileScreen.follow}</Text>
                   </TouchableOpacity>  
                   )}
                 </>
@@ -237,10 +240,10 @@ const ProfileScreen = ({navigation, route}) => {
                     onPress={() => {
                       navigation.navigate('EditProfileScreen');
                     }}>
-                    <Text style={styles.userBtnTxt}>Éditer</Text>
+                    <Text style={styles.userBtnTxt}>{profileScreen.edit}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
-                    <Text style={styles.userBtnTxt}>Se déconnecter...</Text>
+                    <Text style={styles.userBtnTxt}>{profileScreen.logout}</Text>
                   </TouchableOpacity>
                 </>
               )}
@@ -249,21 +252,21 @@ const ProfileScreen = ({navigation, route}) => {
             <View style={styles.userInfoWrapper}>
               <View style={styles.userInfoItem}>
                 <Text style={styles.userInfoTitle}>{posts.length}</Text>
-                <Text style={styles.userInfoSubTitle}>Publications</Text>
+                <Text style={styles.userInfoSubTitle}>{profileScreen.publications}</Text>
               </View>
               <View style={styles.userInfoItem}>
                 {userData ? <Text style={styles.userInfoTitle}>{userData.followers}</Text> : <ActivityIndicator size="small" />}
-                <Text style={styles.userInfoSubTitle}>Abonnés</Text>
+                <Text style={styles.userInfoSubTitle}>{profileScreen.followers}</Text>
               </View>
               <View style={styles.userInfoItem}>
                 { userData ? <Text style={styles.userInfoTitle}>{userData.followings}</Text> : <ActivityIndicator size="small" />}
-                <Text style={styles.userInfoSubTitle}>Abonnements</Text>
+                <Text style={styles.userInfoSubTitle}>{profileScreen.followings}</Text>
               </View>
             </View>
           </View>
           )}
           ListEmptyComponent= {() => (
-          <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', margin:10}}>Cet utilisateur n'a aucune publication pour le moment.</Text>
+          <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', margin:10}}>{profileScreen.noPostsLabel}</Text>
           )}
           data={posts}
           keyExtractor={item => item.id}

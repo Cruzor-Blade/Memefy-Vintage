@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import {View, StyleSheet, Linking} from 'react-native';
 import FormButton from "../../components/FormButton";
 import { Text, useTheme } from 'react-native-paper';
+import { LanguageContext } from "../../languages/languageContext";
 
 
 const About = () =>{
+    const {aboutScreen} = useContext(LanguageContext);
     const contact = "+237651516229"
-    const message = "Salut la team. Je vous contacte à propos de votre application MemeBit et J'aimerai en apprendre un peu plus sur vous :)"
+    const message = aboutScreen.message
     return (
         // <View style={styles.container}>
         //     <View>
@@ -28,14 +30,16 @@ const About = () =>{
         // </View>
         <View style={[styles.textContainer, {backgroundColor: useTheme().dark ? '#555' : '#f8f8f8'}]}>
                 <Text style={styles.textDesc}>
-                Nous sommes un groupe de developpeurs :)
+                    {aboutScreen.introduction}
                 </Text>
                 <Text style={styles.textDesc}>
-                Nous aimons ce que nous faisons, et c'est pourquoi nous le faisons encore mieux. Contactez nous sur notre numero WhatsApp en pressant le bouton ci dessous
+                    {aboutScreen.conviction}
                 </Text>
-
+                <Text style={styles.textDesc}>
+                    {aboutScreen.contact}
+                </Text>
                 <FormButton
-                    buttonTitle="       Ecrire sur Whatsapp      "
+                    buttonTitle={aboutScreen.whatsAppButtonLabel}
                     onPress = {() => Linking.openURL(`whatsapp://send?phone=${contact}&text=${message}`)}
                 />
 
@@ -63,6 +67,6 @@ const styles= StyleSheet.create({
         borderRadius: 10,
     },
     textDesc: {
-        fontSize:16
+        fontSize:18
     }
 })

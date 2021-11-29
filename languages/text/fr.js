@@ -1,0 +1,132 @@
+export default
+{
+    onboardingScreen : {
+        nextLabel:"Suivant",
+        doneLabel:"TERMINÉ",
+        skipLabel:"Passer",
+        onboarding_1_Title:"Bienvenue sur MemeBit",
+        onboarding_2_Title:"Gardez le sourire...",
+        onboarding_3_Title:"Soyez vous meme",
+        onboarding_1_Subtitle:"L'application pour rire et partager des memes",
+        onboarding_2_Subtitle:"Riez et echangez sur des blagues tres drôles pour votre sourire quotidien",
+        onboarding_3_Subtitle:"Partagez ce que vous pensez avec les gens qui vous ressemblent. Parce que MemeBit, c'est Comme Chez Vous !",
+    },
+    loginScreen : {
+        emailPlaceholder:"Email",
+        passwordPlaceholder:"Mot de passe",
+        emailErrorMsg:"l'addresse email entrée est incorrecte",
+        passwordErrorMsg:"Le mot de passe doit avoir au moins 8 caractères",
+        signInButtonLabel:"Se Connecter",
+        signUpTouchable:"Pas encore un compte? Créez en un..."
+    },
+    signUpScreen : {
+        createAccountTitle:"Creez un Compte",
+        usernamePlaceholder:"Entrez un nom d'utilisateur",
+        emailPlaceholder:"Email",
+        passwordPlaceholder:"Mot de passe",
+        confirmPasswordPlaceholder:"Confirmez votre mot de passe",
+        usernameErrorMsg:"Le nom d'utilisateur doit avoir au moins 4 caractères",
+        emailErrorMsg:"L'addresse email entrée est incorrecte",
+        passwordErrorMsg:"Le mot de passe doit avoir au moins 8 caracteres",
+        confirmPasswordErrorMsg:"Les mots de passe des entrees ne correspondent pas",
+        signInButtonLabel:"Creez votre compte",
+        signInTouchable:"Deja un compte? Connectez vous..."
+    },
+    appTabs : {
+        postTabLabel : 'Publier',
+        findTabLabel :'Trouver',
+        homeTabLabel: 'Accueil',
+        profileTabLabel:'Profil',
+        preferencesTabLabel:'Préférences',
+        postHeaderLabel : 'Partager un meme',
+        findHeaderLabel :'Trouver un Utilisateur',
+        findHeaderProfile:'Utilisateur',
+        homeHeaderProfile:'Utilisateur',
+        homeCommentHeader:'Commentaires',
+        profileHeaderLabel:'Votre profil',
+        homeEditProfileScreen:'Editer votre profil',
+        preferencesHeaderLabel:'Préférences',
+        preferencesSuggestions:'Faire une Suggestion...',
+        preferencesAbout:'À propos de nous',
+    },
+    postScreen : {
+        postPlaceholder : "À quoi pensez vous ?",
+        submitButton : "Publier",
+        alertTitle : "Publication importée!",
+        alertSubtitle: "Votre post a été publié avec succès!",
+        transferred : "% Transféré!",
+        actionButtonTakePhoto : "Prendre une Photo",
+        actionButtonChooseFromGallery : "Choisir Une Photo",
+    },
+    findScreen : {
+        searchPlaceholder :"Recherchez un individu..."
+    },
+    postViewScreen : {
+        deleteAlertTitle : "Supprimer la publication",
+        deleteAlertSubtitle : "Voulez vous vraiment supprimer la publication ?",
+        deleteAlertCancel: "Annuler",
+        deleteAlertDone: "OK",
+        deleteAlertTitle : "Publication supprimée",
+        deleteAlertSubtitle : "Publication supprimée avec succès !",
+        internalStorageAccesDemandTitle : "Demande d'accès au stockage interne",
+        internalStorageAccesDemandSubtitle : "Vous devez accorder l'accès au stockage de votre appareil",
+        internatStorageAccessDenied : "Permission d'accès au stockage refusée",
+        dowloadSuccessAlert :"Image téléchargée avec succès",
+        dowloadFailAlert : "Impossible de télécharger pour le moment",
+        noCommentsTitle : "Cette publication n'a aucun commentaire pour le moment.",
+        noCommentsSubtitle : "Soyez la première personne à commenter ; )",
+    },
+    commentsScreen : {
+        textInputPlaceholder : "Envoyer un commentaire...",
+        noCommentsTitle : "Cette publication n'a aucun commentaire pour le moment.",
+        noCommentsSubtitle : "Soyez la première personne à commenter ; )",
+    },
+    profileScreen : {
+        defaultDescription: 'Aucun détail ajouté.',
+        follow:'Suivre',
+        unfollow:'Se retirer',
+        edit:'Éditer',
+        logout:'Se déconnecter',
+        publications:'Publications',
+        followers:'Abonnés',
+        followings:'Abonnements',
+        noPostsLabel:"Cet utilisateur n'a aucune publication pour le moment."
+    },
+    editProfileScreen : {
+        fnamePlaceholder : "Nom",
+        lnamePlaceholder : "Prénom",
+        aboutPlaceholder : "À propos de moi",
+        phonePlaceholder : "Téléphone",
+        countryPlaceholder : "Pays",
+        cityPlaceHolder : "Ville",
+        update : "Mettre à Jour",
+        bottomsheetMainTitle :"Uploader Une Photo",
+        bottomsheetSubtitle : "Choisissez une photo de profil",
+        takePhoto:"Prendre une Photo",
+        chooseGallery : "Choisir dans la gallerie",
+        cancel : "Cancel",
+        alertTitle : "Profil mis à jour",
+        alertSubTitle: "Votre profil a été mis a jour avec succès."
+    },
+    preferencesScreen : {
+        appearanceLabel : "Apparence et personalisation",
+        suggestionsLabel : "Boite a suggestions",
+        aboutLabel: "À propos",
+    },
+    aboutScreen : {
+        introduction: "Nous sommes une équipe de jeunes dévéloppeurs.",
+        conviction:"Nous aimons ce que nous faisons, et c'est pourquoi nous le faisons encore mieux.",
+        contact:"Contactez nous sur WhatsApp an pressant le bouton ci dessous",
+        message: "Salut la team. Je vous contacte à propos de votre application MemeBit et J'aimerai en apprendre un peu plus sur vous :)",
+        whatsAppButtonLabel:"       Ecrire sur Whatsapp      ",
+    },
+    appearanceScreen : {
+        darkThemeRipple:"Thème Sombre"
+    },
+    suggestionsScreen : {
+        message :"Salut a vous la team. J'ecris a propos votre application MemeBit ou j'aimerai apporter quelques suggestions coordialement.",
+        introduction : "Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'améliorer.",
+        contact:"Merci de nous envoyer une suggestion par email en cliquant sur le bouton ci dessous.",
+        suggestButtonLabel: "       Envoyer une suggestion      "
+    }
+}

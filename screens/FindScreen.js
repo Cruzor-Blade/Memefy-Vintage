@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet, TextInput, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
 import { Text, useTheme } from 'react-native-paper';
@@ -6,8 +6,10 @@ import { Text, useTheme } from 'react-native-paper';
 import firestore from '@react-native-firebase/firestore';
 import { defaultProfilePicture } from '../utils/Defaults';
 import { ProfileMask, UserImg, Divider } from '../styles/FeedStyles';
+import { LanguageContext } from '../languages/languageContext';
 
 const FindScreen = ({navigation}) => {
+  const {findScreen} = useContext(LanguageContext);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +38,7 @@ const FindScreen = ({navigation}) => {
       <TextInput
         autoCapitalize='none'
         style={styles.searchInput}
-        placeholder="Recherchez un individu..."
+        placeholder={findScreen.searchPlaceholder}
         onChangeText={(text) => {
           if (text == '') {
             setUsers([]);

@@ -6,8 +6,12 @@ import FormButton from '../components/FormButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../navigation/AuthProvider';
 import { windowWidth } from '../utils/Dimentions';
+import { LanguageContext } from '../languages/languageContext';
 
 const SignupScreen = ({navigation}) => {
+  const {register, registerLoading} = useContext(AuthContext);
+  const { signUpScreen } = useContext(LanguageContext);
+
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +22,6 @@ const SignupScreen = ({navigation}) => {
   const[isValidPassword, setIsValidPassword] = useState(true);
   const[matchingPasswords, setMatchingPasswords] = useState(true);
 
-  const {register, registerLoading} = useContext(AuthContext);
 
   
   const handleValidUser = (val) => {
@@ -56,10 +59,10 @@ const SignupScreen = ({navigation}) => {
   return(
         <View style={styles.container}>
           <ScrollView showsVerticalScrollIndicator={false} style={{ width:windowWidth-40, minHeight:200}}>
-            <Text style={styles.text}>Creez un compte</Text>  
+            <Text style={styles.text}>{signUpScreen.createAccountTitle}</Text>  
             <FormInput
               labelValue={username}
-              placeholder="Entrez un nom d'utilisateur"
+              placeholder={signUpScreen.usernamePlaceholder}
               iconType="user"
               autoCapitalize="none"
               autoCorrect={false}
@@ -72,11 +75,11 @@ const SignupScreen = ({navigation}) => {
               onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
             />
             {isValidUser ? null : (
-                <Text style={styles.errorMsg}>Le nom d'utilisateur doit avoir au moins 4 caracteres</Text>
+                <Text style={styles.errorMsg}>{signUpScreen.usernameErrorMsg}</Text>
               )}
             <FormInput
               labelValue={email}
-              placeholder="Email"
+              placeholder={signUpScreen.emailPlaceholder}
               iconType="mail"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -91,11 +94,11 @@ const SignupScreen = ({navigation}) => {
               onEndEditing={(e) => handleValidEmail(e.nativeEvent.text)}
             />
             {isValidEmail ? null : (
-                <Text style={styles.errorMsg}>L'addresse email entree est incorrecte</Text>
+                <Text style={styles.errorMsg}>{signUpScreen.emailErrorMsg}</Text>
               )}
             <FormInput
               labelValue={password}
-              placeholder="Mot de passe"
+              placeholder={signUpScreen.passwordPlaceholder}
               iconType="lock"
               secureTextEntry={true}
               onChangeText={(userPassword) => {
@@ -107,11 +110,11 @@ const SignupScreen = ({navigation}) => {
               onEndEditing={(e) => handleValidPassword(e.nativeEvent.text)}
               />
               {isValidPassword ? null : (
-                <Text style={styles.errorMsg}>Le mot de passe doit avoir au moins 8 caracteres</Text>
+                <Text style={styles.errorMsg}>{signUpScreen.passwordErrorMsg}</Text>
               )}
             <FormInput
               labelValue={confirmPassword}
-              placeholder="Confirmez votre mot de passe"
+              placeholder={signUpScreen.confirmPasswordPlaceholder}
               iconType="lock"
               secureTextEntry={true}
               onChangeText={(userConfirmPassword) => {
@@ -123,12 +126,12 @@ const SignupScreen = ({navigation}) => {
               onEndEditing={(e) => handleMatchingPasswords(e.nativeEvent.text)}
             />
             {matchingPasswords ? null : (
-                <Text style={styles.errorMsg}>Les mots de passe des entrees ne correspondent pas</Text>
+                <Text style={styles.errorMsg}>{signUpScreen.confirmPasswordErrorMsg}</Text>
               )}
             {registerLoading && <ActivityIndicator size='small' style={{margin:3}}/>}
           </ScrollView>
           <FormButton
-            buttonTitle="Creez votre compte"
+            buttonTitle={signUpScreen.signInButtonLabel}
             onPress={() => {
               handleValidUser(username);
               handleValidEmail(email);
@@ -148,7 +151,7 @@ const SignupScreen = ({navigation}) => {
           onPress={() => navigation.navigate("Login")}
           >
             <Text style={styles.navButtonText}>
-              Deja un compte? Connectez vous...</Text>
+              {signUpScreen.signInTouchable}</Text>
           </TouchableOpacity>
         </View>
         )

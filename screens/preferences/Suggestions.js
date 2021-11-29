@@ -1,24 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import {View, StyleSheet, Linking} from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import FormButton from "../../components/FormButton";
+import { LanguageContext } from "../../languages/languageContext";
 
 
 const Suggestions = () =>{
-    const message= "Salut a vous la team. J'ecris a propos votre application MemeBit ou j'aimerai apporter quelques suggestions coordialement."
+    const {suggestionsScreen} = useContext(LanguageContext);
+    const message= suggestionsScreen.message
 
     return(
             <View style={[styles.textContainer, {backgroundColor: useTheme().dark ? '#555' :'#f8f8f8'}]}>
                 <Text style={styles.textDesc}>
-                    Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'améliorer.
+                   {suggestionsScreen.introduction}
                 </Text>
                 <Text style={styles.textDesc}>
-                    Merci de nous envoyer une suggestion par email en cliquant sur le bouton ci dessous.
+                    {suggestionsScreen.contact}
                 </Text>
 
                 <FormButton
-                    buttonTitle="       Envoyer une suggestion      "
+                    buttonTitle={suggestionsScreen.suggestButtonLabel}
                     onPress = {() => Linking.openURL(`mailto:cruzorbladex@gmail.com?subject=Suggerer une modification&body=${message}`)}
                 />
 
@@ -46,6 +48,6 @@ const styles= StyleSheet.create({
         borderRadius: 10,
     },
     textDesc: {
-        fontSize:16
+        fontSize:18
     }
 })

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, StyleSheet } from 'react-native';
 
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import Feather from 'react-native-vector-icons/Feather';
 import { useTheme } from 'react-native-paper';
+import { LanguageContext } from '../languages/languageContext';
 
 import PostScreen from '../screens/PostScreen';
 import FindScreen from '../screens/FindScreen';
@@ -23,7 +24,10 @@ import PostViewScreen from '../screens/PostViewScreen';
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 
+
 const AppTabs = () => {
+  const { appTabs } = useContext(LanguageContext);
+  
   const currentTheme= useTheme();
   const getTabBarVisibility = (route) => {
     tabBarHiddenRoutes=['EditProfileScreen', 'Preferences'] ;
@@ -42,6 +46,320 @@ const AppTabs = () => {
     else if (!focused && currentTheme.dark) return "#666666";
     else if (!focused && !currentTheme.dark) return "#333333";
   }
+
+
+    
+  const PostStack = ({navigation}) => {
+    return (
+      <Stack.Navigator
+        initialRouteName="PostScreen"
+        screenOptions={{
+          headerTintColor: currentTheme.dark ? '#121212' : '#ffffff',
+        }}
+      >
+        <Stack.Screen
+          name="PostScreen"
+          component={PostScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('Home')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.postHeaderLabel
+          }}
+        />
+      </Stack.Navigator>
+    )
+  }
+
+    
+  const FindStack = ({navigation}) => {
+    return (
+      <Stack.Navigator initialRouteName="FindScreen">
+        <Stack.Screen
+          name="FindScreen"
+          component={FindScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('Home')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.findTabLabel
+          }}
+        />
+        <Stack.Screen
+          name="FindProfile"
+          component={ProfileScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('FindScreen')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.findHeaderProfile
+          }}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+        />
+      </Stack.Navigator>
+    )
+  }
+
+
+  const HomeStack = ({navigation}) => {
+    return (
+      <Stack.Navigator initialRouteName="HomeScreen">
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            headerLeft : () => (
+              <Image
+                source={require('../assets/maintab/memebit.png')}
+                style={{width:120, height:33, marginLeft:20, marginTop:7}}
+              />
+            ),
+            title:'',
+            headerStyle: {
+              elevation:0
+            }
+          }}
+        />
+        <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{
+            title:appTabs.homeHeaderProfile,
+            headerStyle:{
+              elevation:0
+            }
+          }}
+        />
+        <Stack.Screen
+          name="CommentsScreen"
+          component={CommentsScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('HomeScreen')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.homeCommentHeader,
+            headerStyle:{
+              elevation:0.8
+            }
+          }}
+        />
+        <Stack.Screen
+          name="PostViewScreen"
+          component={PostViewScreen}
+          options={{
+            headerShown: false,
+            tabBarVisible:false,
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('Home')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            )
+          }}
+        />
+      </Stack.Navigator>
+    )
+  }
+  
+
+  
+  const ProfileStack = ({navigation}) => {
+
+    return (
+      <Stack.Navigator initialRouteName="ProfileScreen">
+        <Stack.Screen
+          name="ProfileScreen"
+          component={ProfileScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('Home')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.profileHeaderLabel,
+            headerStyle:{
+              elevation:0.5
+            }
+          }}
+        />
+        <Stack.Screen
+          name="EditProfileScreen"
+          
+          component={EditProfileScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('ProfileScreen')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.homeEditProfileScreen,
+            headerStyle:{
+              elevation:0.5
+            }
+          }}
+        />
+        <Stack.Screen
+          name="CommentsScreen"
+          component={CommentsScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('ProfileScreen')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.homeCommentHeader,
+            headerStyle:{
+              elevation:0
+            }
+          }}
+        />
+        <Stack.Screen
+          name="PostViewScreen"
+          component={PostViewScreen}
+          options={{
+            headerShown: false,
+            tabBarVisible:false,
+          }}
+        />
+      </Stack.Navigator>
+    )
+  }
+
+  
+  const PreferencesStack = ({navigation}) => {
+
+    return (
+      <Stack.Navigator initialRouteName="PreferencesScreen">
+        <Stack.Screen
+          name="PreferencesScreen"
+          component={PreferencesScreen}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('Home')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.preferencesHeaderLabel,
+            headerStyle:{
+              elevation:0.5
+            }
+          }}
+        />
+        <Stack.Screen
+          name="Appearance"
+          
+          component={Appearance}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('PreferencesScreen')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:'Apparence',
+            headerStyle:{
+              elevation:0.5
+            }
+          }}
+        />
+        <Stack.Screen
+          name="Suggestions"
+          
+          component={Suggestions}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('PreferencesScreen')}
+              backgroundColor="#fff"
+              color="#222"
+              />
+            ),
+            title:appTabs.preferencesSuggestions,
+            headerStyle:{
+              elevation:0.5
+            }
+          }}
+        />
+        <Stack.Screen
+          name="Donate"
+          
+          component={Donate}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('PreferencesScreen')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            )
+          }}
+        />
+        <Stack.Screen
+          name="About"
+          
+          component={About}
+          options={{
+            headerLeft: () => (
+              <Feather.Button
+              name="arrow-left"
+              onPress={() => navigation.navigate('PreferencesScreen')}
+              backgroundColor="#fff"
+              color="#333"
+              />
+            ),
+            title:appTabs.preferencesAbout,
+            headerStyle:{
+              elevation:0.5
+            }
+          }}
+        />
+      </Stack.Navigator>
+    )
+  }
+
+
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -59,7 +377,7 @@ const AppTabs = () => {
         name='Post'
         component={PostStack}
         options={{
-          tabBarLabel: 'Publier',
+          tabBarLabel: appTabs.postTabLabel,
           tabBarIcon: ({focused}) => (
             <Image
               style={{tintColor: tabBarIconColor(focused) ,...styles.bottomIcons}}
@@ -74,7 +392,7 @@ const AppTabs = () => {
         name='Find'
         component={FindStack}
         options={{
-          tabBarLabel: 'Rechercher',
+          tabBarLabel: appTabs.findTabLabel,
           tabBarIcon: ({focused}) => (
           <Image
             style={{tintColor: tabBarIconColor(focused) ,...styles.bottomIcons}}
@@ -88,7 +406,7 @@ const AppTabs = () => {
         name='Home'
         component={HomeStack}
         options={{
-          tabBarLabel: 'Accueil',
+          tabBarLabel: appTabs.homeTabLabel,
           tabBarIcon: ({focused}) => (
           <Image
             style={{tintColor:  tabBarIconColor(focused) ,...styles.bottomIcons}}
@@ -103,7 +421,7 @@ const AppTabs = () => {
         component={ProfileStack}
         options={({route}) => ({
           tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: 'Profil',
+          tabBarLabel: appTabs.profileTabLabel,
           tabBarIcon: ({focused}) => (
             <Image
               style={{tintColor:  tabBarIconColor(focused) ,...styles.bottomIcons}}
@@ -117,7 +435,7 @@ const AppTabs = () => {
         name='Preferences'
         component={PreferencesStack}
         options={{
-          tabBarLabel: 'Preferences',
+          tabBarLabel: appTabs.preferencesTabLabel,
           tabBarIcon: ({focused}) => (
           <Image
             style={{tintColor: tabBarIconColor(focused) ,...styles.bottomIcons}}
@@ -130,315 +448,6 @@ const AppTabs = () => {
 
     </Tab.Navigator>
   );
-}
-
-const PostStack = ({navigation}) => {
-  const currentTheme = useTheme();
-  return (
-    <Stack.Navigator
-      initialRouteName="PostScreen"
-      screenOptions={{
-        headerTintColor: currentTheme.dark ? '#121212' : '#ffffff',
-        title: "Partager un meme"
-      }}
-    >
-      <Stack.Screen
-        name="PostScreen"
-        component={PostScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Partager un meme'
-        }}
-      />
-    </Stack.Navigator>
-  )
-}
-
-
-const FindStack = ({navigation}) => {
-  return (
-    <Stack.Navigator initialRouteName="FindScreen">
-      <Stack.Screen
-        name="FindScreen"
-        component={FindScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Rechercher...'
-        }}
-      />
-      <Stack.Screen
-        name="FindProfile"
-        component={ProfileScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('FindScreen')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Utilisateur'
-        }}
-      />
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-      />
-    </Stack.Navigator>
-  )
-}
-
-const HomeStack = ({navigation}) => {
-  return (
-    <Stack.Navigator initialRouteName="HomeScreen">
-      <Stack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          headerLeft : () => (
-            <Image
-              source={require('../assets/maintab/memebit.png')}
-              style={{width:120, height:33, marginLeft:20, marginTop:7}}
-            />
-          ),
-          title:'',
-          headerStyle: {
-            elevation:0
-          }
-        }}
-      />
-      <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{
-          title:'Utilisateur',
-          headerStyle:{
-            elevation:0
-          }
-        }}
-      />
-      <Stack.Screen
-        name="CommentsScreen"
-        component={CommentsScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('HomeScreen')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Commentaires',
-          headerStyle:{
-            elevation:0.8
-          }
-        }}
-      />
-      <Stack.Screen
-        name="PostViewScreen"
-        component={PostViewScreen}
-        options={{
-          headerShown: false,
-          tabBarVisible:false,
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          )
-        }}
-      />
-    </Stack.Navigator>
-  )
-}
-
-
-const ProfileStack = ({navigation, route}) => {
-
-  return (
-    <Stack.Navigator initialRouteName="ProfileScreen">
-      <Stack.Screen
-        name="ProfileScreen"
-        component={ProfileScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Votre profil',
-          headerStyle:{
-            elevation:0.5
-          }
-        }}
-      />
-      <Stack.Screen
-        name="EditProfileScreen"
-        
-        component={EditProfileScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('ProfileScreen')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Éditer votre profil',
-          headerStyle:{
-            elevation:0.5
-          }
-        }}
-      />
-      <Stack.Screen
-        name="CommentsScreen"
-        component={CommentsScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('ProfileScreen')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Commentaires',
-          headerStyle:{
-            elevation:0
-          }
-        }}
-      />
-      <Stack.Screen
-        name="PostViewScreen"
-        component={PostViewScreen}
-        options={{
-          headerShown: false,
-          tabBarVisible:false,
-        }}
-      />
-    </Stack.Navigator>
-  )
-}
-
-
-const PreferencesStack = ({navigation, route}) => {
-
-  return (
-    <Stack.Navigator initialRouteName="PreferencesScreen">
-      <Stack.Screen
-        name="PreferencesScreen"
-        component={PreferencesScreen}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('Home')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Préferences',
-          headerStyle:{
-            elevation:0.5
-          }
-        }}
-      />
-      <Stack.Screen
-        name="Appearance"
-        
-        component={Appearance}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('PreferencesScreen')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'Apparence',
-          headerStyle:{
-            elevation:0.5
-          }
-        }}
-      />
-      <Stack.Screen
-        name="Suggestions"
-        
-        component={Suggestions}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('PreferencesScreen')}
-            backgroundColor="#fff"
-            color="#222"
-            />
-          ),
-          title:'Suggestions',
-          headerStyle:{
-            elevation:0.5
-          }
-        }}
-      />
-      <Stack.Screen
-        name="Donate"
-        
-        component={Donate}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('PreferencesScreen')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          )
-        }}
-      />
-      <Stack.Screen
-        name="About"
-        
-        component={About}
-        options={{
-          headerLeft: () => (
-            <Feather.Button
-            name="arrow-left"
-            onPress={() => navigation.navigate('PreferencesScreen')}
-            backgroundColor="#fff"
-            color="#333"
-            />
-          ),
-          title:'À propos de nous',
-          headerStyle:{
-            elevation:0.5
-          }
-        }}
-      />
-    </Stack.Navigator>
-  )
 }
 
 

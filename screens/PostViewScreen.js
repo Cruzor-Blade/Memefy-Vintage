@@ -23,9 +23,11 @@ import { defaultProfilePicture } from '../utils/Defaults';
 import moment from 'moment';
 import { AuthContext } from "../navigation/AuthProvider";
 import RNFetchBlob from "rn-fetch-blob";
+import { LanguageContext } from "../languages/languageContext";
 
 const PostViewScreen = ({route, navigation}) => {
-    const { user } = useContext(AuthContext);
+    const {user} = useContext(AuthContext);
+    const {postViewScreen} = useContext(LanguageContext);
 
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
@@ -122,16 +124,16 @@ const PostViewScreen = ({route, navigation}) => {
 
     const handleDelete = (postId) => {
         Alert.alert(
-          'Delete Post',
-          'Are You Sure?',
+          postViewScreen.deleteAlertTitle,
+          postViewScreen.deleteAlertSubtitle,
           [
             {
-              text:'Annuler',
+              text:postViewScreen.deleteAlertCancel,
               onPress: () => console.log('Cancel pressed !'),
               style:'cancel'
             },
             {
-              text:'Confirmer',
+              text:postViewScreen.deleteAlertDone,
               onPress: () => deletePost(postId),
               style:'cancel'
             }
@@ -181,8 +183,8 @@ const PostViewScreen = ({route, navigation}) => {
           .delete()
           .then(() => {
             Alert.alert(
-              'Publication supprimée',
-              'Votre publication a été suprimée avec succès !',
+              postViewScreen.deleteAlertTitle,
+              postViewScreen.deleteAlertSubtitle,
             );
 
           })
@@ -198,15 +200,15 @@ const PostViewScreen = ({route, navigation}) => {
             const granted = await PermissionsAndroid.request(
               PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
               {
-                title:`Demande d'accès au stockage interne`,
-                message:`Vous devez accorder l'accès au stockage de votre appareil`
+                title:postViewScreen.internalStorageAccesDemandTitle,
+                message:postViewScreen.internalStorageAccesDemandSubtitle
               }
             )
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
               console.log('Storage Permission Granted');
               downloadImage();
             } else {
-              alert(`Permission d'accès au stockage refusée`);
+              alert(postViewScreen.internatStorageAccessDenied);
             }
           } catch (error) {
             console.warn(error);
@@ -241,9 +243,9 @@ const PostViewScreen = ({route, navigation}) => {
           //Showing alert for successful download
           let status = res.info().status;
           if (status == 200) {
-            alert('Image téléchargée avec succès')
+            alert(postViewScreen.dowloadSuccessAlert)
           } else {
-            alert('Impossible de télécharger pour le moment')
+            alert(postViewScreen.dowloadFailAlert)
             console.log('Response error: ', JSON.stringify(res))
           }
         })
@@ -328,8 +330,12 @@ const PostViewScreen = ({route, navigation}) => {
                       )}
                       ListEmptyComponent= {() => (
                         <>
-                            <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:20}}>Cette publication n'a aucun commentaire pour le moment.</Text>
-                            <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold'}}>Soyez la première personne à commenter ; )</Text>
+                            <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:20}}>
+                              {postViewScreen.noCommentsTitle}
+                            </Text>
+                            <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold'}}>
+                              {postViewScreen.noCommentsSubtitle}
+                            </Text>
                         
                         </>
                         )}

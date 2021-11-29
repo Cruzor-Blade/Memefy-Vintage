@@ -1,53 +1,61 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {View, Text, TouchableOpacity, Image } from 'react-native';
 
 import Onboarding from 'react-native-onboarding-swiper';
 import { windowWidth } from '../utils/Dimentions';
+import { LanguageContext } from '../languages/languageContext';
 
 
-const Skip = ({...props}) =>{
-    return(
-        <TouchableOpacity
-            style={{marginHorizontal:10}}
-            {...props}
-        >
-            <Text style={{fontSize:16}}>Passer</Text>
-        </TouchableOpacity>
-    )
-}
 
-const Next = ({...props}) =>{
-    return(
-        <TouchableOpacity
-            style={{marginHorizontal:10}}
-            {...props}
-        >
-            <Text style={{fontSize:16}}>Suivant</Text>
-        </TouchableOpacity>
-    )
-}
 
-const Done = ({...props}) =>{
-    return(
-        <TouchableOpacity
-            style={{marginHorizontal:10}}
-            {...props}
-        >
-            <Text style={{fontSize:16}}>TERMINE</Text>
-        </TouchableOpacity>
-    )
-}
-
-const Dot = ({selected}) =>{
-    let backgroundColor= selected ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.3)' ;
-    return(
-        <View
-            style={{width:5, height:5, marginHorizontal:3, backgroundColor}}
-        />
-    )
-}
 
 const OnboardingScreen = ({navigation}) => {
+    const {onboardingScreen} = useContext(LanguageContext);
+
+    const Skip = ({...props}) =>{
+        return(
+            <TouchableOpacity
+                style={{marginHorizontal:10}}
+                {...props}
+            >
+                <Text style={{fontSize:16}}>{onboardingScreen.skipLabel}</Text>
+            </TouchableOpacity>
+        )
+    }    
+
+    const Next = ({...props}) =>{
+        return(
+            <TouchableOpacity
+                style={{marginHorizontal:10}}
+                {...props}
+            >
+                <Text style={{fontSize:16}}>{onboardingScreen.nextLabel}</Text>
+            </TouchableOpacity>
+        )
+    }
+
+    const Done = ({...props}) =>{
+        return(
+            <TouchableOpacity
+                style={{marginHorizontal:10}}
+                {...props}
+            >
+                <Text style={{fontSize:16}}>{onboardingScreen.doneLabel}</Text>
+            </TouchableOpacity>
+        )
+    }
+    
+    const Dot = ({selected}) =>{
+        let backgroundColor= selected ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.3)' ;
+        return(
+            <View
+                style={{width:5, height:5, marginHorizontal:3, backgroundColor}}
+            />
+        )
+    }
+
+
+
     return(
         <Onboarding
             allowFontScaling={false}
@@ -61,22 +69,22 @@ const OnboardingScreen = ({navigation}) => {
                 {
                     backgroundColor: '#a6e4d0',
                     image: <Image source={require('../assets/onboarding/onboarding-1.png')}/>,
-                    title:"Bienvenue sur MemeBit",
-                    subtitle:"L'application pour rire et partager des memes"
+                    title:onboardingScreen.onboarding_1_Title,
+                    subtitle:onboardingScreen.onboarding_1_Subtitle
 
                 },
                 {
                     backgroundColor: '#fdeb93',
                     image: <Image source={require('../assets/onboarding/onboarding-2.png')} style={{width:windowWidth, height:windowWidth/1.2853, resizeMode:'contain'}}/>,
-                    title: "Gardez le sourire...",
-                    subtitle: "Riez et echangez sur des blagues tres drôles pour votre sourire quotidien",
+                    title: onboardingScreen.onboarding_2_Title,
+                    subtitle: onboardingScreen.onboarding_2_Subtitle,
 
                 },
                 {
                     backgroundColor: '#e9bcbe',
                     image: <Image source={require('../assets/onboarding/onboarding-3.png')} style={{width:windowWidth*0.95, height:windowWidth/2.17, resizeMode:'contain'}}/>,
-                    title: "Soyez vous meme",
-                    subtitle: "Partagez ce que vous pensez avec les gens qui vous ressemblent. Parce que MemeBit, c'est comme chez vous !",
+                    title: onboardingScreen.onboarding_3_Title,
+                    subtitle: onboardingScreen.onboarding_3_Subtitle,
 
                 }
             ]}

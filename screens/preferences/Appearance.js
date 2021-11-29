@@ -4,16 +4,19 @@ import { TouchableRipple, Switch, useTheme, Text } from 'react-native-paper';
 
 import { ActionsContext } from '../../userContext/Actions';
 import { Divider } from '../../styles/FeedStyles';
+import { LanguageContext } from '../../languages/languageContext';
 
 const Appearance = () => {
     const { toggleTheme } = useContext(ActionsContext);
+    const {appearanceScreen} = useContext(LanguageContext);
+    console.log(appearanceScreen)
     const paperTheme = useTheme();
 
     return (
         <View>
             <TouchableRipple onPress={() => toggleTheme()}>
                 <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', padding:15}}>
-                    <Text style={{fontSize:16}}>Thème Sombre</Text>
+                    <Text style={{fontSize:16}}>{appearanceScreen.darkThemeRipple}</Text>
                     <View pointerEvents="none">
                         <Switch value={paperTheme.dark}/>
                     </View>

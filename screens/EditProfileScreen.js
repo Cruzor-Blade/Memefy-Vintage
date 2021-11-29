@@ -26,9 +26,12 @@ import {AuthContext} from '../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { defaultProfilePicture } from '../utils/Defaults';
+import { LanguageContext } from '../languages/languageContext';
 
 const EditProfileScreen = () => {
   const {user} = useContext(AuthContext);
+  const { editProfileScreen } = useContext(LanguageContext);
+
   const currentTheme = useTheme();
   const color = currentTheme.dark ? '#aaaaaa' : '#333333'
 
@@ -72,8 +75,8 @@ const EditProfileScreen = () => {
     .then(() => {
       console.log('User Updated!');
       Alert.alert(
-        'Profil mis à jour',
-        'Votre profil a été mis a jour avec succès.'
+        editProfileScreen.alertTitle,
+        editProfileScreen.alertSubtitle
       );
     })
   }
@@ -138,7 +141,7 @@ const EditProfileScreen = () => {
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 300,
       cropping: true,
-      compressImageQuality: 0.7,
+      compressImageQuality: 0.8,
     }).then((image) => {
       console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
@@ -152,7 +155,7 @@ const EditProfileScreen = () => {
       width: 300,
       height: 300,
       cropping: true,
-      compressImageQuality: 0.7,
+      compressImageQuality: 0.8,
     }).then((image) => {
       console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
@@ -164,23 +167,23 @@ const EditProfileScreen = () => {
   renderInner = () => (
     <View style={[styles.panel, {backgroundColor: currentTheme.dark ? '#555555' : '#ffffff'}]}>
       <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Uploader Une Photo</Text>
-        <Text style={styles.panelSubtitle}>Choisissez une photo de profil</Text>
+        <Text style={styles.panelTitle}>{editProfileScreen.bottomsheetMainTitle}</Text>
+        <Text style={styles.panelSubtitle}>{editProfileScreen.bottomsheetSubtitle}</Text>
       </View>
       <TouchableOpacity
         style={styles.panelButton}
         onPress={takePhotoFromCamera}>
-        <Text style={styles.panelButtonTitle}>Prendre une Photo</Text>
+        <Text style={styles.panelButtonTitle}>{editProfileScreen.takePhoto}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
         onPress={choosePhotoFromLibrary}>
-        <Text style={styles.panelButtonTitle}>Choisir dans la Gallerie</Text>
+        <Text style={styles.panelButtonTitle}>{editProfileScreen.chooseGallery}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
         onPress={() => this.bs.current.snapTo(1)}>
-        <Text style={styles.panelButtonTitle}>Annuler</Text>
+        <Text style={styles.panelButtonTitle}>{editProfileScreen.cancel}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -261,7 +264,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <FontAwesome name="user-o" color={color} size={20} />
               <TextInput
-                  placeholder="Nom"
+                  placeholder={editProfileScreen.fnamePlaceholder}
                   placeholderTextColor={color}
                   autoCorrect={false}
                   value={userData ? userData.fname : ''}
@@ -272,7 +275,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <FontAwesome name="user-o" color={color} size={20} />
               <TextInput
-                  placeholder="Prénom"
+                  placeholder={editProfileScreen.lnamePlaceholder}
                   placeholderTextColor={color}
                   value={userData ? userData.lname : ''}
                   onChangeText={(txt) => setUserData({...userData, lname: txt})}
@@ -285,7 +288,7 @@ const EditProfileScreen = () => {
               <TextInput
                   multiline
                   numberOfLines={3}
-                  placeholder="À propos de moi"
+                  placeholder={editProfileScreen.aboutPlaceholder}
                   placeholderTextColor={color}
                   value={userData ? userData.about : ''}
                   onChangeText={(txt) => setUserData({...userData, about: txt})}
@@ -296,7 +299,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <Feather name="phone" color={color} size={20} />
               <TextInput
-                  placeholder="Téléphone"
+                  placeholder={editProfileScreen.phonePlaceholder}
                   placeholderTextColor={color}
                   keyboardType="number-pad"
                   autoCorrect={false}
@@ -309,7 +312,7 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <FontAwesome name="globe" color={color} size={20} />
               <TextInput
-                  placeholder="Pays"
+                  placeholder={editProfileScreen.countryPlaceholder}
                   placeholderTextColor={color}
                   autoCorrect={false}
                   value={userData ? userData.country : ''}
@@ -324,7 +327,7 @@ const EditProfileScreen = () => {
                   size={20}
               />
               <TextInput
-                  placeholder="Ville"
+                  placeholder={editProfileScreen.countryPlaceholder}
                   placeholderTextColor={color}
                   autoCorrect={false}
                   value={userData ? userData.city : ''}
@@ -332,7 +335,7 @@ const EditProfileScreen = () => {
                   style={styles.textInput}
               />
             </View>
-            <FormButton buttonTitle="Mettre à jour" onPress={handleUpdate} />
+            <FormButton buttonTitle={editProfileScreen.update} onPress={handleUpdate} />
             {uploading && <ActivityIndicator size="28" style={{marginHorizontal:'auto', marginVertical:4}} />}
         </ScrollView>
       </Animated.View>

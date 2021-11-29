@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth'
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -12,8 +12,11 @@ import { Text,
     TouchableOpacity,
     ActivityIndicator
     } from "react-native";
+import { LanguageContext } from "../languages/languageContext";
 
 const CommentsScreen = ({route}) => {
+    const {commentsScreen} = useContext(LanguageContext);
+
     const [comments, setComments] = useState([]);
     const [postId, setPostId] = useState("");
     const [commentText, setCommentText] = useState("");
@@ -112,8 +115,8 @@ const CommentsScreen = ({route}) => {
                 )}
                 ListEmptyComponent= {() => (
                     <>
-                        <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:300, color:'#111'}}>Cette publication n'a aucun commentaire pour le moment.</Text>
-                        <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold', color:'#111'}}>Soyez la première personne à commenter ; )</Text>
+                        <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:300, color:'#111'}}>{commentsScreen.noCommentsTitle}</Text>
+                        <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold', color:'#111'}}>{commentsScreen.noCommentsSubtitle}</Text>
                     
                     </>
                     )}
