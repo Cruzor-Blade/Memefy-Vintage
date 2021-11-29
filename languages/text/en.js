@@ -131,4 +131,15 @@ export default
         contact:"Thank you of giving us some suggestions by pressing on the button under.",
         suggestButtonLabel: "       Send a suggestion      "
     },
+    authProvider:{
+        networkUnavailable:"Unable to connect or network unavailable.",
+        tooManyRequests:"Too much requests. Please try again later",
+        wrongPassword:"The password provided is not correct",
+        userDisabled:"Your account has been disabled.",
+        userNotFound:"There are no existing accounts with this email address",
+        alreadyTakenUsername:"This username has already been taken",
+        alreadyRegisteredEmail:"This email address already registered an account. Connect rather.",
+        invalidEmail:"The email address provided is invalid.",
+        unAuthorizedConnexion:"You are not authorized to log into your account.",
+    }
 }

@@ -130,5 +130,16 @@ export default
         introduction : "Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'améliorer.",
         contact:"Merci de nous envoyer une suggestion par email en cliquant sur le bouton ci dessous.",
         suggestButtonLabel: "       Envoyer une suggestion      "
+    },
+    authProvider:{
+        networkUnavailable:"Probleme de connexion ou impossible de se connecter",
+        tooManyRequests:"Trop de tentatives de connexion. Veuillez reessayer plus tard",
+        wrongPassword:"Le mot de passe saisi est incorrect",
+        userDisabled:"Votre compte a ete désactivé",
+        userNotFound:"Aucun compte n'est enregistré avec cette addresse email",
+        alreadyTakenUsername:"Ce nom d'utilisateur est déja pris",
+        alreadyRegisteredEmail:"Cette addresse email deja enregistrée. Connectez vous plutot.",
+        invalidEmail:"L'addresse email entrée n'est pas valide.",
+        unAuthorizedConnexion:"Vous n'êtes pas autorisé a vous connecter à votre compte",
     }
 }

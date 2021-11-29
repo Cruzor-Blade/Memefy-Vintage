@@ -33,6 +33,7 @@ export const LanguageProvider = ({children}) => {
     
     return (
         <LanguageContext.Provider value={{
+            selectedLanguage,
             switchLanguage : (language) => {
                 AsyncStorage.setItem('currentLanguage', language);
                 setSelectedLanguage(language);
@@ -51,6 +52,7 @@ export const LanguageProvider = ({children}) => {
             aboutScreen: LanguageObject[selectedLanguage].aboutScreen,
             appearanceScreen: LanguageObject[selectedLanguage].appearanceScreen,
             suggestionsScreen: LanguageObject[selectedLanguage].suggestionsScreen,
+            authProvider:LanguageObject[selectedLanguage].authProvider,
         }}>
             {children}
         </LanguageContext.Provider>
