@@ -15,6 +15,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import AppTabs from "./AppTabs";
 import AuthStack from "./AuthStack";
+import InitializingScreen from "../screens/InitializingScreen";
 
 const Routes = () =>{
     
@@ -48,13 +49,14 @@ const Routes = () =>{
 
     const theme = isDarkTheme ? CustomDarkTheme : CustomDefaultTheme;
 
+    
     const onAuthStateChanged = (user) => {
         setUser(user);
         if (initializing) setInitializing(false);
     }
-
     
-
+    
+    
     useEffect(async () =>{
         await AsyncStorage.getItem('isDarkTheme').then(value => {
             if (value == 'true') {   
@@ -64,10 +66,8 @@ const Routes = () =>{
         const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
         return subscriber;
     }, []);
-
     
-
-    if (initializing) return null;
+    if (initializing) return <PaperProvider theme={theme}><InitializingScreen/></PaperProvider>;
 
     return(
         <PaperProvider theme={theme}>
