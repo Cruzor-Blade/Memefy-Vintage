@@ -121,7 +121,9 @@ export default
         whatsAppButtonLabel:"       Write on Whatsapp      ",
     },
     appearanceScreen : {
-        darkThemeRipple:"Dark Theme"
+        darkThemeRipple:"Dark Theme",
+        switchLanguage:"Change the app language",
+        changeLanguageModalTitle:"Change the language",
     },
     suggestionsScreen : {
         message :"Hello MemeBit team. I contact you about your application where i wanted to give some suggestions...",

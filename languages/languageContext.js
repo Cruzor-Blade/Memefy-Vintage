@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useState, useEffect } from 'react';
 import * as RNLocalize from 'react-native-localize';
 import en from './text/en';
@@ -13,19 +14,29 @@ const LanguageObject = {
 export const LanguageProvider = ({children}) => {
     const [selectedLanguage, setSelectedLanguage] = useState('en')
 
-    useEffect(() => {
-        const currentLanguage = RNLocalize.findBestAvailableLanguage(
-            Object.keys(LanguageObject)
-        );
+    useEffect(async () => {
+        let currentLanguage;
+        await AsyncStorage.getItem('currentLanguage').then(value => {
+            if (value) {
+                currentLanguage = value;
+            } else {
+                currentLanguage = RNLocalize.findBestAvailableLanguage(
+                    Object.keys(LanguageObject)
+                );
+            }
+        })
 
-        setSelectedLanguage(currentLanguage?.languageTag || 'en')
+        setSelectedLanguage(currentLanguage? currentLanguage : 'en')
     }, [])
 
 
     
     return (
         <LanguageContext.Provider value={{
-            setSelectedLanguage,
+            switchLanguage : (language) => {
+                AsyncStorage.setItem('currentLanguage', language);
+                setSelectedLanguage(language);
+            },
             onboardingScreen: LanguageObject[selectedLanguage].onboardingScreen,
             loginScreen: LanguageObject[selectedLanguage].loginScreen,
             signUpScreen: LanguageObject[selectedLanguage].signUpScreen,
