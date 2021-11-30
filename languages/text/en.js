@@ -50,7 +50,8 @@ export default
         preferencesAbout:'About Us',
     },
     findScreen : {
-        searchPlaceholder :"Find Somebody..."
+        searchPlaceholder :"Find Somebody...",
+        noUsersTitle:"Look like there are no usernames corresponding to your search",
     },
     commentsScreen : {
         textInputPlaceholder : "Send a comment...",

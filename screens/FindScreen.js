@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, StyleSheet, TextInput, FlatList, TouchableOpacity, ActivityIndicator} from 'react-native';
+import { View, StyleSheet, TextInput, FlatList, TouchableOpacity, ActivityIndicator, Image} from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
 import { Text, useTheme } from 'react-native-paper';
 
@@ -10,8 +10,11 @@ import { LanguageContext } from '../languages/languageContext';
 
 const FindScreen = ({navigation}) => {
   const {findScreen} = useContext(LanguageContext);
+  const [searchValue, setSearchValue] = useState("")
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const currentTheme = useTheme();
 
   const fetchUsers = (search) => {
     setLoading(true);
@@ -37,13 +40,15 @@ const FindScreen = ({navigation}) => {
     <View>
       <TextInput
         autoCapitalize='none'
-        style={styles.searchInput}
+        style={[styles.searchInput, {color: currentTheme.dark ? "#fff" :"333"}]}
         placeholder={findScreen.searchPlaceholder}
         onChangeText={(text) => {
-          if (text == '') {
-            setUsers([]);
-          } else {
-            fetchUsers(text)}
+            setSearchValue(text);
+            if (text == '') {
+              setUsers([]);
+            } else {
+              fetchUsers(text)
+            }
           }
         }
         placeholderTextColor={useTheme().dark ? "#cdcdcd" : "#333"}
@@ -75,6 +80,20 @@ const FindScreen = ({navigation}) => {
               <Divider style={{width:'85%', marginTop:5}}/>
           </TouchableOpacity>
         )}
+        ListEmptyComponent= {() => searchValue && !loading ? (
+          <>
+              <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:20, fontWeight:"bold"}}>
+                {findScreen.noUsersTitle}
+              </Text>
+              <Image
+                source={require("../assets/maintab/not-found.png")}
+                style={{alignSelf:'center', height:160, width:160, tintColor:"#666666"}}
+                />
+              {/* <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold'}}>
+                {findScreen.noUsersSubtitle}
+              </Text> */}
+          </>
+          ) : null}
       />
     </View>
   )

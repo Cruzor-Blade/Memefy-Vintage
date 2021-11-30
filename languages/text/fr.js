@@ -59,7 +59,8 @@ export default
         actionButtonChooseFromGallery : "Choisir Une Photo",
     },
     findScreen : {
-        searchPlaceholder :"Recherchez un individu..."
+        searchPlaceholder :"Recherchez un individu...",
+        noUsersTitle:"Il semblerait qu'aucun utilisateur ne correspond à votre recherche"
     },
     postViewScreen : {
         deleteAlertTitle : "Supprimer la publication",

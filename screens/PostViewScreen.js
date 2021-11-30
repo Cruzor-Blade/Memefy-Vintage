@@ -5,7 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import storage from '@react-native-firebase/storage';
 import MaskedView from '@react-native-community/masked-view';
 
-import { Text,
+import {
     View,
     StyleSheet,
     ImageBackground,
@@ -17,7 +17,7 @@ import { Text,
     Platform,
     Animated
     } from "react-native";
-import { useTheme } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 import { PostTime, ProfileMask, UserImg, UserInfo, UserInfoText, UserName } from "../styles/FeedStyles";
 
 import { defaultProfilePicture } from '../utils/Defaults';

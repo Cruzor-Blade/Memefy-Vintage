@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth'
 import Entypo from 'react-native-vector-icons/Entypo';
-import { useTheme } from "react-native-paper";
+import { useTheme, Text } from "react-native-paper";
 
-import { Text,
+import {
     View,
     StyleSheet,
     FlatList,
@@ -125,8 +125,8 @@ const CommentsScreen = ({route}) => {
                 )}
                 ListEmptyComponent= {() => (
                     <>
-                        <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:300, color:'#111'}}>{commentsScreen.noCommentsTitle}</Text>
-                        <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold', color:'#111'}}>{commentsScreen.noCommentsSubtitle}</Text>
+                        <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:300}}>{commentsScreen.noCommentsTitle}</Text>
+                        <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold'}}>{commentsScreen.noCommentsSubtitle}</Text>
                     
                     </>
                     )}
