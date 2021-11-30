@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity} from 'react-native';
-import { TouchableRipple, Switch, useTheme, Text, Modal } from 'react-native-paper';
+import { StyleSheet, View} from 'react-native';
+import { TouchableRipple, Switch, useTheme, Text} from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 
 import { ActionsContext } from '../../userContext/Actions';
@@ -12,7 +12,7 @@ const Appearance = () => {
     const [selectedLanguage, setSelectedLanguage] = useState(null);
     const { toggleTheme } = useContext(ActionsContext);
     const {appearanceScreen, switchLanguage} = useContext(LanguageContext);
-    const paperTheme = useTheme();
+    const currentTheme = useTheme();
     
     const changeLanguage = (value) => {
         switchLanguage(value);
@@ -36,12 +36,13 @@ const Appearance = () => {
                     <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', padding:15}}>
                         <Text style={{fontSize:16}}>{appearanceScreen.darkThemeRipple}</Text>
                         <View pointerEvents="none">
-                            <Switch value={paperTheme.dark}/>
+                            <Switch value={currentTheme.dark}/>
                         </View>
                     </View>
                 </TouchableRipple>
                 <Divider style={{marginTop:0}} />
                 <Picker
+                    style={{color:currentTheme.dark? "#dddddd" : "#333333"}}
                     selectedValue={selectedLanguage}
                     prompt={appearanceScreen.changeLanguageModalTitle}
                     onValueChange={(itemValue, itemIndex) => changeLanguage(itemValue)}

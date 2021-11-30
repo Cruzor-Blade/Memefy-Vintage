@@ -67,8 +67,8 @@ const SignupScreen = ({navigation}) => {
               autoCapitalize="none"
               autoCorrect={false}
               onChangeText={(username) => {
-                  setUsername(username.split(" ").join("").toLowerCase())
-                  if(username.split(" ").join("").length >=4 && !isValidUser) {
+                  setUsername(username.split(/[\[\] ~@#^&:;,.|{=}]/).join("").toLowerCase())
+                  if(username.split(/[ ~@#^&:;|{=}]/).join("").length >=4 && !isValidUser) {
                     setIsValidUser(true);
                   }
                 }}
@@ -86,7 +86,7 @@ const SignupScreen = ({navigation}) => {
               autoCorrect={false}
               autoComplete={"email"}
               onChangeText={(userEmail) => {
-                setEmail(userEmail.split(" ").join(""))
+                setEmail(userEmail.split(/[ \[\]~^:;|{=}]/).join(""))
                 if (userEmail.split(" ").join("").length >= 4 && userEmail.includes("@", ".") && !isValidEmail) {
                   setIsValidEmail(true);
                 }
