@@ -6,29 +6,11 @@ import { Picker } from '@react-native-picker/picker';
 import { ActionsContext } from '../../userContext/Actions';
 import { Divider } from '../../styles/FeedStyles';
 import { LanguageContext } from '../../languages/languageContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Appearance = () => {
-    const [selectedLanguage, setSelectedLanguage] = useState(null);
     const { toggleTheme } = useContext(ActionsContext);
-    const {appearanceScreen, switchLanguage} = useContext(LanguageContext);
+    const {appearanceScreen, switchLanguage, selectedLanguage} = useContext(LanguageContext);
     const currentTheme = useTheme();
-    
-    const changeLanguage = (value) => {
-        switchLanguage(value);
-        setSelectedLanguage(value);
-    }
-
-
-    useEffect(() => {
-        AsyncStorage.getItem('currentLanguage').then(value => {
-            if (value) {
-                setSelectedLanguage(value);
-            } else {
-                setSelectedLanguage('en')
-            }
-        })
-    })
 
     return (
             <View style={styles.container}>
@@ -45,7 +27,7 @@ const Appearance = () => {
                     style={{color:currentTheme.dark? "#dddddd" : "#333333"}}
                     selectedValue={selectedLanguage}
                     prompt={appearanceScreen.changeLanguageModalTitle}
-                    onValueChange={(itemValue, itemIndex) => changeLanguage(itemValue)}
+                    onValueChange={(itemValue, itemIndex) => switchLanguage(itemValue)}
                     >
                     <Picker.Item label="Français" value="fr" />
                     <Picker.Item label="English" value="en" />
