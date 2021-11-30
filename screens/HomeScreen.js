@@ -5,6 +5,7 @@ import { useTheme } from 'react-native-paper';
 import PostCard from '../components/PostCard';
 
 import { AuthContext } from '../navigation/AuthProvider';
+import { LanguageContext } from "../languages/languageContext";
 
 import { Container } from '../styles/FeedStyles';
 
@@ -15,6 +16,8 @@ import { defaultProfilePicture } from '../utils/Defaults';
 
 const HomeScreen = ({navigation}) => {
   const {user} = useContext(AuthContext);
+  const {selectedLanguage} = useContext(LanguageContext)
+
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -43,12 +46,13 @@ const HomeScreen = ({navigation}) => {
       await firestore()
       .collection('posts')
       .orderBy('postTime', 'desc')
+      .where('language', '==', selectedLanguage )
       .get()
       .then((querySnapshot) => {
         let showPostTime = 0;
 
         querySnapshot.forEach(doc => {
-          const {userId, post, postImg, postTime, likes, comments, ImgDimensions} = doc.data();
+          const {userId, post, postImg, postTime, reactions, likes, comments, ImgDimensions} = doc.data();
           if (followArray.includes(userId)) {
             list.push({
               id:doc.id,
@@ -60,6 +64,7 @@ const HomeScreen = ({navigation}) => {
               postImg,
               ImgDimensions,
               liked: false,
+              reactions,
               likes,
               comments,
               following:true
@@ -75,6 +80,7 @@ const HomeScreen = ({navigation}) => {
               postImg,
               ImgDimensions,
               liked: false,
+              reactions,
               likes,
               comments,
               following:false

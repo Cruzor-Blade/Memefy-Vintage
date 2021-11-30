@@ -29,7 +29,7 @@ import { LanguageContext } from '../languages/languageContext';
 
 const AddPostScreen = () => {
   const {user} = useContext(AuthContext);
-  const {postScreen} = useContext(LanguageContext);
+  const {postScreen, selectedLanguage} = useContext(LanguageContext);
 
   const [image, setImage] = useState(null);
   const [imgDims, setImgDims] = useState(null);
@@ -89,6 +89,9 @@ const AddPostScreen = () => {
       likes: null,
       comments: null,
       ImgDimensions:imgDims,
+      language:selectedLanguage,
+      reactions:0,
+      comments:0,
     })
     .then(() => {
       console.log('Post Added!');
@@ -142,10 +145,6 @@ const AddPostScreen = () => {
       setImage(null);
       setImgDims(null);
 
-      // Alert.alert(
-      //   'Image uploaded!',
-      //   'Your image has been uploaded to the Firebase Cloud Storage Successfully!',
-      // );
       return url;
 
     } catch (e) {
@@ -161,7 +160,7 @@ const AddPostScreen = () => {
         {image != null ?
         <AddImage
           source={{uri: image}}
-          style={imgDims && {height:(imgDims.height/imgDims.width)*windowWidth, maxHeight:windowWidth*1.2, minHeight:windowWidth*(2/3)}}
+          style={imgDims && {height:(imgDims.height/imgDims.width)*windowWidth, maxHeight:windowWidth*1.2, minHeight:windowWidth*(1/3)}}
         /> : null}
 
         <InputField

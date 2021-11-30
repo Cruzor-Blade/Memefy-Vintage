@@ -22,14 +22,14 @@ import moment from 'moment';
 import frLocale from "moment/locale/fr";
 import { AuthContext } from '../navigation/AuthProvider';
 import { ActionsContext } from '../userContext/Actions';
-import { useTheme } from 'react-native-paper';
+import { useTheme, Text } from 'react-native-paper';
 import MaskedView from '@react-native-community/masked-view';
 
 const iconSize = 36.0;
 const mvDuration = 500;
 const containerWidth= windowWidth * (3/4);
 
-const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}) =>{
+const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}) => {
   const {user} = useContext(AuthContext);
   const {onFollowUser} = useContext(ActionsContext);
   const currentTheme = useTheme();
@@ -357,12 +357,15 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
         <InteractionWrapper>
           <View style={[styles.commentsViewReaction, {backgroundColor:currentTheme.dark ? '#444444' : '#eeeeee'}]}>
             <TouchableOpacity onPress={onCommentPress}>
-              <Animated.Image source={require('../assets/reactions/chatBubble.png')}
-                style={[{height:28, width:26, resizeMode:'contain', tintColor: currentTheme.dark ? '#cccccc': '#222222',
-                  transform:[{scale:chatBubbleScale}]
-                }]} />
+              <View style={styles.commentsView}>
+                <Animated.Image source={require('../assets/reactions/chatBubble.png')}
+                  style={[{height:28, width:26, resizeMode:'contain', tintColor: currentTheme.dark ? '#cccccc': '#222222',
+                    transform:[{scale:chatBubbleScale}]
+                  }]} />
+                  <Text style={{fontSize:11.5}}>{item.comments}</Text>
+              </View>
             </TouchableOpacity>
-            <View style={{height:45, width:26, alignItems:'center', justifyContent:'center'}}>
+            <View style={{width:26, height:44, alignItems:'center', justifyContent:'space-between', marginBottom:-4}}>
               {currentUserReaction ? (
                 <TouchableOpacity onPress={() => onRmvReactionPress()}>
                   <Image
@@ -371,6 +374,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   />
                 </TouchableOpacity>
               ) : null}
+              <Text style={{fontSize:11.5}}>{item.reactions}</Text>
             </View>
           </View>
           <View style={styles.reactionsContainer}>
@@ -380,7 +384,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                     <Image
                       style={{height: 27, width:34.87, resizeMode:'contain'}}
                       source={require('../assets/reactions/follow.png')}
-                    />
+                      />
                   </TouchableOpacity>
                 </Animated.View>
                 : null
@@ -450,6 +454,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     borderBottomLeftRadius:8,
     borderBottomRightRadius:8,
+    paddingVertical:10
   },
   reactionView: {
       height:iconSize+2,
@@ -470,5 +475,10 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       alignItems:'center',
       justifyContent:'center'
+  },
+  commentsView: {
+    flexDirection:'column',
+    alignItems:'center',
+    marginTop:3
   }
 })
