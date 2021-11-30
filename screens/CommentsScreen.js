@@ -80,14 +80,24 @@ const CommentsScreen = ({route}) => {
         if (!sendingComment) {
             setSendingComment(true);
                 if (commentText !=''){
-                    await firestore()
-                    .collection('posts')
-                    .doc(route.params.postId)
-                    .collection('comments')
-                    .add({
-                        creator: auth().currentUser.uid,
-                        commentText
-                    })
+                    try {
+
+                        await firestore()
+                        .collection('posts')
+                        .doc(route.params.postId)
+                        .collection('comments')
+                        .add({
+                            creator: auth().currentUser.uid,
+                            commentText
+                        })
+                        
+                        firestore()
+                        .collection('posts')
+                        .doc(route.params.postId)
+                        .update({'comments': firestore.FieldValue.increment(1)});
+                    } catch (error) {
+                        console.log(error);
+                    }
                 setCommentText('');
                 }
             setSendingComment(false)

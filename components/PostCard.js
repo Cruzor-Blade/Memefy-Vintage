@@ -52,6 +52,22 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   const FsadLeft = containerWidth*(2/6);
   const FprevLeft = containerWidth*(3/6);
 
+  function ParseFloat(str, val) {
+    str = str.toString();
+    if (! str.includes(".")) {
+      return Number(str)
+    } else {
+      str = str.slice(0, (str.indexOf(".")) + val + 1);
+      return Number(str);
+    }
+  }
+
+  const numDisplay = (number) => {
+    if (0<=number && number <=999) return number;
+    else if (1000<= number && number <=999999) return `${ParseFloat(number/1000, 1)}k`
+    else if (number >=1000000) return `${ParseFloat(number/1000000, 1)}M`
+  }
+
   
   const handlereactionChange = (reaction) => {
     if (!changeReactions.current && reaction) {
@@ -105,7 +121,25 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   const onReactionPress = async (userReaction) => {
         handlereactionChange(userReaction);
         setCurrentUserReaction(userReaction);
+
         await firestore()
+        .collection("posts")
+        .doc(item.id)
+        .collection("reactions")
+        .doc(user.uid)
+        .get()
+        .then(async documentSnapshot => {
+          if (!documentSnapshot) {
+          firestore()
+          .collection("posts")
+          .doc(item.id)
+          .update({'reactions': firestore.FieldValue.increment(1)});
+          }
+        }).catch(e => {
+          console.log(e)
+        })
+
+        firestore()
         .collection("posts")
         .doc(item.id)
         .collection("reactions")
@@ -116,12 +150,30 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   const onRmvReactionPress = async () => {
         handlereactionChange(null);
         setCurrentUserReaction(null);
+
         await firestore()
         .collection("posts")
         .doc(item.id)
         .collection("reactions")
         .doc(user.uid)
-        .delete()
+        .get()
+        .then(async documentSnapshot => {
+          if (documentSnapshot) {
+            await firestore()
+            .collection("posts")
+            .doc(item.id)
+            .collection("reactions")
+            .doc(user.uid)
+            .delete()
+
+          firestore()
+          .collection("posts")
+          .doc(item.id)
+          .update({'reactions': firestore.FieldValue.increment(-1)});
+          }
+        }).catch(e => {
+          console.log(e)
+        })
 };
 
   const reactions = {
@@ -362,10 +414,10 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   style={[{height:28, width:26, resizeMode:'contain', tintColor: currentTheme.dark ? '#cccccc': '#222222',
                     transform:[{scale:chatBubbleScale}]
                   }]} />
-                  <Text style={{fontSize:11.5}}>{item.comments}</Text>
+                  <Text style={{fontSize:11.5}}>{numDisplay(item.comments)}</Text>
               </View>
             </TouchableOpacity>
-            <View style={{width:26, height:44, alignItems:'center', justifyContent:'space-between', marginBottom:-4}}>
+            <View style={{width:36, height:44, alignItems:'center', justifyContent:'space-between', marginBottom:-4}}>
               {currentUserReaction ? (
                 <TouchableOpacity onPress={() => onRmvReactionPress()}>
                   <Image
@@ -374,7 +426,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   />
                 </TouchableOpacity>
               ) : null}
-              <Text style={{fontSize:11.5}}>{item.reactions}</Text>
+              <Text style={{fontSize:11.5}}>{numDisplay(item.reactions)}</Text>
             </View>
           </View>
           <View style={styles.reactionsContainer}>
