@@ -71,6 +71,7 @@ const ProfileScreen = ({navigation, route}) => {
               postTime,
               likes,
               comments,
+              reactions,
               followers,
               followings
             } = doc.data();
@@ -86,6 +87,7 @@ const ProfileScreen = ({navigation, route}) => {
               liked: false,
               likes,
               comments,
+              reactions,
               followers,
               followings
             });
@@ -266,18 +268,17 @@ const ProfileScreen = ({navigation, route}) => {
           </View>
           )}
           ListEmptyComponent= {() => (
-          <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', margin:10}}>{profileScreen.noPostsLabel}</Text>
-          )}
-          data={posts}
-          keyExtractor={item => item.id}
-          showsVerticalScrollIndicator={false}
-          renderItem={({item}) => 
-            <PostCard
-              item={item}
-              // onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
-              // onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
-              // onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
-                />}
+            <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', margin:10}}>{profileScreen.noPostsLabel}</Text>
+            )}
+            data={posts}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item}) => 
+              <PostCard
+                item={item}
+                onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
+                onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
+                  />}
             />
     </SafeAreaView>
   );
