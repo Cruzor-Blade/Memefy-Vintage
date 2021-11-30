@@ -17,7 +17,7 @@ export default
         emailErrorMsg:"The email address provided is not valid",
         passwordErrorMsg:"The password should have at least 8 characters",
         signInButtonLabel:"Login",
-        signUpTouchable:"Still not an account? Create one..."
+        signUpTouchable:"Still not have an account? Create one..."
     },
     signUpScreen : {
         createAccountTitle:"Create an Account",
@@ -62,8 +62,8 @@ export default
         deleteAlertSubtitle : "Are you sure ?",
         deleteAlertCancel: "Cancel",
         deleteAlertDone: "OK",
-        deleteAlertTitle : "Post deleted successfully",
-        deleteAlertSubtitle : "Your post has been deleted successfully !",
+        deletedAlertTitle : "Post deleted successfully",
+        deletedAlertSubtitle : "Your post has been deleted successfully !",
         internalStorageAccesDemandTitle : "Internal storage access",
         internalStorageAccesDemandSubtitle : "Please grant the access to your internal storage in order to download files.",
         internatStorageAccessDenied : "Internal storage access permission denied",
