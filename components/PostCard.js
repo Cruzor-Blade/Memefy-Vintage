@@ -205,6 +205,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
           setComments(comments);
           setPostReactions(reactions);
         })
+        setCurrentUserReaction(null)
 };
 
   const reactions = {
@@ -456,8 +457,13 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   style={{height:25, width:25, opacity:0.7}}
                   />
                 </TouchableOpacity>
-              ) : null}
-              <Text style={[{fontSize:11.5}, !currentUserReaction && {marginTop:5}]}>{numDisplay(postReactions)}</Text>
+              ) : 
+              <Image
+                  source={require("../assets/reactions/neutral.png")}
+                  style={{height:25, width:25, opacity:0.4}}
+                  />
+              }
+              <Text style={[{fontSize:11.5}]}>{numDisplay(postReactions)}</Text>
             </View>
           </View>
           <View style={styles.reactionsContainer}>
