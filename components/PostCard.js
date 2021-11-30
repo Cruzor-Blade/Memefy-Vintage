@@ -19,11 +19,13 @@ import {
 import { defaultProfilePicture } from '../utils/Defaults';
 
 import moment from 'moment';
-import frLocale from "moment/locale/fr";
+import frLocale from 'moment/locale/fr';
+import enLocale from 'moment/locale/en-gb';
 import { AuthContext } from '../navigation/AuthProvider';
 import { ActionsContext } from '../userContext/Actions';
 import { useTheme, Text } from 'react-native-paper';
 import MaskedView from '@react-native-community/masked-view';
+import { LanguageContext } from '../languages/languageContext';
 
 const iconSize = 36.0;
 const mvDuration = 500;
@@ -32,12 +34,15 @@ const containerWidth= windowWidth * (3/4);
 const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}) => {
   const {user} = useContext(AuthContext);
   const {onFollowUser} = useContext(ActionsContext);
+  const {selectedLanguage} = useContext(LanguageContext);
   const currentTheme = useTheme();
   
   const [userData, setUserData] = useState(null);
   const [showReactions, setShowReactions] = useState(false);
   const [currentUserReaction, setCurrentUserReaction] = useState(null);
   const [userFollowing, setUserFollowing] = useState(item.following);
+  const [comments, setComments] = useState(item.comments);
+  const [postReactions, setPostReactions] = useState(item.reactions);
   
   const [ changeReactions, setChangeReactions ]= useState({prev:null, current:null});
 
@@ -51,6 +56,12 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   const FdontcareLeft = containerWidth*(1/6);
   const FsadLeft = containerWidth*(2/6);
   const FprevLeft = containerWidth*(3/6);
+
+
+
+  moment.locale(selectedLanguage)
+
+  console.log(selectedLanguage)
 
   function ParseFloat(str, val) {
     str = str.toString();
@@ -129,7 +140,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
         .doc(user.uid)
         .get()
         .then(async documentSnapshot => {
-          if (!documentSnapshot) {
+          if (!documentSnapshot.exists) {
           firestore()
           .collection("posts")
           .doc(item.id)
@@ -139,12 +150,22 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
           console.log(e)
         })
 
-        firestore()
+        await firestore()
         .collection("posts")
         .doc(item.id)
         .collection("reactions")
         .doc(user.uid)
-        .set({userReaction})
+        .set({userReaction});
+
+        await firestore()
+        .collection("posts")
+        .doc(item.id)
+        .get()
+        .then(snapshot => {
+          const {comments, reactions} = snapshot.data()
+          setComments(comments);
+          setPostReactions(reactions);
+        })
   };
 
   const onRmvReactionPress = async () => {
@@ -158,7 +179,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
         .doc(user.uid)
         .get()
         .then(async documentSnapshot => {
-          if (documentSnapshot) {
+          if (documentSnapshot.exists) {
             await firestore()
             .collection("posts")
             .doc(item.id)
@@ -173,6 +194,16 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
           }
         }).catch(e => {
           console.log(e)
+        })
+
+        firestore()
+        .collection("posts")
+        .doc(item.id)
+        .get()
+        .then(snapshot => {
+          const {comments, reactions} = snapshot.data()
+          setComments(comments);
+          setPostReactions(reactions);
         })
 };
 
@@ -397,7 +428,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
           </UserInfoText>
         </UserInfo>
-        {item.post && <PostText style={currentTheme.dark ? {color:'#cccccc'} : {color:'#333333'}}>
+        {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#333333'}, !item.postImg && {fontSize:22, marginHorizontal:7}]}>
           {item.post}</PostText>}
         {item.postImg === null ? <Divider/>
         : //if there is an user image available
@@ -414,10 +445,10 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   style={[{height:28, width:26, resizeMode:'contain', tintColor: currentTheme.dark ? '#cccccc': '#222222',
                     transform:[{scale:chatBubbleScale}]
                   }]} />
-                  <Text style={{fontSize:11.5}}>{numDisplay(item.comments)}</Text>
+                  <Text style={{fontSize:11.5}}>{numDisplay(comments)}</Text>
               </View>
             </TouchableOpacity>
-            <View style={{width:36, height:44, alignItems:'center', justifyContent:'space-between', marginBottom:-4}}>
+            <View style={{width:36, height:44, alignItems:'center', justifyContent:'space-between', marginBottom:-3.5}}>
               {currentUserReaction ? (
                 <TouchableOpacity onPress={() => onRmvReactionPress()}>
                   <Image
@@ -426,7 +457,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   />
                 </TouchableOpacity>
               ) : null}
-              <Text style={{fontSize:11.5}}>{numDisplay(item.reactions)}</Text>
+              <Text style={[{fontSize:11.5}, !currentUserReaction && {marginTop:5}]}>{numDisplay(postReactions)}</Text>
             </View>
           </View>
           <View style={styles.reactionsContainer}>
