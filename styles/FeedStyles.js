@@ -64,7 +64,7 @@ export const PostText = styled.Text`
     font-family: 'Lato-Regular';
     padding-left: 15px;
     padding-right: 15px;
-    margin-bottom: 7px;
+    margin-bottom: 4px;
 `;
 
 export const PostImg = styled.Image`

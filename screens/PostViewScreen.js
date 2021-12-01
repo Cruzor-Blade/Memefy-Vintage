@@ -303,7 +303,7 @@ const PostViewScreen = ({route, navigation}) => {
                                   <UserInfoText>
                                       <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
                                           <UserName style={{color:currentTheme.dark ? "#eeeeee" :"#222222"}}>
-                                              {userData ? userData.fname || 'No' : 'No' } {userData ? userData.lname || 'Name' : 'Name'}
+                                              {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : ''}
                                           </UserName>
                                       </TouchableOpacity>
                                       <PostTime style={{color:currentTheme.dark ? "#eeeeee" :"#222222"}}>{post ? moment(post.postTime.toDate()).fromNow() : null}</PostTime>
@@ -344,7 +344,7 @@ const PostViewScreen = ({route, navigation}) => {
                     renderItem={({item}) => (
                           <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]}>
                           <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
-                            {item.user ? item.user.fname || 'No' : 'No'} {item.user ? item.user.lname || 'Name' : 'Name'}
+                            {item.user ? item.user.fname || 'No' : ''} {item.user ? item.user.lname || 'Name' : ''}
                           </Text>
                               <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
                           </View>
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'flex-start',
         marginRight:8,
-        opacity:0.4
+        opacity:0.7
     },
     postDetailsContainer:{
         height:80,

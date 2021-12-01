@@ -211,7 +211,7 @@ const ProfileScreen = ({navigation, route}) => {
                     source={{uri: userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}}
                     />
               </MaskedView>
-            <Text style={styles.userName}>{userData ? userData.fname || 'No' : 'No'} {userData ? userData.lname || 'Name' : 'Name'}</Text>
+            <Text style={styles.userName}>{userData ? userData.fname || 'No' : ''} {userData ? userData.lname || 'Name' : ''}</Text>
             <Text style={[styles.userName, {fontSize:16, marginTop:0, marginBottom:15}]}>{userData && `@${userData.username}`}</Text>
             {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
             <Text style={styles.aboutUser}>
