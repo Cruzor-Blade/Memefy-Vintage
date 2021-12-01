@@ -49,7 +49,7 @@ const HomeScreen = ({navigation}) => {
       .where('language', '==', selectedLanguage )
       .get()
       .then((querySnapshot) => {
-        let showPostTime = 0;
+        // let showPostTime = 0;
 
         querySnapshot.forEach(doc => {
           const {userId, post, postImg, postTime, reactions, likes, comments, ImgDimensions} = doc.data();
@@ -70,7 +70,8 @@ const HomeScreen = ({navigation}) => {
               following:true
             })
           } else {
-            notUserFollowingPosts.push({
+            // notUserFollowingPosts.push({
+            list.push({ //added the list.push
               id:doc.id,
               userId,
               userName:'no_name',
@@ -87,14 +88,14 @@ const HomeScreen = ({navigation}) => {
             })
           }
 
-          if (showPostTime == 0 && notUserFollowingPosts.length != 0) {
-            const randomPostIndex = Math.floor(Math.random() * notUserFollowingPosts.length)
-            list.push(notUserFollowingPosts[randomPostIndex])
-            notUserFollowingPosts = []
-            showPostTime == Math.round(Math.random() * 18 + 7);
-          } else {
-            showPostTime= showPostTime - 1;
-          }
+          // if (showPostTime == 0 && notUserFollowingPosts.length != 0) {
+          //   const randomPostIndex = Math.floor(Math.random() * notUserFollowingPosts.length)
+          //   list.push(notUserFollowingPosts[randomPostIndex])
+          //   notUserFollowingPosts = []
+          //   showPostTime == Math.round(Math.random() * 18 + 7);
+          // } else {
+          //   showPostTime= showPostTime - 1;
+          // }
           
         })
 
