@@ -100,7 +100,8 @@ const CommentsScreen = ({route}) => {
                     }
                 setCommentText('');
                 }
-            setSendingComment(false)
+            setSendingComment(false);
+            fetchComments();
         }
     }
 
@@ -117,7 +118,7 @@ const CommentsScreen = ({route}) => {
                     <View style={[styles.commentCard, {backgroundColor: currentTheme.dark ? '#666666' : '#dcdcdc'}]} >
                         <TouchableOpacity>
                             <Text style={{fontSize:14, fontWeight:'700', color: currentTheme.dark ? '#dddddd' : '#222222'}}>
-                                {item.user ? item.user.fname : 'No'} {item.user ? item.user.lname : 'Name'}
+                                {item.user ? item.user.fname || 'No': 'No'} {item.user ? item.user.lname || 'Name' : 'Name'}
                             </Text>
                         </TouchableOpacity>
                         <Text style={{color: currentTheme.dark ? '#cccccc' : '#333333'}}>{item.commentText}</Text>
