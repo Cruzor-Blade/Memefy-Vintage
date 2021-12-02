@@ -40,7 +40,7 @@ const FindScreen = ({navigation}) => {
     <View>
       <TextInput
         autoCapitalize='none'
-        style={[styles.searchInput, {color: currentTheme.dark ? "#fff" :"333"}]}
+        style={[styles.searchInput, {color: currentTheme.dark ? "#fff" :"#333"}]}
         placeholder={findScreen.searchPlaceholder}
         onChangeText={(text) => {
             setSearchValue(text);
