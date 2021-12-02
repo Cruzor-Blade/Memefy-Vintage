@@ -423,7 +423,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
           <UserInfoText>
             <TouchableOpacity onPress={onProfilePress}>
               <UserName style={currentTheme.dark ? {color:'#eeeeee'} : {color:'#333333'}}>
-                {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : ''}
+                {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : 'Name'}
               </UserName>
             </TouchableOpacity>
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
@@ -434,8 +434,10 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
         {item.postImg === null ? <Divider/>
         : //if there is an user image available
         <TouchableOpacity onPress={onImagePress}>
-          <PostImg source={{uri: item.postImg}} 
-            style={{height:item.ImgDimensions ? (item.ImgDimensions.height/item.ImgDimensions.width)*windowWidth : 250}}/>
+          <View style={{maxHeight:windowWidth*1.4, overflow:'hidden'}}>
+            <PostImg source={{uri: item.postImg}} 
+              style={{height:item.ImgDimensions ? (item.ImgDimensions.height/item.ImgDimensions.width)*windowWidth : 250}}/>
+          </View>
         </TouchableOpacity>
         }
         <InteractionWrapper>
