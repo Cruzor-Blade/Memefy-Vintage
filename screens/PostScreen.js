@@ -40,7 +40,7 @@ const AddPostScreen = () => {
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth:640,
-      compressImageMaxHeight:768,
+      compressImageMaxHeight:896,
       cropping: true,
       freeStyleCropEnabled:true,
     }).then((image) => {
@@ -57,7 +57,7 @@ const AddPostScreen = () => {
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       compressImageMaxWidth:640,
-      compressImageMaxHeight:768,
+      compressImageMaxHeight:896,
       cropping: true,
       freeStyleCropEnabled:true,
       compressImageQuality:0.8,
