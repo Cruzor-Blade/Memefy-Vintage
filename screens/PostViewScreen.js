@@ -10,13 +10,14 @@ import {
     StyleSheet,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback,
     FlatList,
     Alert,
     PermissionsAndroid,
     Platform,
-    Animated
+    Animated,
+    ScrollView
     } from "react-native";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useTheme, Text } from "react-native-paper";
 import { PostTime, ProfileMask, UserImg, UserInfo, UserInfoText, UserName } from "../styles/FeedStyles";
 
@@ -224,7 +225,7 @@ const PostViewScreen = ({route, navigation}) => {
             //related to android only
             useDownloadManager: true,
             notification:true,
-            path: PictureDir + '/memebit/meme_' +
+            path: PictureDir + '/memebit/MemeBit_' +
             Math.floor(date.getTime() + date.getSeconds()/2) + ext,
             description: 'Image'
           }
@@ -276,62 +277,61 @@ const PostViewScreen = ({route, navigation}) => {
 
     return (
         <View style={styles.container}>
+            {showInfo &&
+              <Animated.View style={[styles.postDetailsContainer, {opacity:postDetailsOpacity, zIndex:1}]}>
+                  <UserInfo>
+                      <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
+                          <MaskedView
+                            style={{width:55, height:55, alignItems:'center', justifyContent:'center'}}
+                            maskElement={
+                              <ProfileMask source={require('../assets/masks/profileMask.png')}/>
+                            }
+                            >
+                            <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
+                          </MaskedView>
+                      </TouchableOpacity>
+                      <UserInfoText>
+                          <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
+                              <UserName style={{color:currentTheme.dark ? "#eeeeee" :"#222222"}}>
+                                  {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : ''}
+                              </UserName>
+                          </TouchableOpacity>
+                          <PostTime style={{color:currentTheme.dark ? "#eeeeee" :"#222222"}}>{post ? moment(post.postTime.toDate()).fromNow() : null}</PostTime>
+                      </UserInfoText>
+                  </UserInfo>
+                  <View style={styles.viewReactionsContainer}>
+                      {route.params.uid === user.uid ? (
+                      <TouchableOpacity style={{marginHorizontal:6}}
+                          onPress={() => handleDelete(route.params.postId)}>
+                          <Ionicons
+                              name="ios-trash-bin-outline"
+                              size = {29}
+                              color="#00ff00"
+                          />
+                      </TouchableOpacity>)
+                      : null}
+                      <TouchableOpacity style={{marginHorizontal: 6}} onPress={checkPermission}>
+                          <Ionicons
+                              name="ios-download-outline"
+                              size = {29}
+                              color="#00ff00"
+                          />
+                      </TouchableOpacity>
+                  </View>
+              </Animated.View>
+            }
             <TouchableWithoutFeedback onPress={() => {
               switchDetailsVisible();
               setTimeout(() => setShowInfo(!showInfo), showInfo ? 700:0)
               }}>
-                <View style={styles.imageContainer}>
+                <ScrollView style={styles.imageContainer}>
                     <ImageBackground
                         source={post ? {uri: post.postImg} : require("../assets/default-img.jpg")}
                         style={[styles.image,
                           {width:windowWidth,
                             height: (route.params.ImgDimensions.height/route.params.ImgDimensions.width)*windowWidth}]}
-                    >
-                        {showInfo &&
-                          <Animated.View style={[styles.postDetailsContainer, {opacity:postDetailsOpacity}]}>
-                              <UserInfo>
-                                  <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
-                                      <MaskedView
-                                        style={{width:55, height:55, alignItems:'center', justifyContent:'center'}}
-                                        maskElement={
-                                          <ProfileMask source={require('../assets/masks/profileMask.png')}/>
-                                        }
-                                        >
-                                        <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
-                                      </MaskedView>
-                                  </TouchableOpacity>
-                                  <UserInfoText>
-                                      <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
-                                          <UserName style={{color:currentTheme.dark ? "#eeeeee" :"#222222"}}>
-                                              {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : ''}
-                                          </UserName>
-                                      </TouchableOpacity>
-                                      <PostTime style={{color:currentTheme.dark ? "#eeeeee" :"#222222"}}>{post ? moment(post.postTime.toDate()).fromNow() : null}</PostTime>
-                                  </UserInfoText>
-                              </UserInfo>
-                              <View style={styles.viewReactionsContainer}>
-                                  {route.params.uid === user.uid ? (
-                                  <TouchableOpacity style={{marginHorizontal:6}}
-                                      onPress={() => handleDelete(route.params.postId)}>
-                                      <Ionicons
-                                          name="ios-trash-bin-outline"
-                                          size = {29}
-                                          color="#00ff00"
-                                      />
-                                  </TouchableOpacity>)
-                                  : null}
-                                  <TouchableOpacity style={{marginHorizontal: 6}} onPress={checkPermission}>
-                                      <Ionicons
-                                          name="ios-download-outline"
-                                          size = {29}
-                                          color="#00ff00"
-                                      />
-                                  </TouchableOpacity>
-                              </View>
-                          </Animated.View>
-                        }
-                    </ImageBackground>
-                </View>
+                    />
+                </ScrollView>
             </TouchableWithoutFeedback>
             
                 <FlatList
@@ -376,7 +376,7 @@ const styles = StyleSheet.create({
     imageContainer:{
         position:'relative',
         width:windowWidth,
-        maxHeight:windowWidth*1.4,
+        maxHeight:windowWidth*1.2,
         elevation:8,
         backgroundColor:"#333",
         shadowOffset:{
@@ -400,6 +400,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center',
         justifyContent:'space-between',
+        position:'absolute'
 
     },
     commentCard: {
