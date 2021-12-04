@@ -469,7 +469,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
             </View>
           </View>
           <View style={styles.reactionsContainer}>
-              {!userFollowing && (item.userId != user.uid) ?
+              {/* {!userFollowing && (item.userId != user.uid) ?
                 <Animated.View style={{position:'absolute', left: containerWidth-iconSize*1.75, opacity:followOpacity}}>
                   <TouchableOpacity onPress={() => onFollow()}>
                     <Image
@@ -479,7 +479,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   </TouchableOpacity>
                 </Animated.View>
                 : null
-              }
+              } */}
                 
                 <View style={[styles.reactionView, {left:laughLeft}]}>
                     <ReactionItem

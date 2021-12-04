@@ -69,6 +69,7 @@ export const PostText = styled.Text`
 
 export const PostImg = styled.Image`
     width: 100%;
+    background-color: #444444;
 `;
 
 export const Divider = styled.View`

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 
 import PostCard from '../components/PostCard';
 
@@ -18,11 +18,12 @@ const HomeScreen = ({navigation}) => {
   const {user} = useContext(AuthContext);
   const {selectedLanguage} = useContext(LanguageContext)
 
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [lastDoc, setLastDoc] = useState(firestore.Timestamp.fromDate(new Date()));
 
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (number) => {
     
     //Fetching the users Ids that the current user is following 
     let followArray = [];
@@ -47,11 +48,14 @@ const HomeScreen = ({navigation}) => {
       .collection('posts')
       .orderBy('postTime', 'desc')
       .where('language', '==', selectedLanguage )
+      .startAfter(lastDoc)
+      .limit(number)
       .get()
       .then((querySnapshot) => {
         // let showPostTime = 0;
 
         querySnapshot.forEach(doc => {
+          console.log(doc.data())
           const {userId, post, postImg, postTime, reactions, likes, comments, ImgDimensions} = doc.data();
           if (followArray.includes(userId)) {
             list.push({
@@ -100,8 +104,13 @@ const HomeScreen = ({navigation}) => {
         })
 
       })
-
-      setPosts(list);
+      if (list.length == 0) {
+        setLastDoc(null);
+        console.log("LatestDOc :", lastDoc)
+      } else {
+        setLastDoc(list[list.length - 1].postTime)
+        setPosts(posts.concat(list));
+      }
 
       if (loading) {
         setLoading(false);
@@ -109,15 +118,29 @@ const HomeScreen = ({navigation}) => {
 
       // console.log('Posts: ', list)
     } catch (e) {
-      console.log (e)
+      console.log (e);
     }
   }
 
   useEffect(() =>{
-    fetchPosts();
+    fetchPosts(2);
   }, [])
 
-  
+  const renderItem = ({ item }) => (
+    <PostCard
+            item={item}
+            onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
+            onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
+            onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
+              />
+  )
+  const onEndReached = () => {
+    if (lastDoc) {
+      fetchPosts(5);
+      console.log("On end threshold");
+    }
+  }
+
   return (
     <Container style={useTheme().dark ? {backgroundColor:'#555555'} : {backgroundColor:'#ffffff'}}>
       <FlatList
@@ -126,14 +149,10 @@ const HomeScreen = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         onRefresh={fetchPosts}
         refreshing={loading}
-        renderItem={({item}) => 
-          <PostCard
-            item={item}
-            onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
-            onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
-            onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
-              />}
-            />
+        renderItem={renderItem}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={2/(posts.length)}
+      />
     </Container>
   )
 }

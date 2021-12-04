@@ -32,9 +32,10 @@ const ProfileScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [following, setFollowing] = useState(false);
+  const [lastDoc, setLastDoc] = useState(firestore.Timestamp.fromDate(new Date()));
 
 
-  const fetchPosts = async () => {
+  const fetchPosts = async (number) => {
     
     //Fetching the users Ids that the current user is following 
     let followArray = [];
@@ -58,6 +59,8 @@ const ProfileScreen = ({navigation, route}) => {
         .collection('posts')
         .where('userId', '==', route.params ? route.params.userId : user.uid)
         .orderBy('postTime', 'desc')
+        .startAfter(lastDoc)
+        .limit(number)
         .get()
         .then((querySnapshot) => {
           // console.log('Total Posts: ', querySnapshot.size);
@@ -94,7 +97,13 @@ const ProfileScreen = ({navigation, route}) => {
           });
         });
 
-      setPosts(list);
+        if (list.length == 0) {
+          setLastDoc(null);
+          console.log("LatestDOc :", lastDoc)
+        } else {
+          setLastDoc(list[list.length - 1].postTime)
+          setPosts(posts.concat(list));
+        }
 
       if (loading) {
         setLoading(false);
@@ -181,11 +190,17 @@ const ProfileScreen = ({navigation, route}) => {
 
   useEffect(() => {
     getUser();
-    fetchPosts();
+    fetchPosts(2);
     navigation.addListener("focus", () => setLoading(!loading));
   }, [navigation, loading]);
 
 
+  const onEndReached = () => {
+    if (lastDoc) {
+      fetchPosts(5);
+      console.log("On end threshold");
+    }
+  }
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: currentTheme.dark ? '#555555' : '#fff'}}>
       
@@ -279,6 +294,8 @@ const ProfileScreen = ({navigation, route}) => {
                 onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
                 onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
                   />}
+            onEndReached={onEndReached}
+            onEndReachedThreshold={2/(posts.length)}
             />
     </SafeAreaView>
   );
