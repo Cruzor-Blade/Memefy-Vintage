@@ -23,7 +23,7 @@ const HomeScreen = ({navigation}) => {
   const [lastDoc, setLastDoc] = useState(firestore.Timestamp.fromDate(new Date()));
 
 
-  const fetchPosts = async (number) => {
+  const fetchPosts = async (number, init) => {
     
     //Fetching the users Ids that the current user is following 
     let followArray = [];
@@ -48,7 +48,7 @@ const HomeScreen = ({navigation}) => {
       .collection('posts')
       .orderBy('postTime', 'desc')
       .where('language', '==', selectedLanguage )
-      .startAfter(lastDoc)
+      .startAfter(init && firestore.Timestamp.fromDate(new Date()) || lastDoc)
       .limit(number)
       .get()
       .then((querySnapshot) => {
@@ -109,7 +109,11 @@ const HomeScreen = ({navigation}) => {
         console.log("LatestDOc :", lastDoc)
       } else {
         setLastDoc(list[list.length - 1].postTime)
-        setPosts(posts.concat(list));
+        if (init) {
+          setPosts(list);
+        } else {
+          setPosts(posts.concat(list));
+        }
       }
 
       if (loading) {
@@ -123,7 +127,7 @@ const HomeScreen = ({navigation}) => {
   }
 
   useEffect(() =>{
-    fetchPosts(2);
+    fetchPosts(2, true);
   }, [])
 
   const renderItem = ({ item }) => (
@@ -134,6 +138,12 @@ const HomeScreen = ({navigation}) => {
             onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
               />
   )
+
+    const onRefresh = () => {
+      setLastDoc(firestore.Timestamp.fromDate(new Date()));
+      fetchPosts(3, true);
+    }
+
   const onEndReached = () => {
     if (lastDoc) {
       fetchPosts(5);
@@ -147,11 +157,11 @@ const HomeScreen = ({navigation}) => {
         data={posts}
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}
-        onRefresh={fetchPosts}
+        onRefresh={onRefresh}
         refreshing={loading}
         renderItem={renderItem}
         onEndReached={onEndReached}
-        onEndReachedThreshold={2/(posts.length)}
+        onEndReachedThreshold={posts ? 2/(posts.length) : 0}
       />
     </Container>
   )

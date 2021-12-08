@@ -429,11 +429,11 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
           </UserInfoText>
         </UserInfo>
-        {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#333333'}, !item.postImg && {fontSize:22, marginHorizontal:7}]}>
+        {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#000'}, !item.postImg && {fontSize:22, marginHorizontal:7}]}>
           {item.post}</PostText>}
         {item.postImg === null ? <Divider/>
         : //if there is an user image available
-        <TouchableOpacity onPress={onImagePress}>
+        <TouchableOpacity activeOpacity={0.7} onPress={onImagePress}>
           <View style={{maxHeight:windowWidth*1.3, overflow:'hidden'}}>
             <PostImg source={{uri: item.postImg}} 
               style={{height:item.ImgDimensions ? (item.ImgDimensions.height/item.ImgDimensions.width)*windowWidth : 250}}/>

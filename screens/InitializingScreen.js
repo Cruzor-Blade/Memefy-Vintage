@@ -42,7 +42,7 @@ const InitializingScreen = () => {
     }, 2.4*moveTime+moveTime/7)
     
     return (
-        <View style={{alignItems:'center', justifyContent:'center', flex:1, flexDirection:'column', backgroundColor: currentTheme.dark ? "#444" :"dadcdc"}}>
+        <View style={{alignItems:'center', justifyContent:'center', flex:1, flexDirection:'column', backgroundColor: currentTheme.dark ? "#444" :"#f8f8f8"}}>
             <Image  
                 style={styles.logo}
                 source={require("../assets/onboarding/onboarding-1.png")}

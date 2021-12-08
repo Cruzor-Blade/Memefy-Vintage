@@ -18,7 +18,7 @@ export const Card = styled.View`
 export const UserInfo = styled.View`
     flex-direction: row;
     justify-content: flex-start;
-    padding: 8px;
+    padding: 6px;
     padding-left:12px;
 `;
 
@@ -64,12 +64,12 @@ export const PostText = styled.Text`
     font-family: 'Lato-Regular';
     padding-left: 15px;
     padding-right: 15px;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
 `;
 
 export const PostImg = styled.Image`
     width: 100%;
-    background-color: #444444;
+    background-color: #777777;
 `;
 
 export const Divider = styled.View`
