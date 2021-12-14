@@ -41,6 +41,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   const [showReactions, setShowReactions] = useState(false);
   const [currentUserReaction, setCurrentUserReaction] = useState(null);
   const [userFollowing, setUserFollowing] = useState(item.following);
+  const [followLoading, setFollowLoading] = useState(false);
   const [comments, setComments] = useState(item.comments);
   const [postReactions, setPostReactions] = useState(item.reactions);
   
@@ -102,14 +103,58 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
     })
   }
 
-  const onFollow = async () => {
-      await onFollowUser(user.uid, item.userId);
-
+  const onFollow = () => {
+    if (!followLoading) {
+      setFollowLoading(true)
+      firestore()
+      .collection('users')
+      .doc(user.uid)
+      .collection('userFollowings')
+      .doc(item.userId)
+      .get()
+      .then(async snapshot => {
+        if (!snapshot.exists) {
+          try {
+            await firestore()
+            .collection('users')
+            .doc(user.uid)
+            .collection('userFollowings')
+            .doc(item.userId)
+            .set({})
+          } catch (error) {
+            console.log('Error while adding the user to the current firesore user follows: ', error)
+          }
+      
+          //Increment the number of users visited user is followed by
+            try {
+              await firestore()
+              .collection('users')
+              .doc(item.userId)
+              .update({'followers': firestore.FieldValue.increment(1)});
+            } catch (error) {
+              console.log(error);
+            }
+      
+            //increment the number of users current user is following
+            try {
+              await firestore()
+              .collection('users')
+              .doc(user.uid)
+              .update({'followings': firestore.FieldValue.increment(1)});
+            } catch (error) {
+              console.log(error);
+            }
+          }
+        })
       animateFollowOpacity('hide');
       setTimeout(() => {
         setUserFollowing(true);
-      }, mvDuration*0.2)
+      }, mvDuration*0.6)
+
+      setTimeout(() => setFollowLoading(false) ,mvDuration*0.8)
+    }
   }
+
 
 
   const getFirebaseReaction = () => {
@@ -423,7 +468,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
           <UserInfoText>
             <TouchableOpacity onPress={onProfilePress}>
               <UserName style={currentTheme.dark ? {color:'#eeeeee'} : {color:'#333333'}}>
-                {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : 'Name'}
+                {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : '...'}
               </UserName>
             </TouchableOpacity>
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
@@ -469,7 +514,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
             </View>
           </View>
           <View style={styles.reactionsContainer}>
-              {/* {!userFollowing && (item.userId != user.uid) ?
+              {!userFollowing && (item.userId != user.uid) ?
                 <Animated.View style={{position:'absolute', left: containerWidth-iconSize*1.75, opacity:followOpacity}}>
                   <TouchableOpacity onPress={() => onFollow()}>
                     <Image
@@ -479,7 +524,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
                   </TouchableOpacity>
                 </Animated.View>
                 : null
-              } */}
+              }
                 
                 <View style={[styles.reactionView, {left:laughLeft}]}>
                     <ReactionItem
