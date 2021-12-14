@@ -60,6 +60,7 @@ export const LanguageProvider = ({children}) => {
                 appearanceScreen: LanguageObject[selectedLanguage].appearanceScreen,
                 suggestionsScreen: LanguageObject[selectedLanguage].suggestionsScreen,
                 authProvider:LanguageObject[selectedLanguage].authProvider,
+                agreementsView:LanguageObject[selectedLanguage].agreementsView,
             }}>
                 {children}
             </LanguageContext.Provider>

@@ -30,7 +30,12 @@ export default
         passwordErrorMsg:"The password should have at least 8 characters",
         confirmPasswordErrorMsg:"The passwords are not matching",
         signInButtonLabel:"Sign Up",
-        signInTouchable:"Already have an account? Sign In..."
+        signInTouchable:"Already have an account? Sign In...",
+        textPrivateFirstPart:"By registering, you confirm that you have read and agree our   ",
+        textPrivateSecondPart:"Terms of service",
+        textPrivateThirdPart:" and our ",
+        textPrivateFourthPart:"Privacy Policy"
+
     },
     appTabs : {
         postTabLabel : 'Post',
@@ -131,6 +136,9 @@ export default
         introduction : "Because we know that the app is not perfect, but we wishe to improve on it.",
         contact:"Thank you of giving us some suggestions by pressing on the button under.",
         suggestButtonLabel: "       Send a suggestion      "
+    },
+    agreementsView:{
+        loading:"loading...",
     },
     authProvider:{
         networkUnavailable:"Unable to connect or network unavailable.",

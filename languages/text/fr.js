@@ -30,7 +30,11 @@ export default
         passwordErrorMsg:"Le mot de passe doit avoir au moins 8 caracteres",
         confirmPasswordErrorMsg:"Les mots de passe des entrees ne correspondent pas",
         signInButtonLabel:"Creez votre compte",
-        signInTouchable:"Deja un compte? Connectez vous..."
+        signInTouchable:"Deja un compte? Connectez vous...",
+        textPrivateFirstPart:"En créant un compte, vous confirmez que vous avez lu et accepté nos   ",
+        textPrivateSecondPart:"Termes de service",
+        textPrivateThirdPart:"ainsi que notre",
+        textPrivateFourthPart:"Politique de confidentialité"
     },
     appTabs : {
         postTabLabel : 'Publier',
@@ -131,6 +135,9 @@ export default
         introduction : "Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'améliorer.",
         contact:"Merci de nous envoyer une suggestion par email en cliquant sur le bouton ci dessous.",
         suggestButtonLabel: "       Envoyer une suggestion      "
+    },
+    agreementsView:{
+        loading:"chargement...",
     },
     authProvider:{
         networkUnavailable:"Probleme de connexion ou impossible de se connecter",

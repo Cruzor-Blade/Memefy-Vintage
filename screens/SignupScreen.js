@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
-import { Text, StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
@@ -7,10 +8,15 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { AuthContext } from '../navigation/AuthProvider';
 import { windowWidth } from '../utils/Dimentions';
 import { LanguageContext } from '../languages/languageContext';
+import AgreementsView from '../components/AgreementsView';
+
 
 const SignupScreen = ({navigation}) => {
   const {register, registerLoading} = useContext(AuthContext);
-  const { signUpScreen } = useContext(LanguageContext);
+  const { signUpScreen} = useContext(LanguageContext);
+
+  const [termsVisible, setTermsVisible] = useState(false);
+  const [termsType, setTermsType] = useState('')
 
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
@@ -146,6 +152,28 @@ const SignupScreen = ({navigation}) => {
                 }
             }}
           />
+          <View style={styles.textPrivate}>
+            <Text>
+              <Text style={styles.color_textPrivate}>{signUpScreen.textPrivateFirstPart}</Text>
+              <TouchableOpacity onPress={() => {
+                setTermsVisible(true)
+                setTermsType('termsofuse')
+                }}>
+                <Text style={[styles.color_textPrivate, {color: '#e88832', top:2}]}>
+                  {signUpScreen.textPrivateSecondPart}
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.color_textPrivate}>{signUpScreen.textPrivateThirdPart}</Text>
+              <TouchableOpacity onPress={() => {
+                setTermsVisible(true)
+                setTermsType('privacypolicy')
+                }}>
+                <Text style={[styles.color_textPrivate, {color: '#e88832', top:2}]}>
+                  {signUpScreen.textPrivateFourthPart}
+                </Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
           <TouchableOpacity
           style={styles.forgotButton}
           onPress={() => navigation.navigate("Login")}
@@ -153,6 +181,12 @@ const SignupScreen = ({navigation}) => {
             <Text style={styles.navButtonText}>
               {signUpScreen.signInTouchable}</Text>
           </TouchableOpacity>
+          {termsType !='' ?
+          <AgreementsView
+            type={termsType}
+            visible={termsVisible}
+            onClosePress={() => setTermsVisible(false)}
+          /> : null}
         </View>
         )
 } 
@@ -160,38 +194,51 @@ const SignupScreen = ({navigation}) => {
 export default SignupScreen;
 
 const styles = StyleSheet.create({
-    container: {
-      backgroundColor: '#f9fafd',
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: 20,
-    },
-    logo: {
-      height: 150,
-      width: 150,
-      resizeMode: 'cover',
-    },
-    text: {
-      fontFamily: 'Kufam-SemiBoldItalic',
-      fontSize: 28,
-      marginBottom: 10,
-      color: '#051d5f',
-    },
-    navButton: {
-      marginTop: 15,
-    },
-    forgotButton: {
-      marginVertical: 35,
-    },
-    navButtonText: {
-      fontSize: 18,
-      fontWeight: '500',
-      color: '#2e64e5',
-      fontFamily: 'Lato-Regular',
-    },
-    errorMsg: {
-      fontSize:13,
-      color:'#ff0000',
-    }
+  container: {
+    backgroundColor: '#f9fafd',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  logo: {
+    height: 150,
+    width: 150,
+    resizeMode: 'cover',
+  },
+  text: {
+    fontFamily: 'Kufam-SemiBoldItalic',
+    fontSize: 28,
+    marginBottom: 10,
+    color: '#051d5f',
+  },
+  navButton: {
+    marginTop: 5,
+  },
+  forgotButton: {
+    marginTop:30,
+    marginBottom:20
+  },
+  navButtonText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#2e64e5',
+    fontFamily: 'Lato-Regular',
+  },
+  errorMsg: {
+    fontSize:13,
+    color:'#ff0000',
+  },
+  textPrivate: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop:16,
+  },
+  color_textPrivate: {
+    fontSize: 13,
+    fontWeight: '400',
+    fontFamily: 'Lato-Regular',
+    color: 'grey',
+  },
   });
