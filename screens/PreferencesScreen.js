@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { LanguageContext } from "../languages/languageContext";
 import OptionMenuModel from "../components/OptionMenuModel";
 
@@ -24,16 +24,20 @@ const Preferences = ({navigation}) =>{
               screen="Appearance"
               style={{marginTop:30}}
               text={preferencesScreen.appearanceLabel}
+              image={require('../assets/preferences/appearance.png')}
             />
           <OptionMenuModel
             navigation={navigation}
             screen="Suggestions"
             text={preferencesScreen.suggestionsLabel}
+            image={require('../assets/preferences/suggestions.png')}
+            imageStyles={{height:33, width:33}}
           />
           <OptionMenuModel
             navigation={navigation}
             screen="About"
             text={preferencesScreen.aboutLabel}
+            image={require('../assets/preferences/about.png')}
           />
         </View>
     )

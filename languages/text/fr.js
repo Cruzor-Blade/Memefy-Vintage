@@ -51,7 +51,7 @@ export default
         homeEditProfileScreen:'Editer votre profil',
         preferencesHeaderLabel:'Préférences',
         preferencesSuggestions:'Faire une Suggestion...',
-        preferencesAbout:'À propos de nous',
+        preferencesAbout:'À propos',
     },
     postScreen : {
         postPlaceholder : "À quoi pensez vous ?",
@@ -119,9 +119,11 @@ export default
         aboutLabel: "À propos",
     },
     aboutScreen : {
+        privacyPolicy:"Politique de Confidentialité",
+        termsOfUse:"Termes d'Utilisation",
         introduction: "Nous sommes une équipe de jeunes dévéloppeurs.",
         conviction:"Nous aimons ce que nous faisons, et c'est pourquoi nous le faisons encore mieux.",
-        contact:"Contactez nous sur WhatsApp an pressant le bouton ci dessous",
+        contact:"Vous pouvez nous contacter sur WhatsApp en pressant le bouton ci dessous",
         message: "Salut la team. Je vous contacte à propos de votre application MemeBit et J'aimerai en apprendre un peu plus sur vous :)",
         whatsAppButtonLabel:"       Ecrire sur Whatsapp      ",
     },

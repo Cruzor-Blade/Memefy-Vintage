@@ -52,7 +52,7 @@ export default
         profileHeaderLabel:'Your Profile',
         preferencesHeaderLabel:'Preferences',
         preferencesSuggestions:'Suggest Us...',
-        preferencesAbout:'About Us',
+        preferencesAbout:'About',
     },
     findScreen : {
         searchPlaceholder :"Find Somebody...",
@@ -120,9 +120,11 @@ export default
         aboutLabel: "About Us",
     },
     aboutScreen : {
+        privacyPolicy:"Privacy Policy",
+        termsOfUse:"Terms of Use",
         introduction: "We are a young team of developpers : )",
         conviction:"We love what we do, and it is why we do it even better.",
-        contact:"Contact us on our Whatsapp by pressing the under button.",
+        contact:"You can contact us on our Whatsapp number by pressing the under button.",
         message: "Hello the team. I contact you about your application MemeBit and I wanted to know a bit more about you : )",
         whatsAppButtonLabel:"       Write on Whatsapp      ",
     },

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Modal, Text, } from 'react-native-paper';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { Modal,} from 'react-native-paper';
+import { ScrollView, View, StyleSheet, Text } from 'react-native';
 import { windowHeight } from '../utils/Dimentions';
 
 import { LanguageContext } from '../languages/languageContext';
@@ -8,7 +8,7 @@ import { LanguageContext } from '../languages/languageContext';
 import Antdesign from 'react-native-vector-icons/AntDesign';
 
 
-const AgreementsView = ({type, language, visible, onClosePress, ...props}) => {
+const AgreementsView = ({type, visible, onClosePress, ...props}) => {
     const {agreementsView, selectedLanguage} = useContext(LanguageContext);
     const [agreement, setAgreement] = useState('');
 
@@ -36,8 +36,6 @@ const AgreementsView = ({type, language, visible, onClosePress, ...props}) => {
       }
 
     const fetchAgreements = () => {
-        console.log('Type: ', type)
-        console.log("CurrentLanguage: ", selectedLanguage)
         console.log("Txt Url: ", languagesAgreements[type] [selectedLanguage])
         fetch(languagesAgreements[type] [selectedLanguage])
         .then(text => text.text())
@@ -51,7 +49,7 @@ const AgreementsView = ({type, language, visible, onClosePress, ...props}) => {
         }, [])
 
     return (
-        <Modal visible={visible} style={styles.overlay}>
+        <Modal animated={true} visible={visible} style={styles.overlay}>
             <View style={styles.textContainer}>
                 <View style={styles.header}>
                     <Text style={{fontSize:18, fontWeight:'bold'}}>{headerTitle[type] [selectedLanguage]}</Text>
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
     },
     textContainer:{
         marginHorizontal:8,
-        height:windowHeight*5/6,
+        height:windowHeight*4/5,
         backgroundColor:"#ffffff",
         marginBottom:20,
         borderRadius:10,
