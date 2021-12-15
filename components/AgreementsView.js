@@ -49,7 +49,7 @@ const AgreementsView = ({type, visible, onClosePress, ...props}) => {
         }, [])
 
     return (
-        <Modal animated={true} visible={visible} style={styles.overlay}>
+        <Modal visible={visible} style={styles.overlay}>
             <View style={styles.textContainer}>
                 <View style={styles.header}>
                     <Text style={{fontSize:18, fontWeight:'bold'}}>{headerTitle[type] [selectedLanguage]}</Text>
