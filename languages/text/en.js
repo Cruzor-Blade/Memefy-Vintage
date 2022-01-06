@@ -4,12 +4,12 @@ export default
         nextLabel:'Next',
         doneLabel:'DONE',
         skipLabel:'Skip',
-        onboarding_1_Title:"Welcome to MemeBit",
+        onboarding_1_Title:"Welcome to Memefy",
         onboarding_2_Title:"Keep The Smile...",
         onboarding_3_Title:"Be Yourself",
         onboarding_1_Subtitle:"The app to laugh and share memes",
         onboarding_2_Subtitle:"Laugh and exchange on funny jokes, for your daily smile",
-        onboarding_3_Subtitle:"Share Your Thoughts With Similar Kind of People. Because MemeBit, is As Your Home !",
+        onboarding_3_Subtitle:"Share Your Thoughts With Similar Kind of People. Because Memefy, is As Your Home !",
     },
     loginScreen : {
         emailPlaceholder:"Email",
@@ -125,7 +125,7 @@ export default
         introduction: "We are a young team of developpers : )",
         conviction:"We love what we do, and it is why we do it even better.",
         contact:"You can contact us on our Whatsapp number by pressing the under button.",
-        message: "Hello the team. I contact you about your application MemeBit and I wanted to know a bit more about you : )",
+        message: "Hello the team. I contact you about your application Memefy and I wanted to know a bit more about you : )",
         whatsAppButtonLabel:"       Write on Whatsapp      ",
     },
     appearanceScreen : {
@@ -134,7 +134,7 @@ export default
         changeLanguageModalTitle:"Change the language",
     },
     suggestionsScreen : {
-        message :"Hello MemeBit team. I contact you about your application where i wanted to give some suggestions...",
+        message :"Hello Memefy team. I contact you about your application where i wanted to give some suggestions...",
         introduction : "Because we know that the app is not perfect, but we wishe to improve on it.",
         contact:"Thank you of giving us some suggestions by pressing on the button under.",
         suggestButtonLabel: "       Send a suggestion      "

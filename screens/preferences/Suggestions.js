@@ -21,7 +21,7 @@ const Suggestions = () =>{
 
                 <FormButton
                     buttonTitle={suggestionsScreen.suggestButtonLabel}
-                    onPress = {() => Linking.openURL(`mailto:contactmemebit@gmail.com?subject=Suggerer une modification&body=${message}`)}
+                    onPress = {() => Linking.openURL(`mailto:contactmemefy@gmail.com?subject=Suggerer une modification&body=${message}`)}
                 />
 
             </View>

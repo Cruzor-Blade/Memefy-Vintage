@@ -474,7 +474,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
             <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
           </UserInfoText>
         </UserInfo>
-        {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#000'}, !item.postImg && {fontSize:22, marginHorizontal:7}]}>
+        {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#000'}, !item.postImg && {fontSize:22, marginHorizontal:7}, {fontFamily:"Raleway-Medium"}]}>
           {item.post}</PostText>}
         {item.postImg === null ? <Divider/>
         : //if there is an user image available

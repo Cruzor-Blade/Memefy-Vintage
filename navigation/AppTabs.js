@@ -128,8 +128,8 @@ const AppTabs = () => {
           options={{
             headerLeft : () => (
               <Image
-                source={require('../assets/maintab/memebit.png')}
-                style={{width:120, height:33, marginLeft:20, marginTop:7}}
+                source={require('../assets/maintab/memefy.png')}
+                style={{width:108, height:33, marginLeft:20, marginTop:7}}
               />
             ),
             title:'',

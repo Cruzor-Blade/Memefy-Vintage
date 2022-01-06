@@ -68,7 +68,7 @@ const OnboardingScreen = ({navigation}) => {
             pages={[
                 {
                     backgroundColor: '#a6e4d0',
-                    image: <Image source={require('../assets/onboarding/onboarding-1.png')}/>,
+                    image: <Image source={require('../assets/onboarding/onboarding-1.png')} style={{height:200, width:200}} />,
                     title:onboardingScreen.onboarding_1_Title,
                     subtitle:onboardingScreen.onboarding_1_Subtitle
 

@@ -4,12 +4,12 @@ export default
         nextLabel:"Suivant",
         doneLabel:"TERMINÉ",
         skipLabel:"Passer",
-        onboarding_1_Title:"Bienvenue sur MemeBit",
+        onboarding_1_Title:"Bienvenue sur Memefy",
         onboarding_2_Title:"Gardez le sourire...",
         onboarding_3_Title:"Soyez vous meme",
         onboarding_1_Subtitle:"L'application pour rire et partager des memes",
         onboarding_2_Subtitle:"Riez et echangez sur des blagues tres drôles pour votre sourire quotidien",
-        onboarding_3_Subtitle:"Partagez ce que vous pensez avec les gens qui vous ressemblent. Parce que MemeBit, c'est Comme Chez Vous !",
+        onboarding_3_Subtitle:"Partagez ce que vous pensez avec les gens qui vous ressemblent. Parce que Memefy, c'est Comme Chez Vous !",
     },
     loginScreen : {
         emailPlaceholder:"Email",
@@ -124,7 +124,7 @@ export default
         introduction: "Nous sommes une équipe de jeunes dévéloppeurs.",
         conviction:"Nous aimons ce que nous faisons, et c'est pourquoi nous le faisons encore mieux.",
         contact:"Vous pouvez nous contacter sur WhatsApp en pressant le bouton ci dessous",
-        message: "Salut la team. Je vous contacte à propos de votre application MemeBit et J'aimerai en apprendre un peu plus sur vous :)",
+        message: "Salut la team. Je vous contacte à propos de votre application Memefy et J'aimerai en apprendre un peu plus sur vous :)",
         whatsAppButtonLabel:"       Ecrire sur Whatsapp      ",
     },
     appearanceScreen : {
@@ -133,7 +133,7 @@ export default
         changeLanguageModalTitle:"Changer de langue",
     },
     suggestionsScreen : {
-        message :"Salut a vous la team. J'ecris a propos votre application MemeBit ou j'aimerai apporter quelques suggestions coordialement.",
+        message :"Salut a vous la team. J'ecris a propos votre application Memefy ou j'aimerai apporter quelques suggestions coordialement.",
         introduction : "Parceque nous savons que notre app n'est pas parfaite, mais que nous souhaitons l'améliorer.",
         contact:"Merci de nous envoyer une suggestion par email en cliquant sur le bouton ci dessous.",
         suggestButtonLabel: "       Envoyer une suggestion      "
