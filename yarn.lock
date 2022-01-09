@@ -5892,6 +5892,11 @@ react-native-action-button@^2.8.5:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-admob-native-ads@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-admob-native-ads/-/react-native-admob-native-ads-0.5.0.tgz#c093dcda9d62db8b4262a0fa611448aa9f5b2230"
+  integrity sha512-OMsQZ9RzDVEs48kwrjz9fLthcotTkTtSkQlncFFdSL9L82zx3b1KPA8CYExy9AyyeIQ6gt3b3d1zRtKJa5ZOjw==
+
 react-native-gesture-handler@^1.10.3:
   version "1.10.3"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.10.3.tgz#942bbf2963bbf49fa79593600ee9d7b5dab3cfc0"
@@ -5956,6 +5961,11 @@ react-native-screens@^3.8.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-tracking-transparency@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-tracking-transparency/-/react-native-tracking-transparency-0.1.1.tgz#6426d4c826d0deaed7ed32f707cb2d15b09c3c3f"
+  integrity sha512-yGzpprmZ7dnlScegpoq1uQLuMLR2yDcFVHKF39FB0hxUBmck3G0bKSIbjj1ienM9IgjPvJQPgvG0dX9asyZ7NA==
 
 react-native-vector-icons@^8.1.0:
   version "8.1.0"

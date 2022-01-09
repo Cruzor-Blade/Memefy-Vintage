@@ -29,7 +29,7 @@ export default OptionMenuModel;
 const styles= StyleSheet.create({
     preferencesItems:{
         flexDirection:'row',
-        height:50,
+        height:55,
         borderColor:'#888',
         borderBottomWidth:0.5,
         alignItems:'center'

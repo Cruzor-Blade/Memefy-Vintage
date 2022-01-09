@@ -26,6 +26,8 @@ import moment from 'moment';
 import { AuthContext } from "../navigation/AuthProvider";
 import RNFetchBlob from "rn-fetch-blob";
 import { LanguageContext } from "../languages/languageContext";
+import { Card } from "../styles/FeedStyles";
+import AdView from "../components/ads/AdView";
 
 const PostViewScreen = ({route, navigation}) => {
     const {user} = useContext(AuthContext);
@@ -37,11 +39,19 @@ const PostViewScreen = ({route, navigation}) => {
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showInfo, setShowInfo] = useState (false);
+
+    const [showImageAd, setShowImageAd] = useState(false);
+    
     const currentTheme = useTheme();
 
     const postDetailsOpacity = useRef(new Animated.Value(0)).current;
 
     moment.locale(currentLanguage)
+
+    const onAdClosePress = () => {
+      setShowImageAd(false)
+      // console("Show Image Ad:", showImageAd);
+    };
 
     const getPostData = async() => {
         await firestore()
@@ -225,7 +235,7 @@ const PostViewScreen = ({route, navigation}) => {
             //related to android only
             useDownloadManager: true,
             notification:true,
-            path: PictureDir + '/memebit/MemeBit_' +
+            path: PictureDir + '/memefy/Memefy_' +
             Math.floor(date.getTime() + date.getSeconds()/2) + ext,
             description: 'Image'
           }
@@ -264,6 +274,13 @@ const PostViewScreen = ({route, navigation}) => {
       }
 
       useEffect(() => {
+        // Deciding by a probability of 1/5 if an ad is to be shown on the postView
+        const showImageProb = Math.random();
+        console.log("Show Image Prob", showImageProb)
+        if (showImageProb >= 0.6) {
+          setShowImageAd(true);
+        }
+        //Getting data about the current post  
         getPostData(route.params.postId);
         getUser();
     }, []);
@@ -333,6 +350,10 @@ const PostViewScreen = ({route, navigation}) => {
                     />
                 </ScrollView>
             </TouchableWithoutFeedback>
+            {showImageAd &&
+                    <Card style={{position:'absolute',  marginTop:2, zIndex:2}}>
+                      <AdView closable={true} type="image" media={true} onClosePress={onAdClosePress} />
+                    </Card>}
             
                 <FlatList
                     showsVerticalScrollIndicator={false}
@@ -354,9 +375,11 @@ const PostViewScreen = ({route, navigation}) => {
                             <Text style={{fontSize:16, marginHorizontal:'auto', textAlign:'center', marginHorizontal:25, marginTop:20}}>
                               {postViewScreen.noCommentsTitle}
                             </Text>
-                            <Text style={{fontSize:17, marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold'}}>
-                              {postViewScreen.noCommentsSubtitle}
-                            </Text>
+                            <TouchableOpacity onPress={() => navigation.navigate("CommentsScreen", {postId:route.params.postId})}>
+                              <Text style={{fontSize:17, color:'blue', marginHorizontal:'auto', textAlign:'center', margin:10, fontWeight:'bold'}}>
+                                {postViewScreen.noCommentsSubtitle}
+                              </Text>
+                            </TouchableOpacity>
                         
                         </>
                         )}

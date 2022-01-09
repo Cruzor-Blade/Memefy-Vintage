@@ -11,6 +11,7 @@ import { Container } from '../styles/FeedStyles';
 
 import firestore from '@react-native-firebase/firestore';
 import { defaultProfilePicture } from '../utils/Defaults';
+import AdView from '../components/ads/AdView';
 
 
 
@@ -130,14 +131,15 @@ const HomeScreen = ({navigation}) => {
     fetchPosts(2, true);
   }, [])
 
-  const renderItem = ({ item }) => (
-    <PostCard
-            item={item}
-            onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
-            onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
-            onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
-              />
-  )
+  const renderItem = ({ item }) => {
+    return  (
+      <PostCard
+          item={item}
+          onProfilePress={() => navigation.navigate('ProfileScreen', {userId:item.userId})}
+          onCommentPress={() => navigation.navigate('CommentsScreen', {postId:item.id, uid:item.userId})}
+          onImagePress={() => navigation.navigate('PostViewScreen', {postId:item.id, uid:item.userId, ImgDimensions:item.ImgDimensions})}
+            />
+  )}
 
     const onRefresh = () => {
       setLastDoc(firestore.Timestamp.fromDate(new Date()));

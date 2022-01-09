@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { View, StyleSheet } from "react-native";
 import { LanguageContext } from "../languages/languageContext";
 import OptionMenuModel from "../components/OptionMenuModel";
+import AdView from "../components/ads/AdView";
 
 const Preferences = ({navigation}) =>{
   const {preferencesScreen} = useContext(LanguageContext);
@@ -39,6 +40,8 @@ const Preferences = ({navigation}) =>{
             text={preferencesScreen.aboutLabel}
             image={require('../assets/preferences/about.png')}
           />
+          <AdView type="image" media={false} />
+          <AdView type="image" media={false} />
         </View>
     )
 }

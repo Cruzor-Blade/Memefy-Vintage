@@ -223,6 +223,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-analytics'
 
+    implementation 'com.google.android.gms:play-services-ads:19.8.0'
+
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'
     }

@@ -1,5 +1,6 @@
 import React, {useContext, useState, useEffect, useRef} from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback, StyleSheet, View, Image, Animated } from 'react-native';
+import { StyleSheet, View, Image, Animated } from 'react-native';
+import { TouchableOpacity,TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import firestore from '@react-native-firebase/firestore';
 
 import { windowWidth} from '../utils/Dimentions';
@@ -27,6 +28,8 @@ import { useTheme, Text } from 'react-native-paper';
 import MaskedView from '@react-native-community/masked-view';
 import { LanguageContext } from '../languages/languageContext';
 
+import AdView from './ads/AdView';
+
 const iconSize = 36.0;
 const mvDuration = 500;
 const containerWidth= windowWidth * (3/4);
@@ -44,6 +47,9 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   const [followLoading, setFollowLoading] = useState(false);
   const [comments, setComments] = useState(item.comments);
   const [postReactions, setPostReactions] = useState(item.reactions);
+
+  const [showImageAd, setShowImageAd] = useState(false);
+  const [ShowVideoAd, setShowVideoAd] = useState(false);
   
   const [ changeReactions, setChangeReactions ]= useState({prev:null, current:null});
 
@@ -438,6 +444,12 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   }
 
   useEffect(() => {
+    const showAdProb = Math.random();
+    if (showAdProb >= 0.65 && showAdProb < 0.92) {
+      setShowImageAd(true);
+    } else if (showAdProb >= 0.92) {
+      setShowVideoAd(true);
+    }
     getUser();
     getFirebaseReaction();
     followOpacity.setValue(1);
@@ -453,116 +465,124 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
   }, [currentUserReaction])
 
   return(
-    <Card style={[{width:windowWidth, ...props}, {backgroundColor:currentTheme.dark ? '#333333' : '#f6f6f6'}]}>
-        <UserInfo >
-          <TouchableOpacity onPress={onProfilePress}>
-            <MaskedView
-              style={{width:55, height:55, alignItems:'center', justifyContent:'center'}}
-              maskElement={
-                <ProfileMask source={require('../assets/masks/profileMask.png')}/>
-              }
-              >
-              <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
-            </MaskedView>
-          </TouchableOpacity>
-          <UserInfoText>
+    <>
+      <Card style={[{width:windowWidth, ...props}, {backgroundColor:currentTheme.dark ? '#333333' : '#f6f6f6'}]}>
+          <UserInfo >
             <TouchableOpacity onPress={onProfilePress}>
-              <UserName style={currentTheme.dark ? {color:'#eeeeee'} : {color:'#333333'}}>
-                {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : '...'}
-              </UserName>
+              <MaskedView
+                style={{width:55, height:55, alignItems:'center', justifyContent:'center'}}
+                maskElement={
+                  <ProfileMask source={require('../assets/masks/profileMask.png')}/>
+                }
+                >
+                <UserImg source={{uri : userData ? userData.userImg || defaultProfilePicture : defaultProfilePicture}} />
+              </MaskedView>
             </TouchableOpacity>
-            <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
-          </UserInfoText>
-        </UserInfo>
-        {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#000'}, !item.postImg && {fontSize:22, marginHorizontal:7}, {fontFamily:"Raleway-Medium"}]}>
-          {item.post}</PostText>}
-        {item.postImg === null ? <Divider/>
-        : //if there is an user image available
-        <TouchableOpacity activeOpacity={0.7} onPress={onImagePress}>
-          <View style={{maxHeight:windowWidth*1.3, overflow:'hidden'}}>
-            <PostImg source={{uri: item.postImg}} 
-              style={{height:item.ImgDimensions ? (item.ImgDimensions.height/item.ImgDimensions.width)*windowWidth : 250}}/>
-          </View>
-        </TouchableOpacity>
-        }
-        <InteractionWrapper>
-          <View style={[styles.commentsViewReaction, {backgroundColor:currentTheme.dark ? '#444444' : '#eeeeee'}]}>
-            <TouchableOpacity onPress={onCommentPress}>
-              <View style={styles.commentsView}>
-                <Animated.Image source={require('../assets/reactions/chatBubble.png')}
-                  style={[{height:28, width:26, resizeMode:'contain', tintColor: currentTheme.dark ? '#cccccc': '#222222',
-                    transform:[{scale:chatBubbleScale}]
-                  }]} />
-                  <Text style={{fontSize:11.5}}>{numDisplay(comments)}</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={{width:36, height:44, alignItems:'center', justifyContent:'space-between', marginBottom:-3.5}}>
-              {currentUserReaction ? (
-                <TouchableOpacity onPress={() => onRmvReactionPress()}>
-                  <Image
-                  source={reactions[currentUserReaction]}
-                  style={{height:25, width:25, opacity:0.7}}
-                  />
-                </TouchableOpacity>
-              ) : 
-              <Image
-                  source={require("../assets/reactions/neutral.png")}
-                  style={{height:25, width:25, opacity:0.4}}
-                  />
-              }
-              <Text style={[{fontSize:11.5}]}>{numDisplay(postReactions)}</Text>
+            <UserInfoText>
+              <TouchableOpacity onPress={onProfilePress}>
+                <UserName style={currentTheme.dark ? {color:'#eeeeee'} : {color:'#333333'}}>
+                  {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : '...'}
+                </UserName>
+              </TouchableOpacity>
+              <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
+            </UserInfoText>
+          </UserInfo>
+          {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#000'}, !item.postImg && {fontSize:22, marginHorizontal:7}, {fontFamily:"Raleway-Medium"}]}>
+            {item.post}</PostText>}
+          {item.postImg === null ? <Divider/>
+          : //if there is an user image available
+          <TouchableOpacity activeOpacity={0.7} onPress={onImagePress}>
+            <View style={{maxHeight:windowWidth*1.3, overflow:'hidden'}}>
+              <PostImg source={{uri: item.postImg}} 
+                style={{height:item.ImgDimensions ? (item.ImgDimensions.height/item.ImgDimensions.width)*windowWidth : 250}}/>
             </View>
-          </View>
-          <View style={styles.reactionsContainer}>
-              {!userFollowing && (item.userId != user.uid) ?
-                <Animated.View style={{position:'absolute', left: containerWidth-iconSize*1.75, opacity:followOpacity}}>
-                  <TouchableOpacity onPress={() => onFollow()}>
+          </TouchableOpacity>
+          }
+          <InteractionWrapper>
+            <View style={[styles.commentsViewReaction, {backgroundColor:currentTheme.dark ? '#444444' : '#eeeeee'}]}>
+              <TouchableOpacity onPress={onCommentPress}>
+                <View style={styles.commentsView}>
+                  <Animated.Image source={require('../assets/reactions/chatBubble.png')}
+                    style={[{height:28, width:26, resizeMode:'contain', tintColor: currentTheme.dark ? '#cccccc': '#222222',
+                      transform:[{scale:chatBubbleScale}]
+                    }]} />
+                    <Text style={{fontSize:11.5}}>{numDisplay(comments)}</Text>
+                </View>
+              </TouchableOpacity>
+              <View style={{width:36, height:44, alignItems:'center', justifyContent:'space-between', marginBottom:-3.5}}>
+                {currentUserReaction ? (
+                  <TouchableOpacity onPress={() => onRmvReactionPress()}>
                     <Image
-                      style={{height: 27, width:34.87, resizeMode:'contain'}}
-                      source={require('../assets/reactions/follow.png')}
-                      />
+                    source={reactions[currentUserReaction]}
+                    style={{height:25, width:25, opacity:0.7}}
+                    />
                   </TouchableOpacity>
-                </Animated.View>
-                : null
-              }
-                
-                <View style={[styles.reactionView, {left:laughLeft}]}>
-                    <ReactionItem
-                        reaction={'laugh'}
+                ) : 
+                <Image
+                    source={require("../assets/reactions/neutral.png")}
+                    style={{height:25, width:25, opacity:0.4}}
                     />
-                </View>
-                <View style={[styles.reactionView, {left:heartLeft}]}>
-                    <ReactionItem
-                        reaction={'heart'}
-                        
-                    />
-                </View>
-                <View style={[styles.reactionView, {left:coolLeft}]}>
-                    <ReactionItem
-                        reaction={'cool'}
-                    />
-                </View>
-                <Animated.View style={[styles.reactionView,
-                    {left:dontcareLeft, transform:[{translateX:dontcareTrans}]}]}>
-                    <ReactionItem
-                        reaction={'dontcare'}
-                    />
-                </Animated.View>
-                <Animated.View style={[styles.reactionView,
-                    {left:sadLeft, transform:[{translateX:sadTrans}]}]}>
-                    <ReactionItem
-                        reaction={'sad'}
-                    />
-                </Animated.View>
-                <Animated.View style={[styles.reactionView,
-                    {left:prevLeft, transform: [{translateX:prevTrans}]}]}>
-                    <ReactionItem
-                        reaction={'prev'}
-                    />
-                </Animated.View>
+                }
+                <Text style={[{fontSize:11.5}]}>{numDisplay(postReactions)}</Text>
+              </View>
             </View>
-        </InteractionWrapper>
-      </Card>
+            <View style={styles.reactionsContainer}>
+                {!userFollowing && (item.userId != user.uid) ?
+                  <Animated.View style={{position:'absolute', left: containerWidth-iconSize*1.75, opacity:followOpacity}}>
+                    <TouchableOpacity onPress={() => onFollow()}>
+                      <Image
+                        style={{height: 27, width:34.87, resizeMode:'contain'}}
+                        source={require('../assets/reactions/follow.png')}
+                        />
+                    </TouchableOpacity>
+                  </Animated.View>
+                  : null
+                }
+                  
+                  <View style={[styles.reactionView, {left:laughLeft}]}>
+                      <ReactionItem
+                          reaction={'laugh'}
+                      />
+                  </View>
+                  <View style={[styles.reactionView, {left:heartLeft}]}>
+                      <ReactionItem
+                          reaction={'heart'}
+                          
+                      />
+                  </View>
+                  <View style={[styles.reactionView, {left:coolLeft}]}>
+                      <ReactionItem
+                          reaction={'cool'}
+                      />
+                  </View>
+                  <Animated.View style={[styles.reactionView,
+                      {left:dontcareLeft, transform:[{translateX:dontcareTrans}]}]}>
+                      <ReactionItem
+                          reaction={'dontcare'}
+                      />
+                  </Animated.View>
+                  <Animated.View style={[styles.reactionView,
+                      {left:sadLeft, transform:[{translateX:sadTrans}]}]}>
+                      <ReactionItem
+                          reaction={'sad'}
+                      />
+                  </Animated.View>
+                  <Animated.View style={[styles.reactionView,
+                      {left:prevLeft, transform: [{translateX:prevTrans}]}]}>
+                      <ReactionItem
+                          reaction={'prev'}
+                      />
+                  </Animated.View>
+              </View>
+          </InteractionWrapper>
+        </Card>
+        {showImageAd &&
+        <Card><AdView type="image" media={true} /></Card>}
+
+        {ShowVideoAd && 
+        <Card><AdView type="video" media={true} /></Card>
+        }
+      </>
   )
 }
 
