@@ -137,7 +137,7 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.memebit"
+        applicationId "com.memefy"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -222,6 +222,8 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     implementation 'com.google.firebase:firebase-analytics'
+
+    implementation 'com.google.android.gms:play-services-basement:17.5.0'
 
     implementation 'com.google.android.gms:play-services-ads:19.8.0'
 

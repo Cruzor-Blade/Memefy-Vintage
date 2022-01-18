@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, DeviceEventEmitter, Platform, Text, View} from 'react-native';
+import { useTheme } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NativeAdView, {
   AdvertiserView,
@@ -17,12 +18,13 @@ import Antdesign from 'react-native-vector-icons/AntDesign';
 
 
 const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMount = true}) => {
-  const [aspectRatio, setAspectRatio] = useState(1.5);
+  const [aspectRatio, setAspectRatio] = useState(1);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const nativeAdRef = useRef();
 
+  const currentTheme = useTheme();
   const onAdFailedToLoad = event => {
     setError(true);
     setLoading(false);
@@ -209,18 +211,21 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
               style={{
                 fontWeight: 'bold',
                 fontSize: 13,
+                color: currentTheme.dark ? "#dddddd" : "#333333"
               }}
             />
             <TaglineView
               numberOfLines={2}
               style={{
                 fontSize: 11,
+                color: currentTheme.dark ? "#dddddd" : "#333333"
               }}
             />
             <AdvertiserView
               style={{
                 fontSize: 10,
                 color: 'gray',
+                color: currentTheme.dark ? "#dddddd" : "#333333"
               }}
             />
 
@@ -232,6 +237,7 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
               <StoreView
                 style={{
                   fontSize: 12,
+                  color: currentTheme.dark ? "#dddddd" : "#333333"
                 }}
               />
               <StarRatingView
@@ -305,6 +311,7 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
               fontSize: 13,
               flexWrap: 'wrap',
               textAlign: 'center',
+              color: currentTheme.dark ? "#ffffff" : "#333333"
             }}
           />
         }

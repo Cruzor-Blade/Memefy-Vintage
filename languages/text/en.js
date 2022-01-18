@@ -118,6 +118,7 @@ export default
         appearanceLabel : "Appearance and personalization",
         suggestionsLabel : "Suggestions",
         aboutLabel: "About Us",
+        shareApp: "Share Memefy witrh friends",
     },
     aboutScreen : {
         privacyPolicy:"Privacy Policy",

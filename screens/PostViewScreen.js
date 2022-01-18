@@ -28,6 +28,7 @@ import RNFetchBlob from "rn-fetch-blob";
 import { LanguageContext } from "../languages/languageContext";
 import { Card } from "../styles/FeedStyles";
 import AdView from "../components/ads/AdView";
+import { AdManager } from "react-native-admob-native-ads";
 
 const PostViewScreen = ({route, navigation}) => {
     const {user} = useContext(AuthContext);
@@ -273,13 +274,71 @@ const PostViewScreen = ({route, navigation}) => {
         ).start();
       }
 
+      const configureAds = () => {
+        const NATIVE_AD_ID =
+          Platform.OS === 'ios'
+            ? 'ca-app-pub-3940256099942544/3986624511'
+            : 'ca-app-pub-3999653499390156/7964949490';
+    
+        const NATIVE_AD_VIDEO_ID =
+          Platform.OS === 'ios'
+            ? 'ca-app-pub-3940256099942544/2521693316'
+            : 'ca-app-pub-3940256099942544/1044960115';
+    
+        AdManager.registerRepository({
+          name: 'imageAd',
+          adUnitId: NATIVE_AD_ID,
+          numOfAds: 5,
+          nonPersonalizedAdsOnly: false,
+          videoOptions:{
+            mute: false
+          },
+          expirationPeriod: 3600000, // in milliseconds (optional)
+          mediationEnabled: false,
+        }).then(result => {
+          console.log('registered: ', result);
+        });
+        
+        // unmute video test ad
+        AdManager.registerRepository({
+          name: 'videoAd',
+          adUnitId: NATIVE_AD_VIDEO_ID,
+          numOfAds: 3,
+          nonPersonalizedAdsOnly: false,
+          videoOptions:{
+            mute: false
+          },
+          expirationPeriod: 3600000, // in milliseconds (optional)
+          mediationEnabled: false,
+        }).then(result => {
+          console.log('registered: ', result);
+        });
+    
+        // mute video test ad
+        AdManager.registerRepository({
+          name: 'muteVideoAd',
+          adUnitId: NATIVE_AD_VIDEO_ID,
+          numOfAds: 3,
+          nonPersonalizedAdsOnly: false,
+          videoOptions:{
+            mute: false
+          },
+          expirationPeriod: 3600000, // in milliseconds (optional)
+          mediationEnabled: false,
+        }).then(result => {
+          console.log('registered: ', result);
+        });
+      }
+
       useEffect(() => {
         // Deciding by a probability of 1/5 if an ad is to be shown on the postView
         const showImageProb = Math.random();
         console.log("Show Image Prob", showImageProb)
         if (showImageProb >= 0.6) {
+          configureAds();
           setShowImageAd(true);
         }
+       
         //Getting data about the current post  
         getPostData(route.params.postId);
         getUser();
@@ -308,7 +367,7 @@ const PostViewScreen = ({route, navigation}) => {
                           </MaskedView>
                       </TouchableOpacity>
                       <UserInfoText>
-                          <TouchableOpacity onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
+                          <TouchableOpacity style={styles.userName} onPress={() => navigation.navigate('ProfileScreen', {userId:post.userId})}>
                               <UserName style={{color:currentTheme.dark ? "#eeeeee" :"#222222"}}>
                                   {userData ? userData.fname || 'No' : '' } {userData ? userData.lname || 'Name' : ''}
                               </UserName>
@@ -401,11 +460,20 @@ const styles = StyleSheet.create({
         width:windowWidth,
         maxHeight:windowWidth*1.2,
         elevation:8,
-        backgroundColor:"#333",
+        backgroundColor:"#f8f8f8",
         shadowOffset:{
           width:0,
           height:3
         }
+    },
+    userName:{
+      color:"#000000"
+      // textShadowColor: 'rgba(128, 128, 128, 0.75)',
+      // textShadowOffset: {
+      //   width: -3,
+      //   height:3
+      // },
+      // textShadowRadius:10
     },
     image:{
         position:'relative',

@@ -1,9 +1,10 @@
-package com.memebit;
+package com.memefy;
 
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.ammarahmed.rnadmob.nativeads.RNAdMobNativePackage;
 import com.ammarahmed.rnadmob.nativeads.RNAdMobNativePackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.oblador.vectoricons.VectorIconsPackage;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { TouchableRipple, Text, useTheme } from 'react-native-paper';
 
-const OptionMenuModel = ({navigation, screen, text, onRipplePress, image, imageStyles, ...props}) => {
+const OptionMenuModel = ({navigation, screen, text, onRipplePress, imageRequire, ImageComp, imageStyles, ...props}) => {
   console.log("Menu text:", text)
   const darkTheme = useTheme().dark
     return (
@@ -14,8 +14,9 @@ const OptionMenuModel = ({navigation, screen, text, onRipplePress, image, imageS
           }
         }}
             >
-            <View style={[styles.preferencesItems, {paddingLeft: !image ? 10 :0,...props}]}>
-              {image ? <Image source={image} style={[styles.imageLabel, {...imageStyles}, {tintColor: darkTheme ? "#cccccc" : "#111111"}]}/> : null}
+            <View style={[styles.preferencesItems, {paddingLeft: !imageRequire || ImageComp ? 10 :0,...props}]}>
+              {imageRequire ? <Image source={imageRequire} style={[styles.imageLabel, {...imageStyles}, {tintColor: darkTheme ? "#cccccc" : "#111111"}]}/> : null}
+              {ImageComp ? <ImageComp/> : null}
               <Text style={styles.preferencesText}>
                           {text}
               </Text>
@@ -35,12 +36,12 @@ const styles= StyleSheet.create({
         alignItems:'center'
       },
       preferencesText:{
-        fontSize:18
+        fontSize:18,
+        marginLeft:7,
       },
       imageLabel:{
         height:30,
         width:30,
-        marginRight:7,
         marginLeft:3
       }
 })

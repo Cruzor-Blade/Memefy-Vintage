@@ -53,7 +53,7 @@ export const MediaView = ({aspectRatio = 1.5}) => {
 
     >
       <Text>
-        Pause/Play
+        {/* Pause/Play */}
       </Text>
     </TouchableOpacity>
 

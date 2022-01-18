@@ -1,6 +1,5 @@
 import React, {useContext, useState, useEffect, useRef} from 'react';
-import { StyleSheet, View, Image, Animated } from 'react-native';
-import { TouchableOpacity,TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { StyleSheet, View, Image, Animated, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 import { windowWidth} from '../utils/Dimentions';
@@ -445,10 +444,11 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
 
   useEffect(() => {
     const showAdProb = Math.random();
-    if (showAdProb >= 0.65 && showAdProb < 0.92) {
+    if (showAdProb >= 0.8 && showAdProb < 0.92) {
       setShowImageAd(true);
     } else if (showAdProb >= 0.92) {
-      setShowVideoAd(true);
+      // setShowVideoAd(true);
+      setShowImageAd(true);
     }
     getUser();
     getFirebaseReaction();
@@ -577,10 +577,10 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
           </InteractionWrapper>
         </Card>
         {showImageAd &&
-        <Card><AdView type="image" media={true} /></Card>}
+        <Card style={{backgroundColor:currentTheme.dark ? '#333333' : '#f6f6f6'}}><AdView type="image" media={true} /></Card>}
 
         {ShowVideoAd && 
-        <Card><AdView type="video" media={true} /></Card>
+        <Card style={{backgroundColor:currentTheme.dark ? '#333333' : '#f6f6f6'}}><AdView type="video" media={true} /></Card>
         }
       </>
   )
@@ -610,7 +610,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     borderBottomLeftRadius:8,
     borderBottomRightRadius:8,
-    paddingVertical:10
+    // paddingVertical:10
   },
   reactionView: {
       height:iconSize+2,
@@ -635,6 +635,7 @@ const styles = StyleSheet.create({
   commentsView: {
     flexDirection:'column',
     alignItems:'center',
-    marginTop:3
+    marginTop:3,
+    width:42
   }
 })

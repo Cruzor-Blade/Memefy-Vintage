@@ -117,6 +117,7 @@ export default
         appearanceLabel : "Apparence et personalisation",
         suggestionsLabel : "Boite a suggestions",
         aboutLabel: "À propos",
+        shareApp: "Partager Memefy avec des amis",
     },
     aboutScreen : {
         privacyPolicy:"Politique de Confidentialité",

@@ -1,6 +1,4 @@
-rootProject.name = 'Memebit'
-include ':react-native-admob-native-ads'
-project(':react-native-admob-native-ads').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-admob-native-ads/android')
+rootProject.name = 'Memefy'
 include ':react-native-admob-native-ads'
 project(':react-native-admob-native-ads').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-admob-native-ads/android')
 include ':rn-fetch-blob'

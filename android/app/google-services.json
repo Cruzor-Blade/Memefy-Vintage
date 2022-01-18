@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:85754735136:android:37fb9384d7477148a46a45",
+        "mobilesdk_app_id": "1:85754735136:android:bd3a20efe20ac80fa46a45",
         "android_client_info": {
-          "package_name": "com.memebit"
+          "package_name": "com.memefy"
         }
       },
       "oauth_client": [
@@ -36,9 +36,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:85754735136:android:eeb2a803680187dea46a45",
+        "mobilesdk_app_id": "1:85754735136:android:bf31d7a61145446da46a45",
         "android_client_info": {
-          "package_name": "com.tekland.memebit"
+          "package_name": "com.memefy"
         }
       },
       "oauth_client": [
