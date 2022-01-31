@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Platform, Share } from "react-native";
+import { View, StyleSheet, Platform, Share, Linking } from "react-native";
 import { LanguageContext } from "../languages/languageContext";
 import OptionMenuModel from "../components/OptionMenuModel";
 import AdView from "../components/ads/AdView";
@@ -9,7 +9,7 @@ import { useTheme } from "react-native-paper";
 
 
 const Preferences = ({navigation}) =>{
-  const linkToApp = 'memefy.page.link/dhgB';
+  const linkToApp = 'https://play.google.com/store/apps/details?id=com.memefy';
   const {preferencesScreen} = useContext(LanguageContext);
   const currentTheme = useTheme();
   // const OptionMenuModel = ({screen, text, ...props}) => (
@@ -90,6 +90,14 @@ const Preferences = ({navigation}) =>{
       }
     }
 
+    const openStore = () => {
+      try {
+        Linking.openURL("market://details?id=com.memefy");
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
     useEffect(() => {
       configureAds();
     }, [])
@@ -119,10 +127,14 @@ const Preferences = ({navigation}) =>{
             imageStyles={{height:33, width:33}}
           />
           <OptionMenuModel
-            text={preferencesScreen.aboutLabel}
             ImageComp={() => <Foundation  color={currentTheme.dark ? "#cccccc" : "#111111"} name="share" size={30} />}
             text={preferencesScreen.shareApp}
             onRipplePress={shareApp}
+          />
+          <OptionMenuModel
+            ImageComp={() => <Foundation  color={currentTheme.dark ? "#cccccc" : "#111111"} name="star" size={30} />}
+            text={preferencesScreen.rateUs}
+            onRipplePress={openStore}
           />
           <AdView type="image" media={false} />
         </View>

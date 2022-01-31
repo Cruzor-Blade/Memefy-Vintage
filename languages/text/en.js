@@ -21,7 +21,7 @@ export default
     },
     signUpScreen : {
         createAccountTitle:"Create an Account",
-        usernamePlaceholder:"Enter a username",
+        usernamePlaceholder:"Enter a username (lower cased)",
         emailPlaceholder:"Email",
         passwordPlaceholder:"Password",
         confirmPasswordPlaceholder:"Confirm Password",
@@ -118,7 +118,8 @@ export default
         appearanceLabel : "Appearance and personalization",
         suggestionsLabel : "Suggestions",
         aboutLabel: "About Us",
-        shareApp: "Share Memefy witrh friends",
+        shareApp: "Share Memefy with friends",
+        rateUs: "Rate Us Five 5 Stars"
     },
     aboutScreen : {
         privacyPolicy:"Privacy Policy",

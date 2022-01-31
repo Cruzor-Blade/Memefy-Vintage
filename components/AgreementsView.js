@@ -26,12 +26,12 @@ const AgreementsView = ({type, visible, onClosePress, ...props}) => {
 
       const headerTitle = {
           privacypolicy:{
-            fr:"Politique de Confidentialté de MemeBit",
-            en:"MemeBit Privacy Policy"
+            fr:"Politique de Confidentialté de Memefy",
+            en:"Memefy Privacy Policy"
           },
           termsofuse:{
-            fr:"Termes d'Utilisation de MemeBit",
-            en:"MemeBit Terms of Use"
+            fr:"Termes d'Utilisation de Memefy",
+            en:"Memefy Terms of Use"
           }
       }
 
