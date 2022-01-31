@@ -1,17 +1,117 @@
-import React, {createContext, useState} from 'react';
+import React, {createContext, useEffect, useState} from 'react';
 
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AdManager } from 'react-native-admob-native-ads';
+import { Platform } from 'react-native';
 
 export const ActionsContext = createContext();
 
 export const ActionProvider = ({children}) => {
     const [followLoading, setFollowLoading] = useState (false);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const [adsEnabled, setAdsEnabled] = useState(false);
+    
+    useEffect(async ()=> {
+        const snapshot = await firestore().collection('config').doc('ads').get();
+        const {showAds, HSi, HSv, HSmv,  PVSi, PSb} = snapshot.data()
+        if (showAds){
+            setAdsEnabled(true);
+            AdManager.setRequestConfiguration({
+            tagForChildDirectedTreatment: false,
+        });
+        
+        const NATIVE_AD_ID =
+            Platform.OS === 'ios'
+            ? 'ca-app-pub-3940256099942544/3986624511'
+            : 'ca-app-pub-3940256099942544/2247696110';
+        
+        const NATIVE_AD_VIDEO_ID =
+            Platform.OS === 'ios'
+            ? 'ca-app-pub-3940256099942544/2521693316'
+            : 'ca-app-pub-3940256099942544/1044960115';
+        
+        // image test ad
+        AdManager.registerRepository({
+            name: 'HomeScreen image',
+            adUnitId: HSi, //for android
+            numOfAds: 3,
+            nonPersonalizedAdsOnly: false,
+            videoOptions:{
+            mute: false
+            },
+            expirationPeriod: 3600000, // in milliseconds (optional)
+            mediationEnabled: false,
+        }).then(result => {
+            console.log('registered: ', result);
+        });
+        
+        AdManager.registerRepository({
+            name: 'PostViewScreen image',
+            adUnitId: PVSi, //for android
+            numOfAds: 3,
+            nonPersonalizedAdsOnly: false,
+            videoOptions:{
+            mute: false
+            },
+            expirationPeriod: 3600000, // in milliseconds (optional)
+            mediationEnabled: false,
+        }).then(result => {
+            console.log('registered: ', result);
+        });
+        
+        AdManager.registerRepository({
+            name: 'PreferencesScreen banner',
+            adUnitId: PSb,
+            numOfAds: 3,
+            nonPersonalizedAdsOnly: false,
+            videoOptions:{
+            mute: false
+            },
+            expirationPeriod: 3600000, // in milliseconds (optional)
+            mediationEnabled: false,
+        }).then(result => {
+            console.log('registered: ', result);
+        });
+        
+        // unmute video test ad
+        AdManager.registerRepository({
+            name: 'HomeScreen video',
+            adUnitId: HSv,
+            numOfAds: 3,
+            nonPersonalizedAdsOnly: false,
+            videoOptions:{
+            mute: false
+            },
+            expirationPeriod: 3600000, // in milliseconds (optional)
+            mediationEnabled: false,
+        }).then(result => {
+            console.log('registered: ', result);
+        });
+        
+        // mute video test ad
+        AdManager.registerRepository({
+            name: 'HomeScreen muteVideo',
+            adUnitId: HSmv,
+            numOfAds: 3,
+            nonPersonalizedAdsOnly: false,
+            videoOptions:{
+            mute: false
+            },
+            expirationPeriod: 3600000, // in milliseconds (optional)
+            mediationEnabled: false,
+        }).then(result => {
+            console.log('registered: ', result);
+        });
+        } else {
+        console.log('ads disabled on the server.')
+        }
+  }, []);
     
     return (
         <ActionsContext.Provider
             value={{
+                adsEnabled,
                 followLoading,
                 isDarkTheme,
                 setIsDarkTheme,

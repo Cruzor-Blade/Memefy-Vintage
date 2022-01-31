@@ -29,10 +29,12 @@ import { LanguageContext } from "../languages/languageContext";
 import { Card } from "../styles/FeedStyles";
 import AdView from "../components/ads/AdView";
 import { AdManager } from "react-native-admob-native-ads";
+import { ActionsContext } from "../userContext/Actions";
 
 const PostViewScreen = ({route, navigation}) => {
     const {user} = useContext(AuthContext);
     const {postViewScreen, currentLanguage} = useContext(LanguageContext);
+    const {adsEnabled} = useContext(ActionsContext);
 
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
@@ -274,68 +276,11 @@ const PostViewScreen = ({route, navigation}) => {
         ).start();
       }
 
-      const configureAds = () => {
-        const NATIVE_AD_ID =
-          Platform.OS === 'ios'
-            ? 'ca-app-pub-3940256099942544/3986624511'
-            : 'ca-app-pub-3999653499390156/7964949490';
-    
-        const NATIVE_AD_VIDEO_ID =
-          Platform.OS === 'ios'
-            ? 'ca-app-pub-3940256099942544/2521693316'
-            : 'ca-app-pub-3940256099942544/1044960115';
-    
-        AdManager.registerRepository({
-          name: 'imageAd',
-          adUnitId: NATIVE_AD_ID,
-          numOfAds: 5,
-          nonPersonalizedAdsOnly: false,
-          videoOptions:{
-            mute: false
-          },
-          expirationPeriod: 3600000, // in milliseconds (optional)
-          mediationEnabled: false,
-        }).then(result => {
-          console.log('registered: ', result);
-        });
-        
-        // unmute video test ad
-        AdManager.registerRepository({
-          name: 'videoAd',
-          adUnitId: NATIVE_AD_VIDEO_ID,
-          numOfAds: 3,
-          nonPersonalizedAdsOnly: false,
-          videoOptions:{
-            mute: false
-          },
-          expirationPeriod: 3600000, // in milliseconds (optional)
-          mediationEnabled: false,
-        }).then(result => {
-          console.log('registered: ', result);
-        });
-    
-        // mute video test ad
-        AdManager.registerRepository({
-          name: 'muteVideoAd',
-          adUnitId: NATIVE_AD_VIDEO_ID,
-          numOfAds: 3,
-          nonPersonalizedAdsOnly: false,
-          videoOptions:{
-            mute: false
-          },
-          expirationPeriod: 3600000, // in milliseconds (optional)
-          mediationEnabled: false,
-        }).then(result => {
-          console.log('registered: ', result);
-        });
-      }
-
       useEffect(() => {
         // Deciding by a probability of 1/5 if an ad is to be shown on the postView
         const showImageProb = Math.random();
         console.log("Show Image Prob", showImageProb)
         if (showImageProb >= 0.6) {
-          configureAds();
           setShowImageAd(true);
         }
        
@@ -400,19 +345,20 @@ const PostViewScreen = ({route, navigation}) => {
               switchDetailsVisible();
               setTimeout(() => setShowInfo(!showInfo), showInfo ? 700:0)
               }}>
-                <ScrollView style={styles.imageContainer}>
+               
+                  <ScrollView style={styles.imageContainer}>
                     <ImageBackground
                         source={post ? {uri: post.postImg} : require("../assets/default-img.jpg")}
                         style={[styles.image,
                           {width:windowWidth,
                             height: (route.params.ImgDimensions.height/route.params.ImgDimensions.width)*windowWidth}]}
                     />
-                </ScrollView>
+                  </ScrollView>
+               
             </TouchableWithoutFeedback>
-            {showImageAd &&
-                    <Card style={{position:'absolute',  marginTop:2, zIndex:2}}>
-                      <AdView closable={true} type="image" media={true} onClosePress={onAdClosePress} />
-                    </Card>}
+            { adsEnabled && showImageAd && <View style={{zIndex:3, position:'absolute', width:windowWidth, borderRadius:10, marginTop:2, backgroundColor:'#cccccc'}} >
+              <AdView closable onClosePress={onAdClosePress} name={"HomeScreen video"} media={true} />
+            </View>}
             
                 <FlatList
                     showsVerticalScrollIndicator={false}

@@ -35,7 +35,7 @@ const containerWidth= windowWidth * (3/4);
 
 const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}) => {
   const {user} = useContext(AuthContext);
-  const {onFollowUser} = useContext(ActionsContext);
+  const {onFollowUser, adsEnabled} = useContext(ActionsContext);
   const {selectedLanguage} = useContext(LanguageContext);
   const currentTheme = useTheme();
   
@@ -446,9 +446,9 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
     const showAdProb = Math.random();
     if (showAdProb >= 0.8 && showAdProb < 0.92) {
       setShowImageAd(true);
-    } else if (showAdProb >= 0.92) {
-      // setShowVideoAd(true);
-      setShowImageAd(true);
+    } else if (showAdProb >= 0.97) {
+      setShowVideoAd(true);
+      // setShowImageAd(true);
     }
     getUser();
     getFirebaseReaction();
@@ -576,12 +576,8 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
               </View>
           </InteractionWrapper>
         </Card>
-        {showImageAd &&
-        <Card style={{backgroundColor:currentTheme.dark ? '#333333' : '#f6f6f6'}}><AdView type="image" media={true} /></Card>}
-
-        {ShowVideoAd && 
-        <Card style={{backgroundColor:currentTheme.dark ? '#333333' : '#f6f6f6'}}><AdView type="video" media={true} /></Card>
-        }
+        { adsEnabled && showImageAd && <Card><AdView name={"HomeScreen image"} media={true} /></Card>}
+        { adsEnabled && ShowVideoAd && <Card><AdView name={"HomeScreen video"} media={true} /></Card>}
       </>
   )
 }

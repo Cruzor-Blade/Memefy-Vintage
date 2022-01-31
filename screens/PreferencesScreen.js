@@ -6,11 +6,13 @@ import AdView from "../components/ads/AdView";
 import { AdManager } from "react-native-admob-native-ads";
 import Foundation from 'react-native-vector-icons/Foundation';
 import { useTheme } from "react-native-paper";
+import { ActionsContext } from "../userContext/Actions";
 
 
 const Preferences = ({navigation}) =>{
   const linkToApp = 'https://play.google.com/store/apps/details?id=com.memefy';
   const {preferencesScreen} = useContext(LanguageContext);
+  const {adsEnabled} = useContext(ActionsContext);
   const currentTheme = useTheme();
   // const OptionMenuModel = ({screen, text, ...props}) => (
     //   <TouchableOpacity onPress={() =>
@@ -23,62 +25,6 @@ const Preferences = ({navigation}) =>{
     //     </View>
     // </TouchableOpacity>
     // )
-
-    const configureAds = () => {
-      const NATIVE_AD_ID =
-        Platform.OS === 'ios'
-          ? 'ca-app-pub-3940256099942544/3986624511'
-          : 'ca-app-pub-3999653499390156/6180916923';
-  
-      const NATIVE_AD_VIDEO_ID =
-        Platform.OS === 'ios'
-          ? 'ca-app-pub-3940256099942544/2521693316'
-          : 'ca-app-pub-3940256099942544/1044960115';
-  
-      AdManager.registerRepository({
-        name: 'imageAd',
-        adUnitId: NATIVE_AD_ID,
-        numOfAds: 2,
-        nonPersonalizedAdsOnly: false,
-        videoOptions:{
-          mute: false
-        },
-        expirationPeriod: 3600000, // in milliseconds (optional)
-        mediationEnabled: false,
-      }).then(result => {
-        console.log('registered: ', result);
-      });
-      
-      // unmute video test ad
-      AdManager.registerRepository({
-        name: 'videoAd',
-        adUnitId: NATIVE_AD_VIDEO_ID,
-        numOfAds: 3,
-        nonPersonalizedAdsOnly: false,
-        videoOptions:{
-          mute: false
-        },
-        expirationPeriod: 3600000, // in milliseconds (optional)
-        mediationEnabled: false,
-      }).then(result => {
-        console.log('registered: ', result);
-      });
-  
-      // mute video test ad
-      AdManager.registerRepository({
-        name: 'muteVideoAd',
-        adUnitId: NATIVE_AD_VIDEO_ID,
-        numOfAds: 3,
-        nonPersonalizedAdsOnly: false,
-        videoOptions:{
-          mute: false
-        },
-        expirationPeriod: 3600000, // in milliseconds (optional)
-        mediationEnabled: false,
-      }).then(result => {
-        console.log('registered: ', result);
-      });
-    }
 
     const shareApp = async () => {
       try {
@@ -98,9 +44,6 @@ const Preferences = ({navigation}) =>{
       }
     }
 
-    useEffect(() => {
-      configureAds();
-    }, [])
 
     return(
         <View style={{marginTop:10}}>
@@ -136,7 +79,7 @@ const Preferences = ({navigation}) =>{
             text={preferencesScreen.rateUs}
             onRipplePress={openStore}
           />
-          <AdView type="image" media={false} />
+          { adsEnabled && <AdView name="PreferencesScreen banner" media={false} />}
         </View>
     )
 }

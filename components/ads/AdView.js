@@ -1,7 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {ActivityIndicator, DeviceEventEmitter, Platform, Text, View} from 'react-native';
-import { useTheme } from 'react-native-paper';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import NativeAdView, {
   AdvertiserView,
   CallToActionView,
@@ -11,20 +9,19 @@ import NativeAdView, {
   StoreView,
   TaglineView,
 } from 'react-native-admob-native-ads';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {MediaView} from './MediaView';
-import {adUnitIDs, Events, Logger } from './Utils';
+import {adUnitIDs, Events, Logger} from './Utils';
 
-import Antdesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-
-const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMount = true}) => {
-  const [aspectRatio, setAspectRatio] = useState(1);
+const AdView = React.memo(({index, media, closable, onClosePress, name, loadOnMount = true}) => {
+  const [aspectRatio, setAspectRatio] = useState(1.5);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const nativeAdRef = useRef();
 
-  const currentTheme = useTheme();
   const onAdFailedToLoad = event => {
     setError(true);
     setLoading(false);
@@ -152,9 +149,9 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
       onAdClicked={onAdClicked}
       onAdImpression={onAdImpression}
       onNativeAdLoaded={onNativeAdLoaded}
-      refreshInterval={60000}
+      refreshInterval={60000 * 2}
       style={{
-        width: '98%',
+        width: '100%',
         alignSelf: 'center',
         backgroundColor:"transparent"
       }}
@@ -162,7 +159,7 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
         customControlsRequested:true,
       }}
        // adUnitID={type === 'image' ? adUnitIDs.image : adUnitIDs.video} // REPLACE WITH NATIVE_AD_VIDEO_ID for video ads.
-      repository={type === 'image' ? 'imageAd' : 'videoAd'}
+      repository={name}
         >
       <View
         style={{
@@ -211,21 +208,18 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
               style={{
                 fontWeight: 'bold',
                 fontSize: 13,
-                color: currentTheme.dark ? "#dddddd" : "#333333"
               }}
             />
             <TaglineView
               numberOfLines={2}
               style={{
                 fontSize: 11,
-                color: currentTheme.dark ? "#dddddd" : "#333333"
               }}
             />
             <AdvertiserView
               style={{
                 fontSize: 10,
                 color: 'gray',
-                color: currentTheme.dark ? "#dddddd" : "#333333"
               }}
             />
 
@@ -237,7 +231,6 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
               <StoreView
                 style={{
                   fontSize: 12,
-                  color: currentTheme.dark ? "#dddddd" : "#333333"
                 }}
               />
               <StarRatingView
@@ -251,71 +244,41 @@ const AdView = React.memo(({index, media, type, closable, onClosePress, loadOnMo
               />
             </View>
           </View>
-          {closable ? 
+
           <View>
-          <TouchableOpacity onPress={onClosePress}>
-            <Antdesign
-              name="closecircle"
-              color="#666666"
-              size={24}
-              style={{marginBottom:5, alignSelf:'flex-end'}}
+            {closable && 
+            <TouchableWithoutFeedback onPress={onClosePress}>
+              <View style={{position:'relative', height:30, width:'100%'}} >
+                <Ionicons name="close-circle" size={26} style={{position:'absolute', top:-4, right:0}} />
+              </View>
+            </TouchableWithoutFeedback>
+            }
+            <CallToActionView
+              style={[{
+                minHeight: 45,
+                paddingHorizontal: 12,
+                justifyContent: 'center',
+                alignItems: 'center',
+                elevation: 10,
+                maxWidth: 100,
+                width: 80,
+              },Platform.OS === "ios" ? {
+              backgroundColor: '#00ff00',
+              borderRadius: 5,
+            } : {}]}
+
+              buttonAndroidStyle={{
+                backgroundColor: '#00ff00',
+                borderRadius: 5,
+              }}
+              allCaps
+              textStyle={{
+                fontSize: 13,
+                flexWrap: 'wrap',
+                textAlign: 'center',
+              }}
             />
-          </TouchableOpacity>
-          <CallToActionView
-            style={[{
-              minHeight: 45,
-              paddingHorizontal: 12,
-              justifyContent: 'center',
-              alignItems: 'center',
-              elevation: 10,
-              maxWidth: 100,
-              width: 80,
-            },Platform.OS === "ios" ? {
-            backgroundColor: '#00ff00',
-            borderRadius: 5,
-          } : {}]}
-
-            buttonAndroidStyle={{
-              backgroundColor: '#00ff00',
-              borderRadius: 5,
-            }}
-            allCaps
-            textStyle={{
-              fontSize: 13,
-              flexWrap: 'wrap',
-              textAlign: 'center',
-            }}
-          />
-        </View>
-        :
-        <CallToActionView
-            style={[{
-              minHeight: 45,
-              paddingHorizontal: 12,
-              justifyContent: 'center',
-              alignItems: 'center',
-              elevation: 10,
-              maxWidth: 100,
-              width: 80,
-            },Platform.OS === "ios" ? {
-            backgroundColor: '#00ff00',
-            borderRadius: 5,
-          } : {}]}
-
-            buttonAndroidStyle={{
-              backgroundColor: '#00ff00',
-              borderRadius: 5,
-            }}
-            allCaps
-            textStyle={{
-              fontSize: 13,
-              flexWrap: 'wrap',
-              textAlign: 'center',
-              color: currentTheme.dark ? "#ffffff" : "#333333"
-            }}
-          />
-        }
-          
+          </View>
         </View>
         {media ? <MediaView aspectRatio={aspectRatio} /> : null}
       </View>
