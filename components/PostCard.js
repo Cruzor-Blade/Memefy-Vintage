@@ -487,8 +487,8 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
               <PostTime>{moment(item.postTime.toDate()).fromNow()}</PostTime>
             </UserInfoText>
           </UserInfo>
-          {item.post && <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#000'}, !item.postImg && {fontSize:22, marginHorizontal:7}, {fontFamily:"Raleway-Medium"}]}>
-            {item.post}</PostText>}
+          {item.post ? <PostText style={[currentTheme.dark ? {color:'#cccccc'} : {color:'#000'}, !item.postImg && {fontSize:22, marginHorizontal:7}, {fontFamily:"Raleway-Medium"}]}>
+            {item.post}</PostText> : null}
           {item.postImg === null ? <Divider/>
           : //if there is an user image available
           <TouchableOpacity activeOpacity={0.7} onPress={onImagePress}>
@@ -576,8 +576,8 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
               </View>
           </InteractionWrapper>
         </Card>
-        { adsEnabled && showImageAd && <Card><AdView name={"HomeScreen image"} media={true} /></Card>}
-        { adsEnabled && ShowVideoAd && <Card><AdView name={"HomeScreen video"} media={true} /></Card>}
+        { adsEnabled && showImageAd ? <Card><AdView name={"HomeScreen image"} media={true} /></Card> : null}
+        { adsEnabled && ShowVideoAd ? <Card><AdView name={"HomeScreen video"} media={true} /></Card> : null}
       </>
   )
 }

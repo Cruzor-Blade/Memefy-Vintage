@@ -140,6 +140,9 @@ const AdView = React.memo(({index, media, closable, onClosePress, name, loadOnMo
     };
   }, [loadOnMount]);
 
+
+  if (error || loading) return null;
+
   return (
     <NativeAdView
       ref={nativeAdRef}

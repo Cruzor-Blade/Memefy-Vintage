@@ -63,7 +63,7 @@ const EditProfileScreen = () => {
     firestore()
     .collection('users')
     .doc(user.uid)
-    .set({
+    .update({
       fname: userData.fname,
       lname: userData.lname,
       about: userData.about,
