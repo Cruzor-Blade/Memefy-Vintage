@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import firestore from '@react-native-firebase/firestore';
 import { windowWidth } from "../utils/Dimentions";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Oticons from 'react-native-vector-icons/Octicons';
 import storage from '@react-native-firebase/storage';
 import MaskedView from '@react-native-community/masked-view';
 
@@ -128,6 +129,37 @@ const PostViewScreen = ({route, navigation}) => {
     
     // console.log("User Data:",userData);
 
+    const reportPost = () => {
+      const addReport = () => {
+        firestore()
+        .collection('metaPosts')
+        .doc('reports')
+        .collection(postId)
+        .doc(user.uid)
+        .set({})
+        .then(() => Alert.alert(
+          postViewScreen.reportedAlertTitle,
+          postViewScreen.reportedAlertSubtitle,
+        ))
+      }
+      Alert.alert(
+        postViewScreen.reportAlertTitle,
+        postViewScreen.reportAlertSubtitle,
+        [
+          {
+            text:postViewScreen.reportAlertCancel,
+            onPress: () => console.log('Cancel pressed !'),
+            style:'cancel'
+          },
+          {
+            text:postViewScreen.reportAlertDone,
+            onPress: () => addReport(),
+            style:'cancel'
+          }
+        ],
+        {cancelable: false}
+      );
+    };
 
     const handleDelete = (postId) => {
         Alert.alert(
@@ -322,7 +354,7 @@ const PostViewScreen = ({route, navigation}) => {
                   </UserInfo>
                   <View style={styles.viewReactionsContainer}>
                       {route.params.uid === user.uid ? (
-                      <TouchableOpacity style={{marginHorizontal:6}}
+                      <TouchableOpacity style={{marginHorizontal:4}}
                           onPress={() => handleDelete(route.params.postId)}>
                           <Ionicons
                               name="ios-trash-bin-outline"
@@ -331,11 +363,18 @@ const PostViewScreen = ({route, navigation}) => {
                           />
                       </TouchableOpacity>)
                       : null}
-                      <TouchableOpacity style={{marginHorizontal: 6}} onPress={checkPermission}>
+                      <TouchableOpacity style={{marginHorizontal: 4}} onPress={checkPermission}>
                           <Ionicons
                               name="ios-download-outline"
                               size = {29}
                               color="#00ff00"
+                          />
+                      </TouchableOpacity>
+                      <TouchableOpacity style={{marginHorizontal: 4, marginTop:4}} onPress={reportPost}>
+                          <Oticons
+                              name="stop"
+                              size = {27}
+                              color="#ff0000"
                           />
                       </TouchableOpacity>
                   </View>
