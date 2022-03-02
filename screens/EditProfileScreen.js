@@ -336,7 +336,7 @@ const EditProfileScreen = () => {
               />
             </View>
             <FormButton buttonTitle={editProfileScreen.update} onPress={handleUpdate} />
-            {uploading && <ActivityIndicator size="28" style={{marginHorizontal:'auto', marginVertical:4}} />}
+            {uploading ? <ActivityIndicator size={28} style={{marginHorizontal:'auto', marginVertical:4}} /> : null}
         </ScrollView>
       </Animated.View>
     </View>
