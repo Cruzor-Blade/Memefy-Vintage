@@ -110,7 +110,7 @@ export default
         aboutPlaceholder : "About me",
         phonePlaceholder : "Phone",
         countryPlaceholder : "Country",
-        cityPlaceHolder : "City",
+        cityPlaceholder : "City",
         update : "Update",
         bottomsheetMainTitle :"Upload a photo",
         bottomsheetSubtitle : "Choose a profile Photo",

@@ -23,7 +23,7 @@ import { LanguageContext } from '../languages/languageContext';
 
 const ProfileScreen = ({navigation, route}) => {
   const {user, logout} = useContext(AuthContext);
-  const {profileScreen} = useContext(LanguageContext);
+  const {profileScreen, selectedLanguage} = useContext(LanguageContext);
 
   const {onFollowUser, onUnfollowUser} = useContext(ActionsContext);
   const currentTheme = useTheme();
@@ -58,6 +58,7 @@ const ProfileScreen = ({navigation, route}) => {
       await firestore()
         .collection('posts')
         .where('userId', '==', route.params ? route.params.userId : user.uid)
+        .where('language', '==', selectedLanguage )
         .orderBy('postTime', 'desc')
         .startAfter(lastDoc)
         .limit(number)

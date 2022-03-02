@@ -327,7 +327,7 @@ const EditProfileScreen = () => {
                   size={20}
               />
               <TextInput
-                  placeholder={editProfileScreen.countryPlaceholder}
+                  placeholder={editProfileScreen.cityPlaceholder}
                   placeholderTextColor={color}
                   autoCorrect={false}
                   value={userData ? userData.city : ''}

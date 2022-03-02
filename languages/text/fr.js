@@ -109,7 +109,7 @@ export default
         aboutPlaceholder : "À propos de moi",
         phonePlaceholder : "Téléphone",
         countryPlaceholder : "Pays",
-        cityPlaceHolder : "Ville",
+        cityPlaceholder : "Ville",
         update : "Mettre à Jour",
         bottomsheetMainTitle :"Uploader Une Photo",
         bottomsheetSubtitle : "Choisissez une photo de profil",
