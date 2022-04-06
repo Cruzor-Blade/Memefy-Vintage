@@ -11,10 +11,14 @@ export const ActionProvider = ({children}) => {
     const [followLoading, setFollowLoading] = useState (false);
     const [isDarkTheme, setIsDarkTheme] = useState(false);
     const [adsEnabled, setAdsEnabled] = useState(false);
+    const [adsIdsObject, setAdsIdsObject] = useState({})
     
     useEffect(async ()=> {
         const snapshot = await firestore().collection('config').doc('ads').get();
-        const {showAds, HSi, HSv, HSmv,  PVSi, PSb} = snapshot.data()
+        const {showAds, HSi, HSv, HSmv,  PVSi, PSb} = snapshot.data();
+        setAdsIdsObject({HSi, HSv, HSmv, PVSi, PSb});
+
+        console.log('Different ids: ','\n', HSi,'\n', HSv,'\n', HSmv,'\n',  PVSi,'\n', PSb)
         if (showAds){
             setAdsEnabled(true);
             AdManager.setRequestConfiguration({
@@ -112,6 +116,11 @@ export const ActionProvider = ({children}) => {
         <ActionsContext.Provider
             value={{
                 adsEnabled,
+                HSi:adsIdsObject.HSi,
+                HSv:adsIdsObject.HSv,
+                HSmv:adsIdsObject.HSmv,
+                PVSi:adsIdsObject.PVSi,
+                PSb:adsIdsObject.PSb,
                 followLoading,
                 isDarkTheme,
                 setIsDarkTheme,

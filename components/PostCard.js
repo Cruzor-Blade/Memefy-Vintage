@@ -35,7 +35,7 @@ const containerWidth= windowWidth * (3/4);
 
 const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}) => {
   const {user} = useContext(AuthContext);
-  const {onFollowUser, adsEnabled} = useContext(ActionsContext);
+  const {onFollowUser, adsEnabled, HSi, HSv} = useContext(ActionsContext);
   const {selectedLanguage} = useContext(LanguageContext);
   const currentTheme = useTheme();
   
@@ -444,7 +444,7 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
 
   useEffect(() => {
     const showAdProb = Math.random();
-    if (showAdProb >= 0.8 && showAdProb < 0.92) {
+    if (showAdProb >= 0.75 && showAdProb < 0.92) {
       setShowImageAd(true);
     } else if (showAdProb >= 0.97) {
       setShowVideoAd(true);
@@ -576,8 +576,8 @@ const PostCard = ({item, onProfilePress, onCommentPress, onImagePress, ...props}
               </View>
           </InteractionWrapper>
         </Card>
-        { adsEnabled && showImageAd ? <Card><AdView name={"HomeScreen image"} media={true} /></Card> : null}
-        { adsEnabled && ShowVideoAd ? <Card><AdView name={"HomeScreen video"} media={true} /></Card> : null}
+        { adsEnabled && showImageAd ? <Card><AdView adId={HSi} media={true} /></Card> : null}
+        { adsEnabled && ShowVideoAd ? <Card><AdView adId={HSv} media={true} /></Card> : null}
       </>
   )
 }

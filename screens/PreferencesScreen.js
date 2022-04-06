@@ -12,7 +12,7 @@ import { ActionsContext } from "../userContext/Actions";
 const Preferences = ({navigation}) =>{
   const linkToApp = 'https://play.google.com/store/apps/details?id=com.memefy';
   const {preferencesScreen} = useContext(LanguageContext);
-  const {adsEnabled} = useContext(ActionsContext);
+  const {adsEnabled, PSb} = useContext(ActionsContext);
   const currentTheme = useTheme();
   // const OptionMenuModel = ({screen, text, ...props}) => (
     //   <TouchableOpacity onPress={() =>
@@ -29,7 +29,7 @@ const Preferences = ({navigation}) =>{
     const shareApp = async () => {
       try {
         const result = await Share.share({
-          message:`Memefy is the new platform to discover memes. Let's Memefy it ! \n\n You can download the app here:\n ${linkToApp}`
+          message:`Memefy is the new platform to discover funniest memes. Let's Memefy it ! \n\n You can download the app here:\n ${linkToApp}`
         })
       } catch (e) {
         console.log("Error during sharing process", e);
@@ -79,7 +79,7 @@ const Preferences = ({navigation}) =>{
             text={preferencesScreen.rateUs}
             onRipplePress={openStore}
           />
-          { adsEnabled && <AdView name="PreferencesScreen banner" media={false} />}
+          { adsEnabled && <AdView adId={PSb} media={false} />}
         </View>
     )
 }

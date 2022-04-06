@@ -35,7 +35,7 @@ import { ActionsContext } from "../userContext/Actions";
 const PostViewScreen = ({route, navigation}) => {
     const {user} = useContext(AuthContext);
     const {postViewScreen, currentLanguage} = useContext(LanguageContext);
-    const {adsEnabled} = useContext(ActionsContext);
+    const {adsEnabled, PVSi} = useContext(ActionsContext);
 
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
@@ -396,7 +396,7 @@ const PostViewScreen = ({route, navigation}) => {
                
             </TouchableWithoutFeedback>
             { adsEnabled && showImageAd && <View style={{zIndex:3, position:'absolute', width:windowWidth, borderRadius:10, marginTop:2, backgroundColor:'#cccccc'}} >
-              <AdView closable onClosePress={onAdClosePress} name={"HomeScreen video"} media={true} />
+              <AdView closable onClosePress={onAdClosePress} adId={PVSi} media={true} />
             </View>}
             
                 <FlatList

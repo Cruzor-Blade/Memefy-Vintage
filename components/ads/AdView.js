@@ -15,7 +15,7 @@ import {adUnitIDs, Events, Logger} from './Utils';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const AdView = React.memo(({index, media, closable, onClosePress, name, loadOnMount = true}) => {
+const AdView = React.memo(({index, media, closable, onClosePress, adId, name, loadOnMount = true}) => {
   const [aspectRatio, setAspectRatio] = useState(1.5);
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -141,7 +141,7 @@ const AdView = React.memo(({index, media, closable, onClosePress, name, loadOnMo
   }, [loadOnMount]);
 
 
-  if (error || loading) return null;
+  if (error) return null;
 
   return (
     <NativeAdView
@@ -162,7 +162,8 @@ const AdView = React.memo(({index, media, closable, onClosePress, name, loadOnMo
         customControlsRequested:true,
       }}
        // adUnitID={type === 'image' ? adUnitIDs.image : adUnitIDs.video} // REPLACE WITH NATIVE_AD_VIDEO_ID for video ads.
-      repository={name}
+      // repository={name}
+      adUnitID={adId}
         >
       <View
         style={{
